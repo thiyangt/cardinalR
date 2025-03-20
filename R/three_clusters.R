@@ -1,23 +1,23 @@
 #### This script contains functions to generate the data structures
 
 ## Data structure 1
-three_clust_01 <- function(n = 1500, p = 4, k = 3) {
+gen_three_clust_01 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_curv_4d(
-    n = n * 7/15,
+    n = n[1],
     offset = c(0, 0, 0, 0)
   ) |>
   mutate(cluster = "cluster1")
 
   elliptical_cluster <- gen_elliptical_cluster_4d(
-    n = n * 3/15,
+    n = n[2],
     axes_lengths = c(2, 1.5, 1, 0.5),
     offset = c(0, 0, 0, 0)
   ) |>
   mutate(cluster = "cluster2")
 
   blunted_corn_cluster <- gen_blunted_corn_cluster_4d(
-    n = n * 5/15,
+    n = n[3],
     height = 5,
     base_radius = 1.5,
     tip_radius = 0.8,
