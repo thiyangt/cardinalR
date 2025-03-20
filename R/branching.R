@@ -375,22 +375,7 @@ gen_four_branch_data <- function(n = c(200, 300, 150, 250), p = 4) {
 #'   n = 400, num_noise = 2, min_n = -0.05,
 #'   max_n = 0.05
 #' )
-eight_branch <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+gen_eight_branch_data <- function(n, num_noise, min_n, max_n) {
 
   # To check that the assigned n is divided by eight
   if ((n %% 8) != 0) {
@@ -456,27 +441,24 @@ eight_branch <- function(n, num_noise, min_n, max_n) {
 
   df8 <- matrix(c(x, y, z, w), ncol = 4)
 
-  df <- rbind(df1, df2, df3, df4, df5, df6, df7, df8)
+  df <- bind_rows(df1, df2, df3, df4, df5, df6, df7, df8)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 4) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
 
 #' Generate Curvy Branching Cluster Data
@@ -503,21 +485,6 @@ eight_branch <- function(n, num_noise, min_n, max_n) {
 #'   num_noise = 2, min_n = -0.05, max_n = 0.05
 #' )
 curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
 
   ## If the number of points for each cluster is not defined
   if (missing(clust_vec)) {
@@ -563,25 +530,22 @@ curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
 
   df <- rbind(df1, df2, df3)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 4) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
 
 #' Generate Curvy Branching Cluster Data with Background Noise
@@ -606,21 +570,6 @@ curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
 #'   max_n = 0.05
 #' )
 curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
 
   # To check that the assigned n is divided by three
   if ((n %% 4) != 0) {
@@ -665,25 +614,22 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
 
   df <- rbind(df1, df2, df3, df4)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 4) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
 
 #' Generate Curvy Branching Clusters with Noise
@@ -703,22 +649,7 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
 #' # Generate curvy branching clusters with noise with custom parameters
 #' set.seed(20240412)
 #' data <- curvy_branch(n = 200, num_noise = 2, min_n = -0.05, max_n = 0.05)
-curvy_branch <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+curvy_branch <- function(n = , num_noise, min_n, max_n) {
 
   # To check that the assigned n is divided by two
   if ((n %% 2) != 0) {
@@ -748,23 +679,20 @@ curvy_branch <- function(n, num_noise, min_n, max_n) {
 
   df <- rbind(df1, df2)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 4) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
