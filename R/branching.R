@@ -78,7 +78,7 @@ gen_three_branch_data <- function(n = c(200, 500, 300), p = 4) {
 #'
 #' This function generates a dataset representing a structure with five branches.
 #'
-#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param n A numeric vector (default: c(200, 100, 300, 400, 300)) representing the sample sizes.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @return A data containing five branches.
 #' @export
@@ -170,15 +170,13 @@ gen_five_branch_data <- function(n = c(200, 100, 300, 400, 300), p = 4) {
   return(df)
 }
 
-#' Generate Seven-Branching Data with Noise
+#' Generate data with seven branches
 #'
-#' This function generates a dataset representing seven branches with added noise.
+#' This function generates a dataset representing a structure with seven branches.
 #'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A matrix containing the seven-branching data with added noise.
+#' @param n A numeric vector (default: c(200, 100, 250, 300, 150, 400, 50)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing seven branches.
 #' @export
 #'
 #' @examples
