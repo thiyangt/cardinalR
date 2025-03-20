@@ -16,10 +16,15 @@ gen_three_brach_data <- function(n = c(200, 500, 300), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
+
   }
 
   if (length(n) != 3) {
     stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
   x1 <- stats::runif(n[1], -2, 2)
