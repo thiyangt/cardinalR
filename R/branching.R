@@ -80,6 +80,8 @@ curvy_tree <- function(n, num_noise, min_n, max_n) {
   } else {
     df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
 }
 
 #' Generate Tree-like Data with Noise
