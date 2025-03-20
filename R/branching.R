@@ -12,61 +12,54 @@
 #' @examples
 #' set.seed(20240412)
 #' tree_data <- curvy_tree(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
-curvy_tree <- function(n = 500, num_noise, min_n, max_n) {
+curvy_tree <- function(n = c(200, 500, 300), p = 4) {
 
-  # To check that the assigned n is divided by three
-  if ((n %% 3) != 0) {
-    warning("The sample size should be a product of three.")
-    cluster_size <- floor(n / 3)
-  } else {
-    cluster_size <- n / 3
-  }
+  x1 <- stats::runif(n[1], -2, 2)
+  x2 <- -(x1^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
+  x3 <- stats::rnorm(n[1], 10, 0.1)
+  x4 <- stats::rnorm(n[1], 10, 0.1)
 
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -2, 2)
-  y <- -(x^3 + stats::runif(cluster_size, 0, 6)) + stats::runif(cluster_size, 0, 0.2)
-  z <- stats::rnorm(cluster_size, 10, 0.1)
-  w <- stats::rnorm(cluster_size, 10, 0.1)
+  x1 <- stats::runif(n[2], 0, 2)
+  x2 <- (x1^3 + stats::runif(n[2], 0, 6)) + stats::runif(n[2], 0, 0.2)
+  x3 <- stats::rnorm(n[2], 10, 0.1)
+  x4 <- stats::rnorm(n[2], 10, 0.1)
 
-  df1 <- matrix(c(x, y, z, w), ncol = 4)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, 0, 2)
-  y <- (x^3 + stats::runif(cluster_size, 0, 6)) + stats::runif(cluster_size, 0, 0.2)
-  z <- stats::rnorm(cluster_size, 10, 0.1)
-  w <- stats::rnorm(cluster_size, 10, 0.1)
+  x1 <- stats::runif(n[3], -2, 0)
+  x2 <- -(x1^3 + stats::runif(n[3], 0, 6)) + stats::runif(n[3], 0, 0.2) + 10
+  x3 <- stats::rnorm(n[3], 10, 0.1)
+  x4 <- stats::rnorm(n[3], 10, 0.1)
 
-  df2 <- matrix(c(x, y, z, w), ncol = 4)
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -2, 0)
-  y <- -(x^3 + stats::runif(cluster_size, 0, 6)) + stats::runif(cluster_size, 0, 0.2) + 10
-  z <- stats::rnorm(cluster_size, 10, 0.1)
-  w <- stats::rnorm(cluster_size, 10, 0.1)
+  df <- bind_rows(df1, df2, df3)
 
-  df3 <- matrix(c(x, y, z, w), ncol = 4)
+  if (p > 4) {
 
-  df <- rbind(df1, df2, df3)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = o.5
     )
-    df <- cbind(df, noise_mat)
+    df <- bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 #' Generate Tree-like Data with Noise
