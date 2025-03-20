@@ -18,6 +18,10 @@ gen_three_brach_data <- function(n = c(200, 500, 300), p = 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
   }
 
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  }
+
   x1 <- stats::runif(n[1], -2, 2)
   x2 <- -(x1^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
   x3 <- stats::rnorm(n[1], 10, 0.1)
