@@ -54,7 +54,8 @@ gen_three_brach_data <- function(n = c(200, 500, 300), p = 4) {
       n = NROW(df), num_noise = p - 4,
       min_n = -0.5, max_n = 0.5
     )
-    df <- suppressWarnings(bind_cols(df, noise_mat))
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- bind_cols(df, noise_mat)
 
   }
 
