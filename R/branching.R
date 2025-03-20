@@ -1,12 +1,10 @@
 #' Generate Curvy Tree Data with Noise
 #'
-#' This function generates a dataset representing a curvy tree structure, with added noise.
+#' This function generates a dataset representing a structure with three branches.
 #'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A matrix containing the curvy tree data with added noise.
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing three branches.
 #' @export
 #'
 #' @examples
