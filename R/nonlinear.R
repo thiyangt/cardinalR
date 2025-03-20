@@ -367,11 +367,11 @@ nonlinear_mirror <- function(n, num_noise, min_n, max_n) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' two_curvy_panckakes <- two_curvy_panckakes(
+#' two_curvy_pancakes <- two_curvy_pancakes(
 #'   n = 300, num_noise = 2,
 #'   min_n = -0.05, max_n = 0.05
 #' )
-two_curvy_panckakes <- function(n, num_noise, min_n, max_n) {
+two_curvy_pancakes <- function(n, num_noise, min_n, max_n) {
   if (n <= 0) {
     stop("Number of points should be a positive number.")
   }
