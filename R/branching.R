@@ -9,8 +9,8 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' tree_data <- gen_three_brach_data(n = c(200, 500, 300), p = 4)
-gen_three_brach_data <- function(n = c(200, 500, 300), p = 4) {
+#' tree_data <- gen_three_branch_data(n = c(200, 500, 300), p = 4)
+gen_three_branch_data <- function(n = c(200, 500, 300), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
