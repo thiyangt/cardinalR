@@ -12,22 +12,7 @@
 #' @examples
 #' set.seed(20240412)
 #' tree_data <- curvy_tree(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
-curvy_tree <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+curvy_tree <- function(n = 500, num_noise, min_n, max_n) {
 
   # To check that the assigned n is divided by three
   if ((n %% 3) != 0) {
