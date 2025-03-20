@@ -1,39 +1,20 @@
 #### This script contains functions to generate the data structures
 
 ## Data structure 1
-three_clust_01 <- function(n = 1500, triangle_vertices) {
-
-  #cluster_size <- n/3
+three_clust_01 <- function(n = 1500, p = 4, k = 3) {
 
   curvilinear_cluster <- gen_curv_4d(
     n = n * 7/15,
     offset = c(0, 0, 0, 0)
-  ) #|>
-  #mutate(cluster = "cluster1")
-
-  # Manually subtract column means
-  curvilinear_cluster <- apply(curvilinear_cluster, 2,
-                               function(col) col - mean(col))
-
-  curvilinear_cluster <- as_tibble(curvilinear_cluster +
-                                     matrix(rep(triangle_vertices[1,], n * 7/15),
-                                            ncol=4, byrow=T))
+  ) |>
+  mutate(cluster = "cluster1")
 
   elliptical_cluster <- gen_elliptical_cluster_4d(
     n = n * 3/15,
     axes_lengths = c(2, 1.5, 1, 0.5),
     offset = c(0, 0, 0, 0)
-  ) #|>
-  #mutate(cluster = "cluster2")
-
-
-  # Manually subtract column means
-  elliptical_cluster <- apply(elliptical_cluster, 2,
-                              function(col) col - mean(col))
-
-  elliptical_cluster <- as_tibble(elliptical_cluster +
-                                    matrix(rep(triangle_vertices[2,], n * 3/15),
-                                           ncol=4, byrow=T))
+  ) |>
+  mutate(cluster = "cluster2")
 
   blunted_corn_cluster <- gen_blunted_corn_cluster_4d(
     n = n * 5/15,
@@ -41,17 +22,9 @@ three_clust_01 <- function(n = 1500, triangle_vertices) {
     base_radius = 1.5,
     tip_radius = 0.8,
     tip_point = c(0, 0, 0, 0)
-  ) #|>
-  #mutate(cluster = "cluster3")
+  ) |>
+  mutate(cluster = "cluster3")
 
-
-  # Manually subtract column means
-  blunted_corn_cluster <- apply(blunted_corn_cluster, 2,
-                                function(col) col - mean(col))
-
-  blunted_corn_cluster <- as_tibble(blunted_corn_cluster +
-                                      matrix(rep(triangle_vertices[3,], n * 5/15),
-                                             ncol=4, byrow=T))
 
   df <- bind_rows(curvilinear_cluster,
                   elliptical_cluster,
