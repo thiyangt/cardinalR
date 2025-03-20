@@ -87,89 +87,88 @@ gen_three_branch_data <- function(n = c(200, 500, 300), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' tree_data <- gen_five_branch_data(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
-gen_five_branch_data <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' tree_data <- gen_five_branch_data(n = c(200, 100, 300, 400, 300), p = 4)
+gen_five_branch_data <- function(n = c(200, 100, 300, 400, 300), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 5) {
+    stop(cli::cli_alert_danger("n should contain exactly 5 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  x1 <- stats::runif(n[1], -3, 3)
+  x2 <- abs(0.5 * x1)
+  x3 <- stats::rnorm(n[1], 10, 0.03)
+  x4 <- stats::rnorm(n[1], 10, 0.03)
 
-  # To check that the assigned n is divided by five
-  if ((n %% 5) != 0) {
-    warning("The sample size should be a product of five.")
-    cluster_size <- floor(n / 5)
-  } else {
-    cluster_size <- n / 5
-  }
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
+  x1 <- stats::runif(n[2], -0.5, 0.5)
+  x2 <- abs(10 * x1)
+  x3 <- stats::rnorm(n[2], 10, 0.03)
+  x4 <- stats::rnorm(n[2], 10, 0.03)
 
-  x <- stats::runif(cluster_size, -3, 3)
-  y <- abs(0.5 * x)
-  z <- stats::rnorm(cluster_size, 10, 0.03)
-  w <- stats::rnorm(cluster_size, 10, 0.03)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df1 <- matrix(c(x, y, z, w), ncol = 4)
+  x1 <- stats::runif(n[3], -6, 3)
+  x2 <- (-1) * abs(0.5 * x1 + 5)
+  x3 <- stats::rnorm(n[3], 10, 0.03)
+  x4 <- stats::rnorm(n[3], 10, 0.03)
 
-  x <- stats::runif(cluster_size, -0.5, 0.5)
-  y <- abs(10 * x)
-  z <- stats::rnorm(cluster_size, 10, 0.03)
-  w <- stats::rnorm(cluster_size, 10, 0.03)
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df2 <- matrix(c(x, y, z, w), ncol = 4)
+  x1 <- stats::runif(n[4], -0.5, 0.5)
+  x2 <- (-1) * abs(10 * x1) - 5
+  x3 <- stats::rnorm(n[4], 10, 0.03)
+  x4 <- stats::rnorm(n[4], 10, 0.03)
 
-  x <- stats::runif(cluster_size, -6, 3)
-  y <- (-1) * abs(0.5 * x + 5)
-  z <- stats::rnorm(cluster_size, 10, 0.03)
-  w <- stats::rnorm(cluster_size, 10, 0.03)
+  df4 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df3 <- matrix(c(x, y, z, w), ncol = 4)
+  x1 <- stats::runif(n[5], -5, 5)
+  x2 <- x1
+  x3 <- stats::rnorm(n[5], 10, 0.03)
+  x4 <- stats::rnorm(n[5], 10, 0.03)
 
-  x <- stats::runif(cluster_size, -0.5, 0.5)
-  y <- (-1) * abs(10 * x) - 5
-  z <- stats::rnorm(cluster_size, 10, 0.03)
-  w <- stats::rnorm(cluster_size, 10, 0.03)
+  df5 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df4 <- matrix(c(x, y, z, w), ncol = 4)
+  df <- bind_rows(df1, df2, df3, df4, df5)
 
-  x <- stats::runif(cluster_size, -5, 5)
-  y <- x
-  z <- stats::rnorm(cluster_size, 10, 0.03)
-  w <- stats::rnorm(cluster_size, 10, 0.03)
+  if (p > 4) {
 
-  df5 <- matrix(c(x, y, z, w), ncol = 4)
-
-  df <- rbind(df1, df2, df3, df4, df5)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
 }
 
 #' Generate Seven-Branching Data with Noise
