@@ -11,8 +11,8 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' tree_data <- curvy_tree(n = c(200, 500, 300), p = 4)
-curvy_tree <- function(n = c(200, 500, 300), p = 4) {
+#' tree_data <- gen_three_brach_data(n = c(200, 500, 300), p = 4)
+gen_three_brach_data <- function(n = c(200, 500, 300), p = 4) {
 
   x1 <- stats::runif(n[1], -2, 2)
   x2 <- -(x1^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
@@ -48,13 +48,13 @@ curvy_tree <- function(n = c(200, 500, 300), p = 4) {
 
   if (p > 4) {
 
-    cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
       n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = o.5
+      min_n = -0.5, max_n = 0.5
     )
-    df <- bind_cols(df, noise_mat)
+    df <- suppressWarnings(bind_cols(df, noise_mat))
 
   }
 
