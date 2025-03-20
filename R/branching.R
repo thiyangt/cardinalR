@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' tree_data <- curvy_tree(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
+#' tree_data <- curvy_tree(n = c(200, 500, 300), p = 4)
 curvy_tree <- function(n = c(200, 500, 300), p = 4) {
 
   x1 <- stats::runif(n[1], -2, 2)
