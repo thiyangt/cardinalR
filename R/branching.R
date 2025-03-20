@@ -87,8 +87,8 @@ gen_three_branch_data <- function(n = c(200, 500, 300), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' tree_data <- tree(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
-tree <- function(n, num_noise, min_n, max_n) {
+#' tree_data <- gen_five_branch_data(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
+gen_five_branch_data <- function(n, num_noise, min_n, max_n) {
   if (n <= 0) {
     stop("Number of points should be a positive number.")
   }
