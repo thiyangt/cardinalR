@@ -137,4 +137,45 @@ randomize_rows <- function(data) {
   data |> dplyr::slice_sample(n = NROW(data))
 }
 
+
+#' Relocate Clusters in High-Dimensional Space
+#'
+#' This function relocates clusters in a dataset by centering each cluster
+#' and shifting it based on a given transformation matrix.
+#'
+#' @param data A tibble or data frame containing clustered data.
+#'        It must have a `cluster` column indicating cluster membership.
+#' @param vert_mat A matrix specifying the translation vectors for each cluster.
+#'        The number of rows must match the number of clusters.
+#'
+#' @return A tibble containing the relocated clusters with randomized row order.
+#' @import dplyr purrr tibble
+#' @export
+relocate_clusters <- function(data, vert_mat) {
+
+  data_by_clust <- data |>
+    dplyr::group_split(cluster)
+
+  relocated_data <- tibble::tibble()
+
+  relocated_data <- purrr::map_dfr(seq_along(data_by_clust), function(i) {
+
+    cluster_data <- data_by_clust[[i]]
+
+    # Subtract column means
+    cluster_data <- apply(cluster_data, 2, function(col) col - mean(col))
+
+    # Relocate the cluster
+    cluster_data <- as_tibble(cluster_data + matrix(rep(vert[i,], NROW(cluster_data)),
+                                                    ncol = 4, byrow = TRUE))
+
+    cluster_data
+  })
+
+  relocated_data <- randomize_rows(relocated_data)
+
+  relocated_data
+
+}
+
 utils::globalVariables(c("n"))
