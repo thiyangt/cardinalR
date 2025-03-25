@@ -30,6 +30,8 @@ gen_three_clust_01 <- function(n = c(700, 300, 500)) {
                   elliptical_cluster,
                   blunted_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }

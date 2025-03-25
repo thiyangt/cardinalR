@@ -122,4 +122,19 @@ gen_bkg_noise <- function(n, num_dims, mean, sd) {
   return(bkg_mat)
 }
 
+#' Randomize Rows of a Data Frame
+#'
+#' This function randomly shuffles the rows of a given data frame.
+#'
+#' @param data A data frame to be randomized.
+#'
+#' @return A data frame with rows randomly shuffled.
+#' @export
+#'
+#' @examples
+#' randomize_rows(mobius_clust_data)
+randomize_rows <- function(data) {
+  data |> dplyr::slice_sample(n = NROW(data))
+}
+
 utils::globalVariables(c("n"))

@@ -528,7 +528,7 @@ curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
     ncol = 4
   )
 
-  df <- rbind(df1, df2, df3)
+  df <- bind_rows(df1, df2, df3)
 
   if (p > 4) {
 
@@ -612,7 +612,7 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
     stats::rnorm(cluster_size, mean = 1, sd = 1)
   ), ncol = 4)
 
-  df <- rbind(df1, df2, df3, df4)
+  df <- bind_rows(df1, df2, df3, df4)
 
   if (p > 4) {
 
@@ -649,35 +649,27 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
 #' # Generate curvy branching clusters with noise with custom parameters
 #' set.seed(20240412)
 #' data <- curvy_branch(n = 200, num_noise = 2, min_n = -0.05, max_n = 0.05)
-curvy_branch <- function(n = , num_noise, min_n, max_n) {
+gen_two_curvy <- function(n = c(300, 200), p = 4) {
 
-  # To check that the assigned n is divided by two
-  if ((n %% 2) != 0) {
-    warning("The sample size should be a product of two.")
-    cluster_size <- floor(n / 2)
-  } else {
-    cluster_size <- n / 2
-  }
-
-  theta <- stats::runif(cluster_size, 0.20, 0.90 * pi)
+  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
 
   df1 <- matrix(c(
-    cos(theta) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(theta) + stats::rnorm(cluster_size, 1, 0.06),
-    cos(theta) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(theta) + stats::rnorm(cluster_size, 1, 0.06)
+    cos(theta) + stats::rnorm(n[1], 1, 0.06),
+    sin(theta) + stats::rnorm(n[1], 1, 0.06),
+    cos(theta) + stats::rnorm(n[1], 1, 0.06),
+    sin(theta) + stats::rnorm(n[1], 1, 0.06)
   ), ncol = 4)
 
-  theta1 <- stats::runif(cluster_size, 0.20, 0.90 * pi)
+  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
 
   df2 <- matrix(c(
-    cos(-theta1) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(-theta1) + stats::rnorm(cluster_size, 1, 0.06),
-    cos(-theta1) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(-theta1) + stats::rnorm(cluster_size, 1, 0.06)
+    cos(-theta1) + stats::rnorm(n[2], 1, 0.06),
+    sin(-theta1) + stats::rnorm(n[2], 1, 0.06),
+    cos(-theta1) + stats::rnorm(n[2], 1, 0.06),
+    sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
   ), ncol = 4)
 
-  df <- rbind(df1, df2)
+  df <- bind_rows(df1, df2)
 
   if (p > 4) {
 
