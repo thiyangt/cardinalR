@@ -11,81 +11,71 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' circular_clusters_data <- three_circulars(
-#'   n = 300, num_noise = 2,
-#'   min_n = -0.05, max_n = 0.05
-#' )
-three_circulars <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' circular_clusters_data <- gen_three_circulars(n = c(200, 500, 300), p = 4)
+gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  theta1 <- stats::runif(n[1], 0.0, 2 * pi)
+  x1 <- cos(theta1) + stats::rnorm(n[1], 10, 0.03)
+  x2 <- sin(theta1) + stats::rnorm(n[1], 10, 0.03)
+  x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
+  x4 <- rep(0, n[1]) - stats::rnorm(n[1], 10, 0.03)
 
-  # To check that the assigned n is divided by three
-  if ((n %% 3) != 0) {
-    warning("The sample size should be a product of three.")
-    cluster_size <- floor(n / 3)
-  } else {
-    cluster_size <- n / 3
-  }
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  theta <- stats::runif(cluster_size, 0.0, 2 * pi)
-  x <- cos(theta) + stats::rnorm(cluster_size, 10, 0.03)
-  y <- sin(theta) + stats::rnorm(cluster_size, 10, 0.03)
+  theta2 <- stats::runif(n[2], 0.0, 2 * pi)
+  x1 <- 0.5 * cos(theta2) + stats::rnorm(n[2], 10, 0.03)
+  x2 <- 0.5 * sin(theta2) + stats::rnorm(n[2], 10, 0.03)
+  x3 <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
+  x4 <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
 
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df1 <- matrix(c(x, y, z, w), ncol = 4)
+  x1 <- stats::rnorm(n[3], 10, 0.03)
+  x2 <- stats::rnorm(n[3], 10, 0.03)
+  x3 <- rep(0, n[3]) + stats::rnorm(n[3], 10, 0.03)
+  x4 <- rep(0, n[3]) - stats::rnorm(n[3], 10, 0.03)
 
-  x <- 0.5 * cos(theta) + stats::rnorm(cluster_size, 10, 0.03)
-  y <- 0.5 * sin(theta) + stats::rnorm(cluster_size, 10, 0.03)
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  df <- dplyr::bind_rows(df1, df2, df3)
 
-  df2 <- matrix(c(x, y, z, w), ncol = 4)
+  if (p > 4) {
 
-  x <- stats::rnorm(cluster_size, 10, 0.03)
-  y <- stats::rnorm(cluster_size, 10, 0.03)
-
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
-
-  df3 <- matrix(c(x, y, z, w), ncol = 4)
-
-  df <- rbind(df1, df2, df3)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- dplyr::bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 #' Generate Cell Cycle Data with Noise
