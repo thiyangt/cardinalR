@@ -151,170 +151,146 @@ gen_three_cell_cycle <- function(n = c(200, 500, 300), p = 3) {
   return(df)
 }
 
-#' Generate Curvy Cell Cycle Data with Noise
+#' Generate Three Curvy Cell Cycle Data
 #'
-#' This function generates a curvy cell cycle dataset with added noise dimensions.
+#' This function generates a dataset representing a structure with three curvy cell cycles,
 #'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A matrix containing the curvy cell cycle data with added noise.
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 3) representing the number of dimensions.
+#' @return A data containing the three curvy cell cycles.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_cell_cycle_data <- curvy_cycle(
-#'   n = 300, num_noise = 2, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-curvy_cycle <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' curvy_cell_cycle_data <- gen_three_curvy_cycle(n = c(200, 500, 300), p = 3)
+gen_three_curvy_cycle <- function(n = c(200, 500, 300), p = 3) {
+
+  if (p < 3) {
+    stop(cli::cli_alert_danger("p should be 3 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by three
-  if ((n %% 3) != 0) {
-    warning("The sample size should be a product of three.")
-    cluster_size <- floor(n / 3)
-  } else {
-    cluster_size <- n / 3
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
 
   r <- sqrt(3) / 3
 
-  theta <- stats::runif(cluster_size, 0, 2 * pi)
-  x <- cos(theta)
-  y <- r + sin(theta)
-  z <- cos(3 * theta) / 3
+  theta1 <- stats::runif(n[1], 0, 2 * pi)
+  x1 <- cos(theta1)
+  x2 <- r + sin(theta1)
+  x3 <- cos(3 * theta1) / 3
 
-  df1 <- matrix(c(x, y, z), ncol = 3)
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3)
 
-  x <- cos(theta) + 0.5
-  y <- sin(theta) - r / 2
-  z <- cos(3 * theta) / 3
+  theta2 <- stats::runif(n[2], 0, 2 * pi)
+  x1 <- cos(theta2) + 0.5
+  x2 <- sin(theta2) - r / 2
+  x3 <- cos(3 * theta2) / 3
 
-  df2 <- matrix(c(x, y, z), ncol = 3)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3)
 
-  x <- cos(theta) - 0.5
-  y <- sin(theta) - r / 2
-  z <- cos(3 * theta) / 3
+  theta3 <- stats::runif(n[3], 0, 2 * pi)
+  x1 <- cos(theta3) - 0.5
+  x2 <- sin(theta3) - r / 2
+  x3 <- cos(3 * theta3) / 3
 
-  df3 <- matrix(c(x, y, z), ncol = 3)
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3)
 
-  df <- rbind(df1, df2, df3)
+  df <- dplyr::bind_rows(df1, df2, df3)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 3) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 3,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 4:p)
+    df <- dplyr::bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
-#' Generate Linked Data
+#' Generate Two Link Circular Clusters
 #'
-#' This function generates linked data points.
+#' This function generates a dataset representing a structure with two link circular clusters.
 #'
-#' @param n The total number of data points to be generated. Should be a product of two.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
+#' @param n A numeric vector (default: c(200, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 3) representing the number of dimensions.
 #'
-#' @return A matrix containing the generated linked data points.
+#' @return A matrix containing the generated two linked circular clusters.
 #' @export
 #'
 #' @examples
 #'
 #' # Generate linked data with noise with custom parameters
 #' set.seed(20240412)
-#' data <- two_circulars(n = 200, num_noise = 2, min_n = -0.05, max_n = 0.05)
-two_circulars <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' data <- gen_two_circulars(n = c(200, 300), p = 3)
+gen_two_circulars <- function(n = c(200, 300), p = 3) {
+
+  if (p < 3) {
+    stop(cli::cli_alert_danger("p should be 3 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 2) {
+    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by two
-  if ((n %% 2) != 0) {
-    warning("The sample size should be a product of two.")
-    cluster_size <- floor(n / 2)
-  } else {
-    cluster_size <- n / 2
-  }
-
-  theta <- (0:(cluster_size - 1)) * (2 * pi / cluster_size)
+  theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
   cs <- cos(.4)
   sn <- sin(.4)
 
-  df1 <- matrix(c(
-    cos(theta),
-    cs * sin(theta),
-    -sn * sin(theta)
-  ), ncol = 3)
+  x1 <- cos(theta1)
+  x2 <- cs * sin(theta1)
+  x3 <- -sn * sin(theta1)
 
-  df2 <- matrix(c(
-    1 + cos(theta),
-    sn * sin(theta),
-    cs * sin(theta)
-  ), ncol = 3)
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3)
 
-  df <- rbind(df1, df2)
+  theta2 <- (0:(n[2] - 1)) * (2 * pi / n[2])
+  x1 <- 1 + cos(theta2)
+  x2 <- sn * sin(theta2)
+  x3 <- cs * sin(theta2)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3)
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+  df <- dplyr::bind_rows(df1, df2)
+
+  if (p > 3) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 3,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 4:p)
+    df <- dplyr::bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
