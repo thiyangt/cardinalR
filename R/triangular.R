@@ -1,35 +1,23 @@
-#' Generate Triangular 3D Datasets with Noise
+#' Generate 3D Triangular Prism
 #'
-#' This function generates triangular 3D datasets with added noise dimensions.
+#' This function generates 3D triangular prism  datasets.
 #'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A matrix containing the triangular 3D datasets with added noise.
+#' @param n A numeric value (default: 300) representing the sample size.
+#' @param p A numeric value (default: 3) representing the number of dimensions.
+#' @return A data containing a triangular prism in 3D.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_3d_data <- tri_3d(
-#'   n = 100, num_noise = 2,
-#'   min_n = -0.05, max_n = 0.05
-#' )
-tri_3d <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' triangular_3d_data <- gen_tri_prism(n = 300, p = 3)
+gen_tri_prism <- function(n = 300, p = 3) {
+
+  if (p < 3) {
+    stop(cli::cli_alert_danger("p should be 3 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
   trace_point <- stats::runif(3)
@@ -37,31 +25,32 @@ tri_3d <- function(n, num_noise, min_n, max_n) {
     ncol = 3
   )
 
-  df <- matrix(c(rep(0, n), rep(0, n), rep(0, n)), ncol = 3)
+  df <- tibble::tibble(
+    x1 = rep(0, n),
+    x2 = rep(0, n),
+    x3 = rep(0, n)
+  )
+
   for (i in 1:n) {
     trace_point <- (corner_points[sample(4, 1), ] + trace_point) / 2
-    df[i, ] <- trace_point
+    df[i, ] <- as.list(trace_point)
   }
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 3) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 3,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 4:p)
+    df <- dplyr::bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 
@@ -78,67 +67,50 @@ tri_3d <- function(n, num_noise, min_n, max_n) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_plane_data <- tri_plane_bkg(
-#'   n = 216,
-#'   num_noise = 2, min_n = -0.05, max_n = 0.05
-#' )
-tri_plane_bkg <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' triangular_plane_data <- gen_tri_plane_with_bkg(n = 300, p = 3)
+gen_tri_plane_with_bkg <- function(n = 300, p = 3) {
+
+  if (p < 3) {
+    stop(cli::cli_alert_danger("p should be 3 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by three
-  if ((n %% 3) != 0) {
-    warning("The sample size should be a product of three.")
-    cluster_size <- floor(n / 3)
-  } else {
-    cluster_size <- n / 3
-  }
-
 
   trace_point <- stats::runif(2)
   corner_points <- matrix(c(c(0, 1, 0.5), c(0, 0, 1)), ncol = 2)
-  df1 <- matrix(c(rep(0, n), rep(0, n)), ncol = 2)
 
-  for (i in 1:cluster_size) {
+  df1 <- tibble::tibble(
+    x1 = rep(0, n),
+    x2 = rep(0, n)
+  )
+
+  for (i in 1:(n * 0.7)) {
     trace_point <- (corner_points[sample(3, 1), ] + trace_point) / 2
-    df1[i, ] <- trace_point
+    df1[i, ] <- as.list(trace_point)
   }
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  if (p > 2) {
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df1)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df1), num_noise = p - 2,
+      min_n = -0.5, max_n = 0.5
     )
-    df1 <- cbind(df1, noise_mat)
+    colnames(noise_mat) <- paste0("x", 3:p)
+    df1 <- dplyr::bind_cols(df1, noise_mat)
+
   }
 
   df2 <- gen_bkg_noise(
-    n = cluster_size, num_dims = NCOL(df1), mean = 0.025,
+    n = n * 0.3, num_dims = NCOL(df1), mean = 0.025,
     sd = 0.5
   )
 
-  df <- rbind(df1, df2, -df1)
+  df <- dplyr::bind_rows(df1, df2, -df1)
 
-  df
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }

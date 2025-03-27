@@ -114,7 +114,9 @@ gen_bkg_noise <- function(n, num_dims, mean, sd) {
       noise_bkg_val_list[[j]] <- stats::rnorm(n, mean = mean, sd = sd)
     }
 
-    bkg_mat <- matrix(unlist(noise_bkg_val_list), ncol = length(noise_bkg_val_list))
+    names(noise_bkg_val_list) <- paste0("x", 1:length(noise_bkg_val_list))
+
+    bkg_mat <- tibble::as_tibble(noise_bkg_val_list)
   } else {
     bkg_mat <- NULL
   }
