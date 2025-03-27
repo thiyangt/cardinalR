@@ -68,6 +68,8 @@ three_clust_02 <- function(n = 1500, triangle_vertices) {
                   cube_cluster,
                   rect_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -107,6 +109,8 @@ three_clust_03 <- function(n = 1500, triangle_vertices) {
                   hemisphere_cluster,
                   tri_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -142,6 +146,8 @@ three_clust_04 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(curvilinear_cluster,
                   gau_cluster,
                   hex_pyr_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -181,6 +187,8 @@ three_clust_05 <- function(n = 1500, triangle_vertices) {
                   elliptical_cluster,
                   blunted_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -217,6 +225,8 @@ three_clust_06 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(curvilinear_cluster,
                   cube_cluster,
                   rect_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -256,6 +266,8 @@ three_clust_07 <- function(n = 1500, triangle_vertices) {
                   hemisphere_cluster,
                   tri_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -294,6 +306,8 @@ three_clust_08 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(spiral_cluster,
                   gau_cluster,
                   hex_pyr_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -337,6 +351,8 @@ three_clust_09 <- function(n = 1500, triangle_vertices) {
                   cube_cluster,
                   blunted_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -377,6 +393,8 @@ three_clust_10 <- function(n = 1500, triangle_vertices) {
                   gau_cluster,
                   tri_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -414,6 +432,8 @@ three_clust_11 <- function(n = 1500, triangle_vertices) {
                   elliptical_cluster,
                   rect_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -448,6 +468,8 @@ three_clust_12 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(nonlinear_cluster,
                   hemisphere_cluster,
                   hex_pyr_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -488,6 +510,8 @@ three_clust_13 <- function(n = 1500, triangle_vertices) {
                   cube_cluster,
                   blunted_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -524,6 +548,8 @@ three_clust_14 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(curvilinear_cluster,
                   gau_cluster,
                   tri_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -564,6 +590,8 @@ three_clust_15 <- function(n = 1500, triangle_vertices) {
                   elliptical_cluster,
                   rect_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -598,6 +626,8 @@ three_clust_16 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(curvilinear_cluster,
                   hemisphere_cluster,
                   hex_pyr_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -636,6 +666,8 @@ three_clust_17 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(hyperbola_cluster,
                   cube_cluster,
                   blunted_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -677,6 +709,8 @@ three_clust_18 <- function(n = 1500, triangle_vertices) {
                   gau_cluster,
                   tri_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -717,6 +751,8 @@ three_clust_19 <- function(n = 1500, triangle_vertices) {
                   hemisphere_cluster,
                   hex_pyr_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -754,6 +790,8 @@ three_clust_20 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(spherical_spiral_cluster,
                   elliptical_cluster,
                   blunted_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -793,6 +831,8 @@ three_clust_21 <- function(n = 1500, triangle_vertices) {
                   gau_cluster,
                   rect_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -829,6 +869,8 @@ three_clust_22 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(nonlinear_cluster,
                   cube_cluster,
                   tri_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -868,6 +910,8 @@ three_clust_23 <- function(n = 1500, triangle_vertices) {
                   hemisphere_cluster,
                   hex_pyr_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -904,6 +948,8 @@ three_clust_24 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(curvilinear_cluster,
                   elliptical_cluster,
                   blunted_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -946,6 +992,8 @@ three_clust_25 <- function(n = 1500, triangle_vertices) {
                   gau_cluster,
                   rect_corn_cluster)
 
+  df <- randomize_rows(df)
+
   df
 
 }
@@ -981,6 +1029,8 @@ three_clust_26 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(curvilinear_cluster,
                   cube_cluster,
                   tri_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -1018,6 +1068,8 @@ three_clust_27 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(hyperbola_cluster,
                   hemisphere_cluster,
                   hex_pyr_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
@@ -1057,6 +1109,8 @@ three_clust_28 <- function(n = 1500, triangle_vertices) {
   df <- bind_rows(spiral_cluster,
                   elliptical_cluster,
                   blunted_corn_cluster)
+
+  df <- randomize_rows(df)
 
   df
 
