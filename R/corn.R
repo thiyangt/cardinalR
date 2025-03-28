@@ -13,12 +13,16 @@ gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
   # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta <- runif(n, 0, 2 * pi)
-  phi <- runif(n, 0, 2 * pi)
+  theta1 <- runif(n, 0, 2 * pi)
+  theta2 <- runif(n, 0, 2 * pi)
+  theta3 <- runif(n, 0, 2 * pi)
 
-  x1 <- radii * cos(theta) * sin(phi)
-  x2 <- radii * sin(theta) * sin(phi)
-  x3 <- radii * cos(theta)
+  phi1 <- runif(n, 0, 2 * pi)
+  phi2 <- runif(n, 0, 2 * pi)
+
+  x1 <- radii * cos(theta1) * sin(phi1)
+  x2 <- radii * sin(theta2) * sin(phi2)
+  x3 <- radii * cos(theta3)
   x4 <- height_values
 
   # Shift the cluster towards the tip point
@@ -43,13 +47,17 @@ gen_blunted_corn_cluster_flip1_4d <- function(n, height, base_radius, tip_radius
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
   # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta <- runif(n, 0, 2 * pi)
-  phi <- runif(n, 0, 2 * pi)
+  theta1 <- runif(n, 0, 2 * pi)
+  theta2 <- runif(n, 0, 2 * pi)
+  theta3 <- runif(n, 0, 2 * pi)
 
-  x1 <- radii * sin(theta) * sin(phi)
+  phi1 <- runif(n, 0, 2 * pi)
+  phi2 <- runif(n, 0, 2 * pi)
+
+  x1 <- radii * sin(theta1) * sin(phi1)
   x2 <- height_values
-  x3 <- radii * cos(theta) * sin(phi)
-  x4 <- radii * cos(theta)
+  x3 <- radii * cos(theta2) * sin(phi2)
+  x4 <- radii * cos(theta3)
 
   # Shift the cluster towards the tip point
   corn_cluster <- cbind(x1, x2, x3, x4)
@@ -73,13 +81,17 @@ gen_blunted_corn_cluster_flip2_4d <- function(n, height, base_radius, tip_radius
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
   # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta <- runif(n, 0, 2 * pi)
-  phi <- runif(n, 0, 2 * pi)
+  theta1 <- runif(n, 0, 2 * pi)
+  theta2 <- runif(n, 0, 2 * pi)
+  theta3 <- runif(n, 0, 2 * pi)
 
-  x2 <- radii * sin(theta) * sin(phi)
+  phi1 <- runif(n, 0, 2 * pi)
+  phi2 <- runif(n, 0, 2 * pi)
+
+  x2 <- radii * sin(theta1) * sin(phi1)
   x3 <- height_values
-  x4 <- radii * cos(theta) * sin(phi)
-  x1 <- radii * cos(theta)
+  x4 <- radii * cos(theta2) * sin(phi2)
+  x1 <- radii * cos(theta3)
 
   # Shift the cluster towards the tip point
   corn_cluster <- cbind(x1, x2, x3, x4)
@@ -172,9 +184,11 @@ gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3, tip_
   selected_angles <- sample(hexagon_angles, n, replace = TRUE)
 
   # gen points inside the hexagon (filling the base)
-  radial_factors <- sqrt(runif(n, 0, 1))  # Ensures uniform distribution inside the hexagon
-  x1 <- radii * cos(selected_angles) * radial_factors
-  x2 <- radii * sin(selected_angles) * radial_factors
+  radial_factors1 <- sqrt(runif(n, 0, 1))  # Ensures uniform distribution inside the hexagon
+  radial_factors12 <- sqrt(runif(n, 0, 1))  # Ensures uniform distribution inside the hexagon
+
+  x1 <- radii * cos(selected_angles) * radial_factors1
+  x2 <- radii * sin(selected_angles) * radial_factors2
 
   # For the third dimension (z), gen points inside the volume, tapering toward the tip
   x3 <- runif(n, -0.1, 0.1) * (height - height_values) / height  # Tapering with small variance
