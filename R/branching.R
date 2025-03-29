@@ -185,6 +185,19 @@ gen_five_branch_data <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 #' n = c(200, 100, 250, 300, 150, 400, 50), p = 4)
 gen_seven_branch_data <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+
+  }
+
+  if (length(n) != 7) {
+    stop(cli::cli_alert_danger("n should contain exactly 7 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
   x1 <- stats::runif(n[1], -2, 2)
   x2 <- -(x1^3 + stats::runif(n[1], 0, 1)) + stats::runif(n[1], 0, 0.2)
   x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
@@ -288,6 +301,19 @@ gen_seven_branch_data <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4
 #' four_branching_data <- gen_four_branch_data(n = c(200, 300, 150, 250), p = 4)
 gen_four_branch_data <- function(n = c(200, 300, 150, 250), p = 4) {
 
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+
+  }
+
+  if (length(n) != 4) {
+    stop(cli::cli_alert_danger("n should contain exactly 4 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
   x1 <- stats::runif(n[1], -5, 1)
   x2 <- (exp(x1) + stats::runif(n[1], 0, 0.1)) + stats::runif(n[1], 0, 0.2)
   x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
@@ -371,77 +397,103 @@ gen_four_branch_data <- function(n = c(200, 300, 150, 250), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' branching_data <- eight_branch(
-#'   n = 400, num_noise = 2, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-gen_eight_branch_data <- function(n, num_noise, min_n, max_n) {
+#' branching_data <- gen_eight_branch_data(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4)
+gen_eight_branch_data <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4) {
 
-  # To check that the assigned n is divided by eight
-  if ((n %% 8) != 0) {
-    warning("The sample size should be a product of eight.")
-    cluster_size <- floor(n / 8)
-  } else {
-    cluster_size <- n / 8
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+
   }
 
-  x <- stats::runif(cluster_size, -1, 2)
-  y <- (exp(x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  if (length(n) != 8) {
+    stop(cli::cli_alert_danger("n should contain exactly 5 values."))
+  }
 
-  df1 <- matrix(c(x, y, z, w), ncol = 4)
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
 
-  x <- stats::runif(cluster_size, -1, 1)
-  y <- (exp(2 * x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[1], -1, 2)
+  x2 <- (exp(x1) + stats::runif(n[1], 0, 0.1)) + stats::runif(n[1])
+  x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
+  x4 <- rep(0, n[1]) - stats::rnorm(n[1], 10, 0.03)
 
-  df2 <- matrix(c(x, y, z, w), ncol = 4)
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -1, 0.6)
-  y <- (exp(3 * x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[2], -1, 1)
+  x2 <- (exp(2 * x1) + stats::runif(n[2], 0, 0.1)) + stats::runif(n[2], 0, 0.2)
+  x3 <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
+  x4 <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
 
-  df3 <- matrix(c(x, y, z, w), ncol = 4)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -1, 3)
-  y <- (exp(0.5 * x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[3], -1, 0.6)
+  x2 <- (exp(3 * x1) + stats::runif(n[3], 0, 0.1)) + stats::runif(n[3], 0, 0.2)
+  x3 <- rep(0, n[3]) + stats::rnorm(n[3], 10, 0.03)
+  x4 <- rep(0, n[3]) - stats::rnorm(n[3], 10, 0.03)
 
-  df4 <- matrix(c(x, y, z, w), ncol = 4)
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -2, 1)
-  y <- (exp(-x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[4], -1, 3)
+  x2 <- (exp(0.5 * x1) + stats::runif(n[4], 0, 0.1)) + stats::runif(n[4], 0, 0.2)
+  x3 <- rep(0, n[4]) + stats::rnorm(n[4], 10, 0.03)
+  x4 <- rep(0, n[4]) - stats::rnorm(n[4], 10, 0.03)
 
-  df5 <- matrix(c(x, y, z, w), ncol = 4)
+  df4 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -1, 1)
-  y <- (exp(2 * -x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[5], -2, 1)
+  x2 <- (exp(-x1) + stats::runif(n[5], 0, 0.1)) + stats::runif(n[5], 0, 0.2)
+  x3 <- rep(0, n[5]) + stats::rnorm(n[5], 10, 0.03)
+  x4 <- rep(0, n[5]) - stats::rnorm(n[5], 10, 0.03)
 
-  df6 <- matrix(c(x, y, z, w), ncol = 4)
+  df5 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -0.6, 1)
-  y <- (exp(3 * -x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[6], -1, 1)
+  x2 <- (exp(2 * -x1) + stats::runif(n[6], 0, 0.1)) + stats::runif(n[6], 0, 0.2)
+  x3 <- rep(0, n[6]) + stats::rnorm(n[6], 10, 0.03)
+  x4 <- rep(0, n[6]) - stats::rnorm(n[6], 10, 0.03)
 
-  df7 <- matrix(c(x, y, z, w), ncol = 4)
+  df6 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- stats::runif(cluster_size, -3, 1)
-  y <- (exp(0.5 * -x) + stats::runif(cluster_size, 0, 0.1)) + stats::runif(cluster_size, 0, 0.2)
-  z <- rep(0, cluster_size) + stats::rnorm(cluster_size, 10, 0.03)
-  w <- rep(0, cluster_size) - stats::rnorm(cluster_size, 10, 0.03)
+  x1 <- stats::runif(n[7], -0.6, 1)
+  x2 <- (exp(3 * -x1) + stats::runif(n[7], 0, 0.1)) + stats::runif(n[7], 0, 0.2)
+  x3 <- rep(0, n[7]) + stats::rnorm(n[7], 10, 0.03)
+  x4 <- rep(0, n[7]) - stats::rnorm(n[7], 10, 0.03)
 
-  df8 <- matrix(c(x, y, z, w), ncol = 4)
+  df7 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df <- bind_rows(df1, df2, df3, df4, df5, df6, df7, df8)
+  x1 <- stats::runif(n[8], -3, 1)
+  x2 <- (exp(0.5 * -x1) + stats::runif(n[8], 0, 0.1)) + stats::runif(n[8], 0, 0.2)
+  x3 <- rep(0, n[8]) + stats::rnorm(n[8], 10, 0.03)
+  x4 <- rep(0, n[8]) - stats::rnorm(n[8], 10, 0.03)
+
+  df8 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2, df3, df4, df5, df6, df7, df8)
 
   if (p > 4) {
 
@@ -452,7 +504,7 @@ gen_eight_branch_data <- function(n, num_noise, min_n, max_n) {
       min_n = -0.5, max_n = 0.5
     )
     colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_mat)
 
   }
 
@@ -571,12 +623,17 @@ curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
 #' )
 curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
 
-  # To check that the assigned n is divided by three
-  if ((n %% 4) != 0) {
-    warning("The sample size should be a product of number of clusters.")
-    cluster_size <- floor(n / 4)
-  } else {
-    cluster_size <- n / 4
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+
+  }
+
+  if (length(n) != 4) {
+    stop(cli::cli_alert_danger("n should contain exactly 4 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
 
@@ -648,28 +705,41 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
 #'
 #' # Generate curvy branching clusters with noise with custom parameters
 #' set.seed(20240412)
-#' data <- curvy_branch(n = 200, num_noise = 2, min_n = -0.05, max_n = 0.05)
+#' data <- gen_two_curvy(n = c(300, 200), p = 4)
 gen_two_curvy <- function(n = c(300, 200), p = 4) {
 
-  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+  }
 
-  df1 <- matrix(c(
-    cos(theta) + stats::rnorm(n[1], 1, 0.06),
-    sin(theta) + stats::rnorm(n[1], 1, 0.06),
-    cos(theta) + stats::rnorm(n[1], 1, 0.06),
-    sin(theta) + stats::rnorm(n[1], 1, 0.06)
-  ), ncol = 4)
+  if (length(n) != 2) {
+    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
+  }
 
-  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
 
-  df2 <- matrix(c(
-    cos(-theta1) + stats::rnorm(n[2], 1, 0.06),
-    sin(-theta1) + stats::rnorm(n[2], 1, 0.06),
-    cos(-theta1) + stats::rnorm(n[2], 1, 0.06),
-    sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
-  ), ncol = 4)
 
-  df <- bind_rows(df1, df2)
+  theta1 <- stats::runif(n[1], 0.20, 0.90 * pi)
+
+  df1 <- tibble::tibble(
+    x1 = cos(theta1) + stats::rnorm(n[1], 1, 0.06),
+    x2 = sin(theta1) + stats::rnorm(n[1], 1, 0.06),
+    x3 = cos(theta1) + stats::rnorm(n[1], 1, 0.06),
+    x4 = sin(theta1) + stats::rnorm(n[1], 1, 0.06)
+  )
+
+  theta2 <- stats::runif(n[2], 0.20, 0.90 * pi)
+
+  df2 <- tibble::tibble(
+    x1 = cos(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    x2 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    x3 = cos(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    x4 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06)
+  )
+
+  df <- dplyr::bind_rows(df1, df2)
 
   if (p > 4) {
 
@@ -680,7 +750,7 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
       min_n = -0.5, max_n = 0.5
     )
     colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_mat)
 
   }
 
