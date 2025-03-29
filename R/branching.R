@@ -384,15 +384,13 @@ gen_four_branch_data <- function(n = c(200, 300, 150, 250), p = 4) {
 
 }
 
-#' Generate Eight Branching Data with Noise
+#' Generate data with eight branches
 #'
-#' This function generates a dataset representing eight branching patterns, with added noise.
+#' This function generates a dataset representing a structure with eight branches.
 #'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A matrix containing the eight branching data with added noise.
+#' @param n A numeric vector (default: c(200, 300, 150, 250, 100, 100, 100, 100)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing eight branches.
 #' @export
 #'
 #' @examples
@@ -515,72 +513,72 @@ gen_eight_branch_data <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100),
 
 #' Generate Curvy Branching Cluster Data
 #'
-#' This function generates curvy branching cluster data with three clusters of different shapes.
+#' This function generates two curvy clusters and one Gaussian cluster in the middle.
 #'
-#' @param n The total number of data points to be generated.
-#' @param clust_vec A vector specifying the number of points for each cluster.
-#'                         If not provided, the n is divided equally
-#'                         among the clusters.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
-#'
-#' @return A matrix containing the generated data, with each row representing a data point.
+#' @param n A numeric vector (default: c(200, 200, 100)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing two curvy clusters and one Gaussian cluster.
 #' @export
 #'
 #' @examples
 #'
 #' # Generate curvy branching cluster data with custom parameters
 #' set.seed(20240412)
-#' data <- curvy_branch_clust(
-#'   n = 300, clust_vec = c(100, 150, 50),
-#'   num_noise = 2, min_n = -0.05, max_n = 0.05
-#' )
-curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
+#' data <- gen_curvy_branch_clust(n = c(200, 200, 100), p = 4)
+gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 
-  ## If the number of points for each cluster is not defined
-  if (missing(clust_vec)) {
-    # To check that the assigned n is divided by three
-    if ((n %% 3) != 0) {
-      warning("The sample size should be a product of three.")
-      cluster_size <- floor(n / 3)
-      clust_vec <- append(rep(cluster_size, 2), (n - cluster_size * 2))
-    } else {
-      cluster_size <- n / 3
-      clust_vec <- rep(cluster_size, 3)
-    }
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
   }
 
-  theta <- stats::runif(clust_vec[1], 0.20, 0.90 * pi)
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  }
 
-  df1 <- matrix(c(
-    cos(theta) + stats::rnorm(clust_vec[1], 1, 0.06),
-    sin(theta) + stats::rnorm(clust_vec[1], 1, 0.06),
-    cos(theta) + stats::rnorm(clust_vec[1], 1, 0.06),
-    sin(theta) + stats::rnorm(clust_vec[1], 1, 0.06)
-  ), ncol = 4)
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
+  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
 
 
-  theta1 <- stats::runif(clust_vec[3], 0.20, 0.90 * pi)
+  x1 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x2 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
+  x3 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x4 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
 
-  df2 <- matrix(c(
-    cos(-theta1) + stats::rnorm(clust_vec[3], 1, 0.06),
-    sin(-theta1) + stats::rnorm(clust_vec[3], 1, 0.06),
-    cos(-theta1) + stats::rnorm(clust_vec[3], 1, 0.06),
-    sin(-theta1) + stats::rnorm(clust_vec[3], 1, 0.06)
-  ), ncol = 4)
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df3 <- matrix(
-    c(
-      stats::rnorm(clust_vec[2], mean = 1, sd = 0.08),
-      stats::rnorm(clust_vec[2], mean = 1, sd = 0.08),
-      stats::rnorm(clust_vec[2], mean = 1, sd = 0.08),
-      stats::rnorm(clust_vec[2], mean = 1, sd = 0.08)
-    ),
-    ncol = 4
-  )
 
-  df <- bind_rows(df1, df2, df3)
+  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
+
+
+  x1 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x2 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x3 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x4 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+
+  x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x2 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x3 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x4 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2, df3)
 
   if (p > 4) {
 
@@ -591,7 +589,7 @@ curvy_branch_clust <- function(n, clust_vec, num_noise, min_n, max_n) {
       min_n = -0.5, max_n = 0.5
     )
     colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_mat)
 
   }
 
