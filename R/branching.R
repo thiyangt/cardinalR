@@ -600,26 +600,18 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 
 #' Generate Curvy Branching Cluster Data with Background Noise
 #'
-#' This function generates data with four clusters, two of which follow a
-#' curvilinear pattern and the other two are distributed randomly.
+#' This function generates data with two curvy clusters and one Gaussian cluster with background noise.
 #'
-#' @param n The total number of data points to be generated.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
-#'
-#' @return A matrix containing the generated data, with each row representing a data point.
+#' @param n A numeric vector (default: c(200, 200, 100, 50)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing two curvy clusters and one Gaussian cluster with background noise.
 #' @export
 #'
 #' @examples
-#'
 #' # Generate curvy branching cluster data with background noise with custom parameters
 #' set.seed(20240412)
-#' data <- curvy_branch_clust_bkg(
-#'   n = 400, num_noise = 2, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
+#' data <- gen_curvy_branch_clust_bkg(n = c(200, 200, 100, 50), p = 4)
+gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -635,39 +627,52 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
   }
 
 
-  theta <- stats::runif(cluster_size, 0.20, 0.90 * pi)
+  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
 
-  df1 <- matrix(c(
-    cos(theta) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(theta) + stats::rnorm(cluster_size, 1, 0.06),
-    cos(theta) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(theta) + stats::rnorm(cluster_size, 1, 0.06)
-  ), ncol = 4)
+  x1 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x2 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
+  x3 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x4 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
 
-  theta1 <- stats::runif(cluster_size, 0.20, 0.90 * pi)
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df2 <- matrix(c(
-    cos(-theta1) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(-theta1) + stats::rnorm(cluster_size, 1, 0.06),
-    cos(-theta1) + stats::rnorm(cluster_size, 1, 0.06),
-    sin(-theta1) + stats::rnorm(cluster_size, 1, 0.06)
-  ), ncol = 4)
+  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
 
-  df3 <- matrix(c(
-    stats::rnorm(cluster_size, mean = 1, sd = 0.08),
-    stats::rnorm(cluster_size, mean = 1, sd = 0.08),
-    stats::rnorm(cluster_size, mean = 1, sd = 0.08),
-    stats::rnorm(cluster_size, mean = 1, sd = 0.08)
-  ), ncol = 4)
+  x1 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x2 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x3 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x4 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
 
-  df4 <- matrix(c(
-    stats::rnorm(cluster_size, mean = 1, sd = 1),
-    stats::rnorm(cluster_size, mean = 1, sd = 1),
-    stats::rnorm(cluster_size, mean = 1, sd = 1),
-    stats::rnorm(cluster_size, mean = 1, sd = 1)
-  ), ncol = 4)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df <- bind_rows(df1, df2, df3, df4)
+  x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x2 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x3 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x4 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+
+  x1 <- stats::rnorm(n[4], mean = 1, sd = 1)
+  x2 <- stats::rnorm(n[4], mean = 1, sd = 1)
+  x3 <- stats::rnorm(n[4], mean = 1, sd = 1)
+  x4 <- stats::rnorm(n[4], mean = 1, sd = 1)
+
+  df4 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2, df3, df4)
 
   if (p > 4) {
 
@@ -678,7 +683,7 @@ curvy_branch_clust_bkg <- function(n, num_noise, min_n, max_n) {
       min_n = -0.5, max_n = 0.5
     )
     colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_mat)
 
   }
 
