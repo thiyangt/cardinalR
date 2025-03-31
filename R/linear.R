@@ -191,8 +191,8 @@ gen_two_long_clusts <- function(n = c(200, 300), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' three_diff_linear <- gen_three_diff_linear_clusts(n = c(200, 300, 150), p = 4)
-gen_three_diff_linear_clusts <- function(n = c(200, 300, 150), p = 4) {
+#' three_diff_linear <- gen_three_angled_long_clusts(n = c(200, 300, 150), p = 4)
+gen_three_angled_long_clusts <- function(n = c(200, 300, 150), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -514,141 +514,66 @@ four_long_clust_bkg <- function(n, num_noise, min_n, max_n) {
 #'
 #' # Generate three linear clusters with noise with custom parameters
 #' set.seed(20240412)
-#' data <- three_long_clust(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
-three_long_clust <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' data <- gen_three_long_clusts(n = c(200, 300, 150), p = 4)
+gen_three_long_clusts <- function(n = c(200, 300, 150), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  x1 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) + 100
+  x2 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 100
+  x3 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 100
+  x4 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) + 100
 
-  # To check that the assigned n is divided by three
-  if ((n %% 3) != 0) {
-    warning("The sample size should be a product of three.")
-    cluster_size <- floor(n / 3)
-  } else {
-    cluster_size <- n / 3
-  }
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  x <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size)
-  y <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size)
-  df_1 <- matrix(c(x, y), ncol = 2)
-  df1 <- matrix(c(df_1[, 1] - 20, df_1[, 2] - 20), ncol = 2)
+  x1 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x2 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+  x3 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x4 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
 
-  x <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size) + cluster_size / 5
-  y <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size) - cluster_size / 5
-  df2 <- matrix(c(x, y), ncol = 2)
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  df3 <- matrix(c(df_1[, 1] - 10, df_1[, 2] + 10), ncol = 2)
+  x1 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) - 10
+  x2 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) + 10
+  x3 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) - 10
+  x4 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) + 10
 
-  df <- rbind(df1, df2, df3)
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  df <- dplyr::bind_rows(df1, df2, df3)
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+  if (p > 4) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- dplyr::bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
-  }
-}
-
-#' Generate Two Linear Differentiated Clusters with Noise
-#'
-#' This function generates data with two linear clusters that are differentiated
-#'  from each other, along with added noise.
-#'
-#' @param n The total number of data points to be generated.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
-#'
-#' @return A matrix containing the generated data, with each row representing a data point.
-#' @export
-#'
-#' @examples
-#'
-#' # Generate two linear differentiated clusters with noise with custom parameters
-#' set.seed(20240412)
-#' data <- two_long_clust_diff(
-#'   n = 300, num_noise = 2, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-two_long_clust_diff <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by three
-  if ((n %% 3) != 0) {
-    warning("The sample size should be a product of three.")
-    cluster_size <- floor(n / 3)
-  } else {
-    cluster_size <- n / 3
-  }
-
-  x <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size)
-  y <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size)
-  df_1 <- matrix(c(x, y), ncol = 2)
-  df1 <- matrix(c(df_1[, 1] - 20, df_1[, 2] - 20), ncol = 2)
-
-  x <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size) + cluster_size / 5
-  y <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size) - cluster_size / 5
-  df2 <- matrix(c(x, y), ncol = 2)
-  df3 <- matrix(c(df_1[, 1] + 10, df_1[, 2] + 10), ncol = 2)
-
-  df <- rbind(df1, df2, df3)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df <- cbind(df, noise_mat)
-
-    df
-  } else {
-    df
-  }
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
