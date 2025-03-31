@@ -1,120 +1,42 @@
-#' Generate points on a plane in 2D space
+#' Generate points on a plane in high-dimensions
 #'
-#' This function generates points on a plane in 3D space based on the provided coefficients,
-#' intercepts, and ranges for the parameters.
+#' This function generates points on a plane in high-dimensions.
 #'
-#' @param n The number of points to generate.
-#' @param coef_x1 The coefficient of the first parameter in the x-dimension equation.
-#' @param coef_x2 The coefficient of the second parameter in the x-dimension equation.
-#' @param coef_y1 The coefficient of the first parameter in the y-dimension equation.
-#' @param coef_y2 The coefficient of the second parameter in the y-dimension equation.
-#' @param intercept_x The intercept for the x-dimension equation.
-#' @param intercept_y The intercept for the y-dimension equation.
-#' @param u_min The minimum value for the first parameter (u) range.
-#' @param u_max The maximum value for the first parameter (u) range.
-#' @param v_min The minimum value for the second parameter (v) range.
-#' @param v_max The maximum value for the second parameter (v) range.
-#' @param num_noise The number of noise dimensions to add to the generated points.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
+#' @param n A numeric value representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
 #'
-#' @return A matrix containing the generated points on the plane.
+#' @return A data containing the generated points on the plane.
 #'
 #' @examples
 #' set.seed(20240412)
-#' plane_points <- plane(
-#'   n = 100, coef_x1 = 1, coef_x2 = 1,
-#'   coef_y1 = -1, coef_y2 = 1, intercept_x = -10,
-#'   intercept_y = 8, u_min = 10, u_max = 30, v_min = 10, v_max = 20,
-#'   num_noise = 2, min_n = -0.05, max_n = 0.05
-#' )
+#' plane_points <- gen_hyperplane(n = 500, p = 4)
 #'
 #' @export
-plane <- function(n, coef_x1, coef_x2, coef_y1, coef_y2, intercept_x,
-                  intercept_y, u_min, u_max, v_min, v_max, num_noise,
-                  min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+gen_hyperplane <- function(n = 500, p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
-  }
+  # Generate n-1 random dimensions
+  x <- matrix(runif(n * (p - 1), -1, 1), ncol = (p - 1))
 
-  if (missing(coef_x1)) {
-    stop("Missing coef_x1.")
-  }
+  # Compute the last coordinate to satisfy the plane equation
+  coeff <- rep(3, p)
+  intercept <- 0
+  x_last <- (intercept - x %*% coeff[1:(p- 1)]) / coeff[p]
 
-  if (missing(coef_x2)) {
-    stop("Missing coef_x2.")
-  }
+  # Combine all coordinates
+  plane_points <- tibble::as_tibble(cbind(x, x_last)) %>%
+    set_names(paste0("x", 1:p))
 
-  if (missing(coef_y1)) {
-    stop("Missing coef_y1.")
-  }
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(plane_points)
 
-  if (missing(coef_y2)) {
-    stop("Missing coef_y2.")
-  }
-
-  if (missing(intercept_x)) {
-    stop("Missing coef_y1.")
-  }
-
-  if (missing(intercept_y)) {
-    stop("Missing coef_y2.")
-  }
-
-  if (missing(u_min)) {
-    stop("Missing u_min.")
-  }
-
-  if (missing(u_max)) {
-    stop("Missing u_max.")
-  }
-
-  if (missing(v_min)) {
-    stop("Missing u_min.")
-  }
-
-  if (missing(v_max)) {
-    stop("Missing u_max.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  u <- stats::runif(n, min = u_min, max = u_max)
-  v <- stats::runif(n, min = v_min, max = v_max)
-  x <- coef_x1 * u + coef_x2 * v + intercept_x
-  y <- coef_y1 * u + coef_y2 * v + intercept_y
-
-  plane_mat <- matrix(c(x, y), ncol = 2)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(plane_mat)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    plane_mat <- cbind(plane_mat, noise_mat)
-
-    plane_mat
-  } else {
-    plane_mat
-  }
 }
 
 #' Generate Long Cluster Data
@@ -417,97 +339,14 @@ plane_2d_hole <- function(n, num_noise, min_n, max_n) {
   return(list(df = df, n = NROW(df)))
 }
 
-#' Generate Four Long Clusters with Background Noise
+#' Generate Three Linear Clusters
 #'
-#' This function generates data with four long clusters along with background noise.
+#' This function generates data with three linear clusters.
 #'
-#' @param n The total number of data points to be generated.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
+#' @param n A numeric vector (default: c(200, 300, 150)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
 #'
-#' @return A matrix containing the generated data, with each row representing a data point.
-#' @export
-#'
-#' @examples
-#' # Generate four long clusters with background noise with custom parameters
-#' set.seed(20240412)
-#' data <- four_long_clust_bkg(
-#'   n = 400, num_noise = 4, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-four_long_clust_bkg <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by five
-  if ((n %% 5) != 0) {
-    warning("The sample size should be a product of five.")
-    cluster_size <- floor(n / 5)
-  } else {
-    cluster_size <- n / 5
-  }
-
-  x <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size)
-  y <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size)
-  df_1 <- matrix(c(x, y), ncol = 2)
-  df1 <- matrix(c(df_1[, 1] - 20, df_1[, 2] - 20), ncol = 2)
-
-  x <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size) + cluster_size / 5
-  y <- 0:(cluster_size - 1) + 0.03 * cluster_size * stats::rnorm(cluster_size) - cluster_size / 5
-  df_2 <- matrix(c(x, y), ncol = 2)
-
-  df3 <- matrix(c(df_1[, 1] - 10, df_1[, 2] + 10), ncol = 2)
-  df4 <- matrix(c(df_1[, 1] + 20, df_1[, 2] + 30), ncol = 2)
-
-  df1 <- rbind(df1, df_2, df3, df4)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df1)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df1 <- cbind(df1, noise_mat)
-  }
-
-  df2 <- gen_bkg_noise(n = cluster_size, num_dims = NCOL(df1), mean = 0, sd = 10)
-
-  df <- rbind(df1, df2)
-
-  df
-}
-
-#' Generate Three Linear Clusters with Noise
-#'
-#' This function generates data with three linear clusters, along with added noise.
-#'
-#' @param n The total number of data points to be generated.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
-#'
-#' @return A matrix containing the generated data, with each row representing a data point.
+#' @return A data containing the three long clusters.
 #' @export
 #'
 #' @examples
