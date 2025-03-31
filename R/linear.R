@@ -31,7 +31,7 @@ gen_hyperplane <- function(n = 500, p = 4) {
   x_last <- (intercept - x %*% coeff[1:(p- 1)]) / coeff[p]
 
   # Combine all coordinates
-  plane_points <- tibble::as_tibble(cbind(x, x_last)) %>%
+  plane_points <- tibble::as_tibble(cbind(x, x_last)) |>
     set_names(paste0("x", 1:p))
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")

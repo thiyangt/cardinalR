@@ -1,56 +1,37 @@
-#' Generate Mobius Cluster with Noise
+#' Generate Gaussian cluster with the Mobius Cluster
 #'
-#' This function generates a dataset consisting of a mobius cluster with added noise.
+#' This function generates a dataset consisting of a mobius cluster and Gaussian cluster.
 #'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A matrix containing the mobius cluster with added noise.
+#' @param n A numeric vector (default: c(200, 100)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the mobius cluster and Gaussian cluster.
 #' @export
 #'
 #' @examples
-#' mobius_cluster <- mobius_clust(
-#'   n = 200, num_noise = 2, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-mobius_clust <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+#' mobius_cluster <- mobius_gau_clust(n = c(200, 100), p = 4)
+mobius_gau_clust <- function(n = c(200, 100), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 2) {
+    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  df1 <- geozoo::mobius(n = n[1], p = p)$points |>
+    tibble::as_tibble(.name_repair = "unique")
 
-  df1 <- mobius_5d(n = n * 0.80, num_noise = 0)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df1)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df1 <- cbind(df1, noise_mat)
-  }
+  names(df1) <- paste0("x", 1:p)
 
   ## To add background noise
-  df2 <- gen_bkg_noise(n = n * 0.20, num_dims = NCOL(df1), mean = 0, sd = 0.3)
-  df <- rbind(df1, df2)
-  df
+  df2 <- gen_bkg_noise(n = n[2], num_dims = NCOL(df1), mean = 0, sd = 0.1)
+  df <- dplyr::bind_rows(df1, df2)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
