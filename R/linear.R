@@ -14,8 +14,8 @@
 #' @export
 gen_hyperplane <- function(n = 500, p = 4) {
 
-  if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+  if (p < 2) {
+    stop(cli::cli_alert_danger("p should be 2 or greater."))
   }
 
   if (any(n < 0)) {
