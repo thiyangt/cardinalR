@@ -2,7 +2,7 @@
 #'
 #' This function generates points on a plane in high-dimensions.
 #'
-#' @param n A numeric value representing the sample size.
+#' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #'
 #' @return A data containing the generated points on the plane.
@@ -33,6 +33,44 @@ gen_hyperplane <- function(n = 500, p = 4) {
   # Combine all coordinates
   plane_points <- tibble::as_tibble(cbind(x, x_last)) %>%
     set_names(paste0("x", 1:p))
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(plane_points)
+
+}
+
+#' Generate Hyper Plane with Hole
+#'
+#' This function generates a dataset representing a hyper plane with a hole.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#'
+#' @return A data containing the hyperplane data with a hole.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' plane_hole_data <- gen_hyperplane_with_hole(n = 1000, p = 4)
+gen_hyperplane_with_hole <- function(n = 500, p = 4) {
+
+  if (p < 2) {
+    stop(cli::cli_alert_danger("p should be 2 or greater."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
+  plane_points <- gen_hyperplane(n = n, p = p)
+
+  # Compute Euclidean distance from the center
+  distances <- sqrt(rowSums(plane_points^2))
+
+  # Remove points inside the hole
+  hole_radius <- 1
+  plane_points <- plane_points |>
+    dplyr::filter(distances > hole_radius)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(plane_points)
@@ -262,82 +300,6 @@ gen_four_long_clusts <- function(n = c(200, 150, 300, 150), p = 4) {
   return(df)
 }
 
-#' Generate 2D Plane with Hole and Noise
-#'
-#' This function generates a dataset representing a 2D plane with a hole in the
-#' middle, with added noise.
-#'
-#' @param n The total number of samples to generate.
-#' @param num_noise The number of additional noise dimensions to add to the data.
-#' @param min_n The minimum value for the noise dimensions.
-#' @param max_n The maximum value for the noise dimensions.
-#' @return A list containing the 2D plane data with a hole and the sample size.
-#' @export
-#'
-#' @examples
-#' set.seed(20240412)
-#' plane_data <- plane_2d_hole(
-#'   n = 100, num_noise = 2,
-#'   min_n = -0.05, max_n = 0.05
-#' )
-plane_2d_hole <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by four
-  if ((n %% 4) != 0) {
-    stop("The sample size should be a product of four.")
-  } else {
-    cluster_size <- n / 4
-  }
-
-  u <- stats::runif(cluster_size, min = 10, max = 30)
-  v <- stats::runif(cluster_size, min = 10, max = 20)
-  x <- u + v - 10
-  y <- v - u + 8
-  df1 <- matrix(c(x, y), ncol = 2)
-
-  anchor <- c(1, 1)
-  indices <- rowSums((sweep(df1, 2, anchor, `-`))) > 20
-  df1 <- df1[indices, ]
-  rownames(df1) <- NULL
-
-  df2 <- matrix(c(-df1[, 2] + 26, df1[, 1] - 15), ncol = 2)
-  df3 <- matrix(c(df1[, 2] + 30, -df1[, 1] + 25), ncol = 2)
-
-  df <- rbind(df1 - 10, df1 + 10, df2, df3)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df <- cbind(df, noise_mat)
-  }
-
-  return(list(df = df, n = NROW(df)))
-}
 
 #' Generate Three Linear Clusters
 #'
