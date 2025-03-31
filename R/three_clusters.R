@@ -1,7 +1,23 @@
-#### This script contains functions to generate the data structures
-
-## Data structure 1
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_01(n = c(700, 300, 500))
 gen_three_clust_01 <- function(n = c(700, 300, 500)) {
+
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
 
   curvilinear_cluster <- gen_curv_4d(
     n = n[1],
@@ -36,7 +52,17 @@ gen_three_clust_01 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 2
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_02(n = c(700, 300, 500))
 gen_three_clust_02 <- function(n = c(700, 300, 500)) {
 
   nonlinear_cluster <- gen_s_curve_4d(
@@ -72,8 +98,17 @@ gen_three_clust_02 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 3
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_03(n = c(700, 300, 500))
 gen_three_clust_03 <- function(n = c(700, 300, 500)) {
 
   nonlinear_cluster <- gen_curvy_cylinder_4d(
@@ -111,8 +146,17 @@ gen_three_clust_03 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 4
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_04(n = c(700, 300, 500))
 gen_three_clust_04 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_curv2_4d(
@@ -147,8 +191,17 @@ gen_three_clust_04 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 5
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_05(n = c(700, 300, 500))
 gen_three_clust_05 <- function(n = c(700, 300, 500)) {
 
   hyperbola_cluster <- gen_nonlinear_hyperbola_4d(
@@ -185,8 +238,17 @@ gen_three_clust_05 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 6
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_06(n = c(700, 300, 500))
 gen_three_clust_06 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_crescent_4d(
@@ -222,8 +284,17 @@ gen_three_clust_06 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 7
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_07(n = c(700, 300, 500))
 gen_three_clust_07 <- function(n = c(700, 300, 500)) {
 
   hyperbola_cluster <- gen_nonlinear_hyperbola2_4d(
@@ -260,8 +331,18 @@ gen_three_clust_07 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 8
 
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_08(n = c(700, 300, 500))
 gen_three_clust_08 <- function(n = c(700, 300, 500)) {
 
   spiral_cluster <- gen_conic_spiral_4d(
@@ -300,8 +381,17 @@ gen_three_clust_08 <- function(n = c(700, 300, 500)) {
 }
 
 
-## Data structure 9
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_09(n = c(700, 300, 500))
 gen_three_clust_09 <- function(n = c(700, 300, 500)) {
 
   helical_cluster <- gen_helical_hyper_spiral_4d(
@@ -342,8 +432,17 @@ gen_three_clust_09 <- function(n = c(700, 300, 500)) {
 }
 
 
-## Data structure 10
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_10(n = c(700, 300, 500))
 gen_three_clust_10 <- function(n = c(700, 300, 500)) {
 
   spherical_spiral_cluster <- gen_spherical_spiral_4d(
@@ -381,8 +480,18 @@ gen_three_clust_10 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 11
 
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_11(n = c(700, 300, 500))
 gen_three_clust_11 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_curv_4d(
@@ -418,8 +527,17 @@ gen_three_clust_11 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 12
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_12(n = c(700, 300, 500))
 gen_three_clust_12 <- function(n = c(700, 300, 500)) {
 
   nonlinear_cluster <- gen_s_curve_4d(
@@ -453,8 +571,17 @@ gen_three_clust_12 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 13
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_13(n = c(700, 300, 500))
 gen_three_clust_13 <- function(n = c(700, 300, 500)) {
 
   nonlinear_cluster <- gen_curvy_cylinder_4d(
@@ -492,8 +619,17 @@ gen_three_clust_13 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 14
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_14(n = c(700, 300, 500))
 gen_three_clust_14 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_curv2_4d(
@@ -529,8 +665,17 @@ gen_three_clust_14 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 15
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_15(n = c(700, 300, 500))
 gen_three_clust_15 <- function(n = c(700, 300, 500)) {
 
   hyperbola_cluster <- gen_nonlinear_hyperbola_4d(
@@ -568,8 +713,17 @@ gen_three_clust_15 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 16
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_16(n = c(700, 300, 500))
 gen_three_clust_16 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_crescent_4d(
@@ -603,8 +757,17 @@ gen_three_clust_16 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 17
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_17(n = c(700, 300, 500))
 gen_three_clust_17 <- function(n = c(700, 300, 500)) {
 
   hyperbola_cluster <- gen_nonlinear_hyperbola2_4d(
@@ -641,8 +804,17 @@ gen_three_clust_17 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 18
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_18(n = c(700, 300, 500))
 gen_three_clust_18 <- function(n = c(700, 300, 500)) {
 
   spiral_cluster <- gen_conic_spiral_4d(
@@ -681,8 +853,17 @@ gen_three_clust_18 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 19
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_19(n = c(700, 300, 500))
 gen_three_clust_19 <- function(n = c(700, 300, 500)) {
 
   helical_cluster <- gen_helical_hyper_spiral_4d(
@@ -721,8 +902,17 @@ gen_three_clust_19 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 20
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_20(n = c(700, 300, 500))
 gen_three_clust_20 <- function(n = c(700, 300, 500)) {
 
   spherical_spiral_cluster <- gen_spherical_spiral_4d(
@@ -759,8 +949,17 @@ gen_three_clust_20 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 21
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_21(n = c(700, 300, 500))
 gen_three_clust_21 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_curv_4d(
@@ -798,8 +997,17 @@ gen_three_clust_21 <- function(n = c(700, 300, 500)) {
 }
 
 
-## Data structure 22
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_22(n = c(700, 300, 500))
 gen_three_clust_22 <- function(n = c(700, 300, 500)) {
 
   nonlinear_cluster <- gen_s_curve_4d(
@@ -834,8 +1042,17 @@ gen_three_clust_22 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 23
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_23(n = c(700, 300, 500))
 gen_three_clust_23 <- function(n = c(700, 300, 500)) {
 
   nonlinear_cluster <- gen_curvy_cylinder_4d(
@@ -873,8 +1090,17 @@ gen_three_clust_23 <- function(n = c(700, 300, 500)) {
 }
 
 
-## Data structure 24
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_24(n = c(700, 300, 500))
 gen_three_clust_24 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_curv2_4d(
@@ -910,8 +1136,17 @@ gen_three_clust_24 <- function(n = c(700, 300, 500)) {
 }
 
 
-## Data structure 25
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_25(n = c(700, 300, 500))
 gen_three_clust_25 <- function(n = c(700, 300, 500)) {
 
   hyperbola_cluster <- gen_nonlinear_hyperbola_4d(
@@ -950,8 +1185,17 @@ gen_three_clust_25 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 26
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_26(n = c(700, 300, 500))
 gen_three_clust_26 <- function(n = c(700, 300, 500)) {
 
   curvilinear_cluster <- gen_crescent_4d(
@@ -986,8 +1230,17 @@ gen_three_clust_26 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 27
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_27(n = c(700, 300, 500))
 gen_three_clust_27 <- function(n = c(700, 300, 500)) {
 
   hyperbola_cluster <- gen_nonlinear_hyperbola2_4d(
@@ -1023,8 +1276,17 @@ gen_three_clust_27 <- function(n = c(700, 300, 500)) {
 
 }
 
-## Data structure 28
-
+#' Generate Three Different Shaped Clusters
+#'
+#' This function generates three different shaped clusters.
+#'
+#' @param n A numeric vector (default: c(700, 300, 500)) representing the sample sizes.
+#' @return A data containing the three different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_three_clust_28(n = c(700, 300, 500))
 gen_three_clust_28 <- function(n = c(700, 300, 500)) {
 
   spiral_cluster <- gen_conic_spiral_4d(

@@ -244,7 +244,7 @@ gen_three_curvy_cycle <- function(n = c(200, 500, 300), p = 3) {
 #' @param n A numeric vector (default: c(200, 300)) representing the sample sizes.
 #' @param p A numeric value (default: 3) representing the number of dimensions.
 #'
-#' @return A matrix containing the generated two linked circular clusters.
+#' @return A data containing the generated two linked circular clusters.
 #' @export
 #'
 #' @examples
