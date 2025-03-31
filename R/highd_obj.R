@@ -356,64 +356,57 @@ torus_3d_row <- function(radius) {
   torus
 }
 
-#' Generate a torus-shaped dataset with optional noise.
+#' Generate overlapped tow torus shapes
 #'
-#' This function generates a torus-shaped dataset along with optional noise.
+#' This function generates overlapped tow torus shapes.
 #'
-#' @param n Total number of data points to generate.
-#' @param num_noise Number of additional noise dimensions to add to the data.
-#' @param min_n Minimum value for the noise added to the data.
-#' @param max_n Maximum value for the noise added to the data.
+#' @param n A numeric vector (default: c(500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 3) representing the number of dimensions.
 #'
-#' @return A matrix containing the generated torus-shaped data points with or
-#' without added noise.
-#' @importFrom purrr reduce
+#' @return A data containing the two overlapped torus shapes.
 #'
 #' @examples
 #' set.seed(20240412)
-#' torus_3d(n = 100, num_noise = 2, min_n = -0.05, max_n = 0.05)
+#' gen_overlap_3d_two_torus(n = c(500, 300), p = 3)
 #'
 #' @export
-torus_3d <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+gen_overlap_3d_two_torus <- function(n = c(500, 300), p = 3) {
+
+  if (p < 3) {
+    stop(cli::cli_alert_danger("p should be 3 or greater."))
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 2) {
+    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  df1 <- tibble::as_tibble(geozoo::torus(p = 3, n = n[1])$points, .name_repair = "unique") |>
+    set_names(paste0("x", 1:3))
+  df2 <- tibble::as_tibble(geozoo::torus(p = 3, n = n[2])$points[,c(3, 1, 2)], .name_repair = "unique") |>
+  set_names(paste0("x", 1:3))
 
-  df_list <- lapply(1:n, function(i) torus_3d_row(radius = 2^(1:0)))
-  df <- purrr::reduce(df_list, rbind)
+  df <- dplyr::bind_rows(df1, df2)
 
+  if (p > 3) {
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
     noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
+      n = NROW(df), num_noise = p - 3,
+      min_n = -0.5, max_n = 0.5
     )
-    df <- cbind(df, noise_mat)
+    colnames(noise_mat) <- paste0("x", 4:p)
+    df <- dplyr::bind_cols(df, noise_mat)
 
-    df
-  } else {
-    df
   }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
 
 #' Generate a 3D cube with optional noise.
