@@ -1,5 +1,5 @@
 # Function to gen a corn-shaped cluster in 4D space with an offset
-gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_point) {
+gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_point = c(0, 0, 0, 0)) {
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
   }
@@ -37,7 +37,7 @@ gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_
   return(df)
 }
 
-gen_blunted_corn_cluster_flip1_4d <- function(n, height, base_radius, tip_radius, tip_point) {
+gen_blunted_corn_cluster_flip1_4d <- function(n, height, base_radius, tip_radius, tip_point = c(0, 0, 0, 0)) {
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
   }
@@ -75,7 +75,7 @@ gen_blunted_corn_cluster_flip1_4d <- function(n, height, base_radius, tip_radius
   return(df)
 }
 
-gen_blunted_corn_cluster_flip2_4d <- function(n, height, base_radius, tip_radius, tip_point) {
+gen_blunted_corn_cluster_flip2_4d <- function(n, height, base_radius, tip_radius, tip_point = c(0, 0, 0, 0)) {
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
   }
