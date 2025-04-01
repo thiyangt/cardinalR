@@ -52,14 +52,20 @@ gen_hemisphere_4d <- function(n, radius = 1, offset) {
   x3 <- radius * cos(theta1) * cos(theta3)  # x3 coordinate
   x4 <- radius * cos(theta1) * sin(theta3)  # x4 coordinate (restricted to hemisphere)
 
-  # Combine the coordinates into a 4D dataset
-  hemisphere_4d <- cbind(x1, x2, x3, x4)
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  # Apply the offset to shift the cluster
-  hemisphere_4d <- sweep(hemisphere_4d, 2, offset, "+") |>
-    as_tibble()
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
 
-  return(hemisphere_4d)
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
 
 # Function to gen a small cube in 4D space
