@@ -1,5 +1,5 @@
 # Function to gen a curvilinear cluster in 4D space with an offset
-gen_curv_4d <- function(n, offset = c(0, 0, 0, 0)) {
+gen_curv_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
 
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
@@ -29,7 +29,7 @@ gen_curv_4d <- function(n, offset = c(0, 0, 0, 0)) {
 
 }
 
-gen_curv_flip1_4d <- function(n, offset = c(0, 0, 0, 0)) {
+gen_curv_flip1_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
 
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
@@ -57,7 +57,7 @@ gen_curv_flip1_4d <- function(n, offset = c(0, 0, 0, 0)) {
   return(df)
 }
 
-gen_curv_flip2_4d <- function(n, offset = c(0, 0, 0, 0)) {
+gen_curv_flip2_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
 
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
@@ -87,7 +87,7 @@ gen_curv_flip2_4d <- function(n, offset = c(0, 0, 0, 0)) {
 }
 
 # Function to gen a noise-free 4D crescent
-gen_crescent_4d <- function(n, offset = c(0, 0, 0, 0)) {
+gen_crescent_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
 
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
@@ -123,7 +123,7 @@ gen_crescent_4d <- function(n, offset = c(0, 0, 0, 0)) {
 }
 
 # Function to gen an S-curve in 4D
-gen_s_curve_4d <- function(n, offset = c(0, 0, 0, 0)) {
+gen_s_curve_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
 
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
@@ -159,7 +159,7 @@ gen_s_curve_4d <- function(n, offset = c(0, 0, 0, 0)) {
 }
 
 # Function to gen a curvy cylinder in 4D
-gen_curvy_cylinder_4d <- function(n, radius = 1, height = 10, curve_strength = 1, offset = c(0, 0, 0, 0)) {
+gen_curvy_cylinder_4d <- function(n = 500, radius = 1, height = 10, curve_strength = 1, offset = c(0, 0, 0, 0)) {
 
   # Step 1: gen cylindrical coordinates in 2D (x1, x2)
   theta <- runif(n, 0, 3 * pi)  # Random angle for the circular base
@@ -187,7 +187,7 @@ gen_curvy_cylinder_4d <- function(n, radius = 1, height = 10, curve_strength = 1
 }
 
 # Function to gen a curvilinear cluster in 4D space with an offset
-gen_curv2_4d <- function(n, offset = c(0, 0, 0, 0)) {
+gen_curv2_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
   if (n <= 0) {
     stop("Number of points should be a positive number.")
   }
@@ -217,7 +217,7 @@ gen_curv2_4d <- function(n, offset = c(0, 0, 0, 0)) {
 }
 
 # Function to gen a non-linear rectangular hyperbola in 4D
-gen_nonlinear_hyperbola_4d <- function(n, C = 1, nonlinear_factor = 0.5, offset = c(0, 0, 0, 0)) {
+gen_nonlinear_hyperbola_4d <- function(n = 500, C = 1, nonlinear_factor = 0.5, offset = c(0, 0, 0, 0)) {
 
   # gen random points for x1 and x3 in a range avoiding zero
   x1 <- runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
@@ -244,7 +244,7 @@ gen_nonlinear_hyperbola_4d <- function(n, C = 1, nonlinear_factor = 0.5, offset 
 }
 
 # Function to gen a non-linear rectangular hyperbola in 4D
-gen_nonlinear_hyperbola2_4d <- function(n, C = 1, nonlinear_factor = 0.5, offset = c(0, 0, 0, 0)) {
+gen_nonlinear_hyperbola2_4d <- function(n = 500, C = 1, nonlinear_factor = 0.5, offset = c(0, 0, 0, 0)) {
 
   # gen random points for x1 and x3 in a range avoiding zero
   x1 <- runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
@@ -276,7 +276,7 @@ gen_nonlinear_hyperbola2_4d <- function(n, C = 1, nonlinear_factor = 0.5, offset
 }
 
 # Function to gen a conic spiral in 4D
-gen_conic_spiral_4d <- function(n, spiral_turns = 1, cone_height = 2, cone_radius = 1, offset = c(0, 0, 0, 0)) {
+gen_conic_spiral_4d <- function(n = 500, spiral_turns = 1, cone_height = 2, cone_radius = 1, offset = c(0, 0, 0, 0)) {
 
   # gen theta values to represent the angle of the spiral in the xy-plane
   theta <- seq(0, 2 * pi * spiral_turns, length.out = n)
@@ -308,7 +308,7 @@ gen_conic_spiral_4d <- function(n, spiral_turns = 1, cone_height = 2, cone_radiu
 }
 
 # Function to gen a Helical Hyper-spiral in 4D
-gen_helical_hyper_spiral_4d <- function(n, a = 0.05, b = 0.1, k = 1, spiral_radius = 0.5, scale_factor = 0.1, offset = c(0, 0, 0, 0)) {
+gen_helical_hyper_spiral_4d <- function(n = 500, a = 0.05, b = 0.1, k = 1, spiral_radius = 0.5, scale_factor = 0.1, offset = c(0, 0, 0, 0)) {
   if (n <= 0) {
     stop("Number of points should be a positive integer.")
   }
@@ -339,7 +339,7 @@ gen_helical_hyper_spiral_4d <- function(n, a = 0.05, b = 0.1, k = 1, spiral_radi
 }
 
 # Function to gen a 4D Spherical Spiral
-gen_spherical_spiral_4d <- function(n, radius = 1, spiral_turns = 1, offset = c(0, 0, 0, 0)) {
+gen_spherical_spiral_4d <- function(n = 500, radius = 1, spiral_turns = 1, offset = c(0, 0, 0, 0)) {
   if (n <= 0) {
     stop("Number of points should be a positive integer.")
   }
