@@ -1,7 +1,7 @@
 # Function to gen a corn-shaped cluster in 4D space with an offset
 gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_point) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
   }
 
   # gen points with a higher density near the tip
@@ -13,29 +13,33 @@ gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
   # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta1 <- runif(n, 0, 2 * pi)
-  theta2 <- runif(n, 0, 2 * pi)
-  theta3 <- runif(n, 0, 2 * pi)
+  theta <- runif(n, 0, 2 * pi)
 
   phi1 <- runif(n, 0, 2 * pi)
-  phi2 <- runif(n, 0, 2 * pi)
 
-  x1 <- radii * cos(theta1) * sin(phi1)
-  x2 <- radii * sin(theta2) * sin(phi2)
-  x3 <- radii * cos(theta3)
+  x1 <- radii * cos(theta) * sin(phi)
+  x2 <- radii * sin(theta) * sin(phi)
+  x3 <- radii * cos(theta)
   x4 <- height_values
 
-  # Shift the cluster towards the tip point
-  corn_cluster <- cbind(x1, x2, x3, x4)
-  corn_cluster <- sweep(corn_cluster, 2, tip_point, "+") |>
-    as_tibble()
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  corn_cluster
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 gen_blunted_corn_cluster_flip1_4d <- function(n, height, base_radius, tip_radius, tip_point) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
   }
 
   # gen points with a higher density near the tip
@@ -47,29 +51,33 @@ gen_blunted_corn_cluster_flip1_4d <- function(n, height, base_radius, tip_radius
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
   # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta1 <- runif(n, 0, 2 * pi)
-  theta2 <- runif(n, 0, 2 * pi)
-  theta3 <- runif(n, 0, 2 * pi)
+  theta <- runif(n, 0, 2 * pi)
 
-  phi1 <- runif(n, 0, 2 * pi)
-  phi2 <- runif(n, 0, 2 * pi)
+  phi <- runif(n, 0, 2 * pi)
 
-  x1 <- radii * sin(theta1) * sin(phi1)
+  x1 <- radii * sin(theta) * sin(phi)
   x2 <- height_values
-  x3 <- radii * cos(theta2) * sin(phi2)
-  x4 <- radii * cos(theta3)
+  x3 <- radii * cos(theta) * sin(phi)
+  x4 <- radii * cos(theta)
 
-  # Shift the cluster towards the tip point
-  corn_cluster <- cbind(x1, x2, x3, x4)
-  corn_cluster <- sweep(corn_cluster, 2, tip_point, "+") |>
-    as_tibble()
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  corn_cluster
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 gen_blunted_corn_cluster_flip2_4d <- function(n, height, base_radius, tip_radius, tip_point) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
   }
 
   # gen points with a higher density near the tip
@@ -81,30 +89,34 @@ gen_blunted_corn_cluster_flip2_4d <- function(n, height, base_radius, tip_radius
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
   # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta1 <- runif(n, 0, 2 * pi)
-  theta2 <- runif(n, 0, 2 * pi)
-  theta3 <- runif(n, 0, 2 * pi)
+  theta <- runif(n, 0, 2 * pi)
 
-  phi1 <- runif(n, 0, 2 * pi)
-  phi2 <- runif(n, 0, 2 * pi)
+  phi <- runif(n, 0, 2 * pi)
 
-  x2 <- radii * sin(theta1) * sin(phi1)
+  x2 <- radii * sin(theta) * sin(phi)
   x3 <- height_values
-  x4 <- radii * cos(theta2) * sin(phi2)
-  x1 <- radii * cos(theta3)
+  x4 <- radii * cos(theta) * sin(phi)
+  x1 <- radii * cos(theta)
 
-  # Shift the cluster towards the tip point
-  corn_cluster <- cbind(x1, x2, x3, x4)
-  corn_cluster <- sweep(corn_cluster, 2, tip_point, "+") |>
-    as_tibble()
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  corn_cluster
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 # Function to gen a corn-shaped cluster in 4D with a rectangular base
 gen_corn_cluster_rectangular_base_4d <- function(n, height = 5, base_width_x = 3, base_width_y = 2, tip_radius = 0.5, tip_point = c(0, 0, 0, 0)) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
   }
 
   # gen points with a higher density near the tip
@@ -121,18 +133,25 @@ gen_corn_cluster_rectangular_base_4d <- function(n, height = 5, base_width_x = 3
   x3 <- runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
   x4 <- height_values  # Fourth dimension is the height
 
-  # Shift the cluster towards the tip point (e.g., offset)
-  corn_cluster <- cbind(x1, x2, x3, x4)
-  corn_cluster <- sweep(corn_cluster, 2, tip_point, "+") |>
-    as_tibble()
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  return(corn_cluster)
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 # Function to gen a corn-shaped cluster in 4D with a triangular base
 gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, tip_radius = 0.5, tip_point = c(0, 0, 0, 0)) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
   }
 
   # gen points with a higher density near the tip
@@ -156,18 +175,25 @@ gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, t
   x3 <- radii * v            # Third triangle coordinate
   x4 <- height_values        # Fourth dimension (height)
 
-  # Shift the cluster towards the tip point (e.g., offset)
-  corn_cluster <- cbind(x1, x2, x3, x4)
-  corn_cluster <- sweep(corn_cluster, 2, tip_point, "+") |>
-    as_tibble()
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  return(corn_cluster)
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 # Function to gen a filled hexagonal pyramid in 4D space
 gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3, tip_point = c(0, 0, 0, 0)) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
   }
 
   # gen height values with more points near the base
@@ -196,12 +222,17 @@ gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3, tip_
   # The fourth dimension (w) is the height
   x4 <- height_values
 
-  # Combine the dimensions into a 4D structure
-  filled_pyramid_cluster <- cbind(x1, x2, x3, x4)
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
 
-  # Shift the cluster towards the tip point (optional offset)
-  filled_pyramid_cluster <- sweep(filled_pyramid_cluster, 2, tip_point, "+") |>
-    as_tibble()
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
 
-  return(filled_pyramid_cluster)
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
