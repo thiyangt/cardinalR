@@ -539,3 +539,42 @@ generate_swiss_roll <- function(n, p, noise_sd = 0) {
   as.data.frame(data)
 }
 
+generate_sine_highd <- function(n, p) {
+  t <- seq(0, 2 * pi, length.out = n)  # Parameter controlling the sine wave
+  data <- matrix(0, nrow = n, ncol = p)  # Initialize data
+
+  data[,1] <- sin(t)  # First dimension: sine wave
+  if (p > 1) {
+    data[,2] <- cos(t)  # Second dimension: cosine wave
+  }
+  if (p > 2) {
+    for (i in 3:p) {
+      data[,i] <- sin(i * t) / i  # Higher dimensions: scaled sine variations
+    }
+  }
+
+  as.data.frame(data)
+}
+
+generate_spiral_highd <- function(n, p, noise_sd = 0) {
+  t <- seq(0, 4 * pi, length.out = n)  # Spiral parameter
+  data <- matrix(0, nrow = n, ncol = p)  # Initialize matrix
+
+  data[,1] <- sin(t)  # First dimension
+  data[,2] <- cos(t)  # Second dimension
+  if (p > 2) {
+    data[,3] <- t / (4 * pi)  # Smooth elevation in the third dimension
+  }
+  if (p > 3) {
+    for (i in 4:p) {
+      data[,i] <- sin(i * t) / i  # Adding non-linearity
+    }
+  }
+
+  # Add optional Gaussian noise
+  if (noise_sd > 0) {
+    data <- data + matrix(rnorm(n * p, sd = noise_sd), nrow = n, ncol = p)
+  }
+
+  as.data.frame(data)
+}
