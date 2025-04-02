@@ -512,3 +512,30 @@ swiss_roll <- function(n, num_noise, min_n, max_n) {
     df
   }
 }
+
+
+generate_swiss_roll <- function(n, p, noise_sd = 0) {
+  t <- runif(n, min = 0, max = 3 * pi)  # Control parameter
+  x <- t * cos(t)
+  y <- t * sin(t)
+  z <- runif(n, min = -1, max = 1)  # Adding some vertical variation
+
+  data <- matrix(0, nrow = n, ncol = p)
+  data[,1] <- x
+  data[,2] <- y
+  if (p > 2) {
+    data[,3] <- z
+  }
+  if (p > 3) {
+    for (i in 4:p) {
+      data[,i] <- sin(i * t) / i  # Additional non-linearity
+    }
+  }
+
+  if (noise_sd > 0) {
+    data <- data + matrix(rnorm(n * p, sd = noise_sd), nrow = n, ncol = p)
+  }
+
+  as.data.frame(data)
+}
+
