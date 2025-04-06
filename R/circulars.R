@@ -14,7 +14,7 @@
 #' circle_data <- gen_circle_pd(n = 500, p = 4)
 gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
 
-  if (p <= 2) {
+  if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
   }
 
@@ -24,8 +24,8 @@ gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
 
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- r1 * cos(theta) + stats::rnorm(n, 10, 0.03)
-  coords[, 2] <- r2 * sin(theta) + stats::rnorm(n, 10, 0.03)
+  coords[, 1] <- r1 * cos(theta) #+ stats::rnorm(n, 10, 0.03)
+  coords[, 2] <- r2 * sin(theta) #+ stats::rnorm(n, 10, 0.03)
 
   # Introduce scaling factors for subsequent dimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
@@ -43,35 +43,34 @@ gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
-
   return(df)
 }
 
-#' Generate Any number of Circle Clusters
+#' Generate Shited Any number of Circle Clusters
 #'
-#' This function generates a dataset representing a structure with any number of circles.
+#' This function generates a dataset representing a structure with any number of shifted circles.
 #'
 #' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 3) representing the number of clusters.
-#' @return A data containing the any number of circle clusters.
+#' @return A data containing the any number of shifted circle clusters.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' circular_clusters_data <- gen_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
-gen_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
+#' circular_clusters_data <- gen_shifted_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
+gen_shifted_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
-  if (k <= 2) {
+  if (k < 2) {
     cli::cli_abort("k should be greater than 2.")
   }
 
-  if (p <= 2) {
+  if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
   }
 
   if (length(n) != k) {
-    cli::cli_abort("n should contain exactly k values.")
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
   }
 
   if (any(n < 0)) {
@@ -96,81 +95,66 @@ gen_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
   df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
-
   return(df)
 }
 
-#' Generate Three Cell Cycle Data
+#' Generate Overlapped Any number of Circle Clusters
 #'
-#' This function generates a dataset representing a structure with three cell cycles.
+#' This function generates a dataset representing a structure with any number of overlapped circles.
 #'
 #' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
-#' @param p A numeric value (default: 3) representing the number of dimensions.
-#' @return A data containing the three cell cycle data.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of overlapped circle clusters.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' cell_cycle_data <- gen_three_cell_cycle(n = c(200, 500, 300), p = 3)
-gen_three_cell_cycle <- function(n = c(200, 500, 300), p = 3) {
+#' cell_cycle_data <- gen_overlapped_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
+gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
-  if (p < 3) {
-    stop(cli::cli_alert_danger("p should be 3 or greater."))
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
   }
 
-  if (length(n) != 3) {
-    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+    cli::cli_abort("Values in n should be positive.")
   }
-
 
   r1 <- 2
   r2 <- 1
 
-  theta1 <- stats::runif(n[1], 0, 2 * pi)
-  x1 <- rep(0, n[1])
-  x2 <- r1 * cos(theta1)
-  x3 <- r2 * sin(theta1)
+  perms <- permutations(n = p, r = p)
+  num_perms <- NROW(perms)
 
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
+  # Ensure we don't try to sample more permutations than available
+  selected_permute <- sample(1:num_perms, k, replace = FALSE)
 
-  theta2 <- stats::runif(n[2], 0, 2 * pi)
-  x1 <- r2 * cos(theta2)
-  x2 <- rep(0, n[2])
-  x3 <- r1 * sin(theta2)
+  # Generate k datasets with swapped columns and varying 'n'
+  swapped_datasets_varying_n <- lapply(1:k, function(i) {
 
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
+    generated_tibble <- gen_circle_pd(n[i], p = p, r1 = r1, r2 = r2)
 
-  theta3 <- stats::runif(n[3], 0, 2 * pi)
-  x1 <- r1 * cos(theta3)
-  x2 <- r2 * sin(theta3)
-  x3 <- rep(0, n[3])
+    # Permute the columns of the tibble
+    perm_indices <- perms[selected_permute[i], ]
+    df <- generated_tibble[, perm_indices]
+    colnames(df) <- paste0("x", 1:p) # Ensure consistent column names
 
-  df3 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
+    df |>
+      tibble::as_tibble()|>
+      dplyr::mutate(cluster = paste0("cluster", i))
+  })
 
-  df <- dplyr::bind_rows(df1, df2, df3)
-
-  if (p > 3) {
-
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
-
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 3,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 4:p)
-    df <- dplyr::bind_cols(df, noise_mat)
-
-  }
+  ## To swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
@@ -221,7 +205,6 @@ gen_curvy_cycle_pd <- function(n = 500, p = 4, r = sqrt(3) / 3){
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
-
   return(df)
 }
 
