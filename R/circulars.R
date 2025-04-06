@@ -27,7 +27,7 @@ gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
   coords[, 1] <- r1 * cos(theta) + stats::rnorm(n, 10, 0.03)
   coords[, 2] <- r2 * sin(theta) + stats::rnorm(n, 10, 0.03)
 
-  # Introduce scaling factors for subsequent pimensions
+  # Introduce scaling factors for subsequent dimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
 
   if (p > 2) {
@@ -297,6 +297,66 @@ gen_three_curvy_cycle <- function(n = c(200, 500, 300), p = 3) {
   }
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Circular in p-d
+#'
+#' This function generates a dataset representing a structure with a circular.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r1 A numeric value (default: 1) representing the radius scale factor along x2.
+#' @param r2 A numeric value (default: 1) representing the radius scale factor along x3.
+#' @return A data containing a circular.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' circular_data <- gen_circular_pd(n = 500, p = 4)
+gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4)){
+
+  if (p <= 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != 1) {
+    cli::cli_abort("n should be a single integer specifying the number of points.")
+  }
+
+  theta <- (0:(n[1] - 1)) * (2 * pi / n[1])
+  x1 <- cos(theta)
+  x2 <- r1 * sin(theta)
+  x3 <- -r2 * sin(theta)
+
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3)
+
+
+  theta <- (0:(n - 1)) * (2 * pi / n)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- cos(theta)
+  coords[, 2] <- r1 * sin(theta1)
+  coords[, 3] <- r2 * sin(theta1)
+
+  # Introduce scaling factors for subsequent dimensions
+  scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 3)))) # Example: decreasing scale
+
+  if (p > 3) {
+    # Apply remaining dimensions with sinusoidal patterns
+    for (i in 4:p) {
+      # Introduce a phase shift for each dimension to make them distinct
+      phase_shift <- (i - 2) * (pi / (2 * p))
+      coords[, i] <- scaling_factors[i-2] * sin(theta + phase_shift)
+    }
+  }
+
+  df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+
   return(df)
 }
 
