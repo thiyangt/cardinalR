@@ -108,27 +108,24 @@ gen_three_cell_cycle <- function(n = c(200, 500, 300), p = 3) {
   theta1 <- stats::runif(n[1], 0, 2 * pi)
   x1 <- rep(0, n[1])
   x2 <- r1 * cos(theta1)
-  theta2 <- stats::runif(n[1], 0, 2 * pi)
-  x3 <- r2 * sin(theta2)
+  x3 <- r2 * sin(theta1)
 
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3)
 
-  theta3 <- stats::runif(n[2], 0, 2 * pi)
-  x1 <- r2 * cos(theta3)
+  theta2 <- stats::runif(n[2], 0, 2 * pi)
+  x1 <- r2 * cos(theta2)
   x2 <- rep(0, n[2])
-  theta4 <- stats::runif(n[2], 0, 2 * pi)
-  x3 <- r1 * sin(theta4)
+  x3 <- r1 * sin(theta2)
 
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3)
 
-  theta5 <- stats::runif(n[3], 0, 2 * pi)
-  x1 <- r1 * cos(theta5)
-  theta6 <- stats::runif(n[3], 0, 2 * pi)
-  x2 <- r2 * sin(theta6)
+  theta3 <- stats::runif(n[3], 0, 2 * pi)
+  x1 <- r1 * cos(theta3)
+  x2 <- r2 * sin(theta3)
   x3 <- rep(0, n[3])
 
   df3 <- tibble::tibble(x1 = x1,
@@ -185,32 +182,26 @@ gen_three_curvy_cycle <- function(n = c(200, 500, 300), p = 3) {
 
   theta1 <- stats::runif(n[1], 0, 2 * pi)
   x1 <- cos(theta1)
-  theta2 <- stats::runif(n[1], 0, 2 * pi)
-  x2 <- r + sin(theta2)
-  theta3 <- stats::runif(n[1], 0, 2 * pi)
-  x3 <- cos(3 * theta3) / 3
+  x2 <- r + sin(theta1)
+  x3 <- cos(3 * theta1) / 3
 
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3)
 
-  theta4 <- stats::runif(n[2], 0, 2 * pi)
-  x1 <- cos(theta4) + 0.5
-  theta5 <- stats::runif(n[2], 0, 2 * pi)
-  x2 <- sin(theta5) - r / 2
-  theta6 <- stats::runif(n[2], 0, 2 * pi)
-  x3 <- cos(3 * theta6) / 3
+  theta2 <- stats::runif(n[2], 0, 2 * pi)
+  x1 <- cos(theta2) + 0.5
+  x2 <- sin(theta2) - r / 2
+  x3 <- cos(3 * theta2) / 3
 
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3)
 
-  theta7 <- stats::runif(n[3], 0, 2 * pi)
-  x1 <- cos(theta7) - 0.5
-  theta8 <- stats::runif(n[3], 0, 2 * pi)
-  x2 <- sin(theta8) - r / 2
-  theta9 <- stats::runif(n[3], 0, 2 * pi)
-  x3 <- cos(3 * theta9) / 3
+  theta3 <- stats::runif(n[3], 0, 2 * pi)
+  x1 <- cos(theta3) - 0.5
+  x2 <- sin(theta3) - r / 2
+  x3 <- cos(3 * theta3) / 3
 
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
