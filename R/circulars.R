@@ -255,10 +255,10 @@ gen_two_circulars <- function(n = c(200, 300), p = 3) {
     stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
   cs <- cos(.4)
   sn <- sin(.4)
 
+  theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
   x1 <- cos(theta1)
   x2 <- cs * sin(theta1)
   x3 <- -sn * sin(theta1)
@@ -293,4 +293,39 @@ gen_two_circulars <- function(n = c(200, 300), p = 3) {
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
+}
+
+
+extend_circle <- function(n, d) {
+  if (length(n) != 1) {
+    stop("n should be a single integer specifying the number of points along the 'circle'")
+  }
+  if (d < 2) {
+    stop("d must be at least 2 for a circular structure")
+  }
+
+  theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
+  coords <- matrix(0, nrow = n[1], ncol = d)
+
+  # First two dimensions (essential for the base circle)
+  # coords[, 1] <- cos(theta1)
+  # coords[, 2] <- sin(theta1)
+
+  cs <- cos(.4)
+  sn <- sin(.4)
+  coords[, 1] <- cos(theta1)
+  coords[, 2] <- cs * sin(theta1)
+  coords[, 3] <- -sn * sin(theta1)
+
+  # Introduce scaling factors for subsequent dimensions
+  scaling_factors <- sqrt(cumprod(c(1, rep(0.5, d - 3)))) # Example: decreasing scale
+
+  # Add remaining dimensions with sinusoidal patterns
+  for (i in 4:d) {
+    # Introduce a phase shift for each dimension to make them distinct
+    phase_shift <- (i - 2) * (pi / (2 * d))
+    coords[, i] <- scaling_factors[i-2] * sin(theta1 + phase_shift)
+  }
+
+  return(coords)
 }
