@@ -84,11 +84,15 @@ gen_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   for (i in 1:k) {
 
-    df3 <- gen_circle_pd(n[i], p = p, a = scale_factors_vec[i])
+    df3 <- gen_circle_pd(n[i], p = p, a = scale_factors_vec[i]) |>
+      dplyr::mutate(cluster = paste0("cluster", i))
 
     df <- dplyr::bind_rows(df, df3)
 
   }
+
+  ## To swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
 
