@@ -14,11 +14,11 @@
 gen_circle_pd <- function(n = 500, p = 3, a = 1){
 
   if (p <= 2) {
-    stop("p should be greater than 2.")
+    cli::cli_abort("p should be greater than 2.")
   }
 
   if (length(n) != 1) {
-    stop("n should be a single integer specifying the number of points.")
+    cli::cli_abort("n should be a single integer specifying the number of points.")
   }
 
   theta <- stats::runif(n, 0.0, 2 * pi)
@@ -41,6 +41,8 @@ gen_circle_pd <- function(n = 500, p = 3, a = 1){
   df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
   names(df) <- paste0("x", 1:p)
 
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+
   return(df)
 }
 
@@ -60,19 +62,19 @@ gen_circle_pd <- function(n = 500, p = 3, a = 1){
 gen_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   if (k <= 2) {
-    stop("k should be greater than 2.")
+    cli::cli_abort("k should be greater than 2.")
   }
 
   if (p <= 2) {
-    stop("p should be greater than 2.")
+    cli::cli_abort("p should be greater than 2.")
   }
 
   if (length(n) != k) {
-    stop("n should contain exactly k values.")
+    cli::cli_abort("n should contain exactly k values.")
   }
 
   if (any(n < 0)) {
-    stop("Values in n should be positive.")
+    cli::cli_abort("Values in n should be positive.")
   }
 
   ## Generate scale factors for circles
@@ -88,6 +90,7 @@ gen_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   }
 
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
 
   return(df)
 }
