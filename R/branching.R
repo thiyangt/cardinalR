@@ -761,3 +761,35 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
   return(df)
 
 }
+
+extend_nonlinear <- function(n, d) {
+  if (length(n) != 1) {
+    stop("n should be a single integer specifying the number of points")
+  }
+  if (d < 2) {
+    stop("d must be at least 2")
+  }
+
+  x1 <- stats::runif(n[1], -2, 2)
+  coords <- matrix(0, nrow = n[1], ncol = d)
+  coords[, 1] <- x1
+
+  # Second dimension (as in the original code)
+  coords[, 2] <- -(x1^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
+
+  # Extend to higher dimensions
+  if (d > 2) {
+    for (i in 3:d) {
+      # Introduce non-linearity based on x1 and add random noise
+      # You can experiment with different non-linear functions and noise levels
+      power <- sample(2:5, 1) # Random power for the polynomial
+      scale_factor <- runif(1, 0.5, 2) # Random scaling
+      noise_level <- runif(1, 0, 1)
+
+      coords[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n[1], -noise_level, noise_level * 2)
+    }
+  }
+
+  return(coords)
+}
+
