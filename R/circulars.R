@@ -132,7 +132,7 @@ gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
   r1 <- 2
   r2 <- 1
 
-  perms <- permutations(n = p, r = p)
+  perms <- gtools::permutations(n = p, r = p)
   num_perms <- NROW(perms)
 
   # Ensure we don't try to sample more permutations than available
@@ -146,12 +146,15 @@ gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
     # Permute the columns of the tibble
     perm_indices <- perms[selected_permute[i], ]
     df <- generated_tibble[, perm_indices]
-    colnames(df) <- paste0("x", 1:p) # Ensure consistent column names
-
-    df |>
-      tibble::as_tibble()|>
+    df <- df |>
       dplyr::mutate(cluster = paste0("cluster", i))
+    names(df) <- append(paste0("x", 1:p), "cluster") # Ensure consistent column names
+
+    df
+
   })
+
+  df <- dplyr::bind_rows(swapped_datasets_varying_n)
 
   ## To swap rows
   df <- randomize_rows(df)
