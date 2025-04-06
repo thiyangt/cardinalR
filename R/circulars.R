@@ -1,3 +1,46 @@
+#' Generate Circle in p-d
+#'
+#' This function generates a dataset representing a structure with a circle.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a circle.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' circle_data <- gen_circle_pd(n = 500, p = 4)
+gen_circle_pd <- function(n = 500, p = 3){
+
+  if (p < 2) {
+    stop("p should be 2 or greater.")
+  }
+
+  if (length(n) != 1) {
+    stop("n should be a single integer specifying the number of points.")
+  }
+
+  theta <- stats::runif(n, 0.0, 2 * pi)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- cos(theta) + stats::rnorm(n, 10, 0.03)
+  coords[, 2] <- sin(theta) + stats::rnorm(n, 10, 0.03)
+
+  # Introduce scaling factors for subsequent pimensions
+  scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
+
+  # Apply remaining dimensions with sinusoidal patterns
+  for (i in 3:p) {
+    # Introduce a phase shift for each dimension to make them distinct
+    phase_shift <- (i - 2) * (pi / (2 * p))
+    coords[, i] <- scaling_factors[i-1] * sin(theta + phase_shift)
+  }
+
+  df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
+  names(df) <- paste0("x", 1:p)
+
+  return(df)
+}
+
 #' Generate Any number of Circle Clusters
 #'
 #' This function generates a dataset representing a structure with any number of circles.
