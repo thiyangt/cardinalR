@@ -14,19 +14,19 @@
 gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   if (k > 2) {
-    stop(cli::cli_alert_danger("k should be 2 or greater."))
+    stop("k should be 2 or greater.")
   }
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+    stop("p should be 4 or greater.")
   }
 
   if (length(n) != k) {
-    stop(cli::cli_alert_danger("n should contain exactly k values."))
+    stop("n should contain exactly k values.")
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+    stop("Values in n should be positive.")
   }
 
   ## Generate scale factors for circles
@@ -75,7 +75,6 @@ gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
     }
   }
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
 
