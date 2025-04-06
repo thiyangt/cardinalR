@@ -430,36 +430,38 @@ gen_two_circulars <- function(n = c(200, 300), p = 3) {
 }
 
 
-extend_circle <- function(n, d) {
-  if (length(n) != 1) {
-    stop("n should be a single integer specifying the number of points along the 'circle'")
-  }
-  if (d < 2) {
-    stop("d must be at least 2 for a circular structure")
-  }
+extend_circle <- function(n, d) {library(gtools)
 
-  theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
-  coords <- matrix(0, nrow = n[1], ncol = d)
+  r1 <- 2
+  r2 <- 1
 
-  # First two dimensions (essential for the base circle)
-  # coords[, 1] <- cos(theta1)
-  # coords[, 2] <- sin(theta1)
+  n <- 500
 
-  cs <- cos(.4)
-  sn <- sin(.4)
-  coords[, 1] <- cos(theta1)
-  coords[, 2] <- cs * sin(theta1)
-  coords[, 3] <- -sn * sin(theta1)
+  theta1 <- stats::runif(n, 0, 2 * pi)
+  x1 <- rep(0, n)
+  x2 <- r1 * cos(theta1)
+  x3 <- r2 * sin(theta1)
 
-  # Introduce scaling factors for subsequent dimensions
-  scaling_factors <- sqrt(cumprod(c(1, rep(0.5, d - 3)))) # Example: decreasing scale
+  # Combine variables into a named list
+  var_list <- list(x1 = x1, x2 = x2, x3 = x3)
 
-  # Add remaining dimensions with sinusoidal patterns
-  for (i in 4:d) {
-    # Introduce a phase shift for each dimension to make them distinct
-    phase_shift <- (i - 2) * (pi / (2 * d))
-    coords[, i] <- scaling_factors[i-2] * sin(theta1 + phase_shift)
-  }
+  # Generate all permutations of the variable order
+  perms <- permutations(n = length(var_list), r = length(var_list))
 
-  return(coords)
+  # Generate k datasets with swapped columns
+  swapped_datasets <- lapply(1:nrow(perms), function(i) {
+    permuted_vars <- var_list[perms[i, ]]
+    names(permuted_vars) <- names(var_list)
+    as.data.frame(permuted_vars)
+  })
+
+  swapped_datasets[[1]]
+
+  df <- dplyr::bind_rows(swapped_datasets[[1]],
+                         swapped_datasets[[2]],
+                         swapped_datasets[[3]],
+                         swapped_datasets[[4]],
+                         swapped_datasets[[5]],
+                         swapped_datasets[[6]])
+  langevitour::langevitour(df)
 }
