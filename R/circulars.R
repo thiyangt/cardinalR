@@ -1,28 +1,36 @@
-#' Generate Three Circular Clusters
+#' Generate Any number of Circle Clusters
 #'
-#' This function generates a dataset representing a structure with three circulars.
+#' This function generates a dataset representing a structure with any number of circles.
 #'
 #' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @return A data containing the three circular clusters.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of circle clusters.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' circular_clusters_data <- gen_three_circulars(n = c(200, 500, 300), p = 4)
-gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
+#' circular_clusters_data <- gen_circles(n = c(200, 500, 300), p = 4, k = 3)
+gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
+
+  if (k > 2) {
+    stop(cli::cli_alert_danger("k should be 2 or greater."))
+  }
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
   }
 
-  if (length(n) != 3) {
-    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  if (length(n) != k) {
+    stop(cli::cli_alert_danger("n should contain exactly k values."))
   }
 
   if (any(n < 0)) {
     stop(cli::cli_alert_danger("Values in n should be positive."))
   }
+
+  ## Generate scale factors for circles
+  scale_factors_vec <- runif(k - 2, 0, 2)
 
   theta1 <- stats::runif(n[1], 0.0, 2 * pi)
   x1 <- cos(theta1) + stats::rnorm(n[1], 10, 0.03)
@@ -35,9 +43,8 @@ gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
                         x3 = x3,
                         x4 = x4)
 
-  theta2 <- stats::runif(n[2], 0.0, 2 * pi)
-  x1 <- 0.5 * cos(theta2) + stats::rnorm(n[2], 10, 0.03)
-  x2 <- 0.5 * sin(theta2) + stats::rnorm(n[2], 10, 0.03)
+  x1 <- stats::rnorm(n[2], 10, 0.03)
+  x2 <- stats::rnorm(n[2], 10, 0.03)
   x3 <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
   x4 <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
 
@@ -46,30 +53,26 @@ gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
                         x3 = x3,
                         x4 = x4)
 
-  x1 <- stats::rnorm(n[3], 10, 0.03)
-  x2 <- stats::rnorm(n[3], 10, 0.03)
-  x3 <- rep(0, n[3]) + stats::rnorm(n[3], 10, 0.03)
-  x4 <- rep(0, n[3]) - stats::rnorm(n[3], 10, 0.03)
+  df <- dplyr::bind_rows(df1, df2)
 
-  df3 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4)
+  if (k > 2) {
+    for (i in 1:(k-2)) {
 
-  df <- dplyr::bind_rows(df1, df2, df3)
+      theta <- stats::runif(n[i], 0.0, 2 * pi)
 
+      x1 <- scale_factors_vec[i] * cos(theta) + stats::rnorm(n[i], 10, 0.03)
+      x2 <- scale_factors_vec[i] * sin(theta) + stats::rnorm(n[i], 10, 0.03)
+      x3 <- rep(0, n[i]) + stats::rnorm(n[i], 10, 0.03)
+      x4 <- rep(0, n[i]) - stats::rnorm(n[i], 10, 0.03)
 
-  if (p > 4) {
+      df3 <- tibble::tibble(x1 = x1,
+                            x2 = x2,
+                            x3 = x3,
+                            x4 = x4)
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+      df <- dplyr::bind_rows(df, df3)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- dplyr::bind_cols(df, noise_mat)
-
+    }
   }
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
