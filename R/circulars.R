@@ -26,8 +26,7 @@ gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
 
   theta1 <- stats::runif(n[1], 0.0, 2 * pi)
   x1 <- cos(theta1) + stats::rnorm(n[1], 10, 0.03)
-  theta2 <- stats::runif(n[1], 0.0, 2 * pi)
-  x2 <- sin(theta2) + stats::rnorm(n[1], 10, 0.03)
+  x2 <- sin(theta1) + stats::rnorm(n[1], 10, 0.03)
   x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
   x4 <- rep(0, n[1]) - stats::rnorm(n[1], 10, 0.03)
 
@@ -36,10 +35,9 @@ gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
                         x3 = x3,
                         x4 = x4)
 
-  theta3 <- stats::runif(n[2], 0.0, 2 * pi)
-  x1 <- 0.5 * cos(theta3) + stats::rnorm(n[2], 10, 0.03)
-  theta4 <- stats::runif(n[2], 0.0, 2 * pi)
-  x2 <- 0.5 * sin(theta4) + stats::rnorm(n[2], 10, 0.03)
+  theta2 <- stats::runif(n[2], 0.0, 2 * pi)
+  x1 <- 0.5 * cos(theta2) + stats::rnorm(n[2], 10, 0.03)
+  x2 <- 0.5 * sin(theta2) + stats::rnorm(n[2], 10, 0.03)
   x3 <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
   x4 <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
 
@@ -267,25 +265,21 @@ gen_two_circulars <- function(n = c(200, 300), p = 3) {
   }
 
   theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
-  theta2 <- (0:(n[1] - 1)) * (2 * pi / n[1])
-  theta3 <- (0:(n[1] - 1)) * (2 * pi / n[1])
   cs <- cos(.4)
   sn <- sin(.4)
 
   x1 <- cos(theta1)
-  x2 <- cs * sin(theta2)
-  x3 <- -sn * sin(theta3)
+  x2 <- cs * sin(theta1)
+  x3 <- -sn * sin(theta1)
 
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3)
 
-  theta4 <- (0:(n[2] - 1)) * (2 * pi / n[2])
-  theta5 <- (0:(n[2] - 1)) * (2 * pi / n[2])
-  theta6 <- (0:(n[2] - 1)) * (2 * pi / n[2])
-  x1 <- 1 + cos(theta4)
-  x2 <- sn * sin(theta5)
-  x3 <- cs * sin(theta6)
+  theta2 <- (0:(n[2] - 1)) * (2 * pi / n[2])
+  x1 <- 1 + cos(theta2)
+  x2 <- sn * sin(theta2)
+  x3 <- cs * sin(theta2)
 
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
