@@ -300,7 +300,7 @@ gen_three_curvy_cycle <- function(n = c(200, 500, 300), p = 3) {
 #' @examples
 #' set.seed(20240412)
 #' circular_data <- gen_circular_pd(n = 500, p = 4)
-gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4)){
+gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4), shift = 0){
 
   if (p <= 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -322,7 +322,7 @@ gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4)){
 
   theta <- (0:(n - 1)) * (2 * pi / n)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- cos(theta)
+  coords[, 1] <- shift + cos(theta)
   coords[, 2] <- r1 * sin(theta1)
   coords[, 3] <- r2 * sin(theta1)
 
@@ -413,41 +413,4 @@ gen_two_circulars <- function(n = c(200, 300), p = 3) {
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
-}
-
-
-extend_circle <- function(n, d) {library(gtools)
-
-  r1 <- 2
-  r2 <- 1
-
-  n <- 500
-
-  theta1 <- stats::runif(n, 0, 2 * pi)
-  x1 <- rep(0, n)
-  x2 <- r1 * cos(theta1)
-  x3 <- r2 * sin(theta1)
-
-  # Combine variables into a named list
-  var_list <- list(x1 = x1, x2 = x2, x3 = x3)
-
-  # Generate all permutations of the variable order
-  perms <- permutations(n = length(var_list), r = length(var_list))
-
-  # Generate k datasets with swapped columns
-  swapped_datasets <- lapply(1:nrow(perms), function(i) {
-    permuted_vars <- var_list[perms[i, ]]
-    names(permuted_vars) <- names(var_list)
-    as.data.frame(permuted_vars)
-  })
-
-  swapped_datasets[[1]]
-
-  df <- dplyr::bind_rows(swapped_datasets[[1]],
-                         swapped_datasets[[2]],
-                         swapped_datasets[[3]],
-                         swapped_datasets[[4]],
-                         swapped_datasets[[5]],
-                         swapped_datasets[[6]])
-  langevitour::langevitour(df)
 }
