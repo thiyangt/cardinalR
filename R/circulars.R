@@ -58,6 +58,7 @@ gen_three_circulars <- function(n = c(200, 500, 300), p = 4) {
 
   df <- dplyr::bind_rows(df1, df2, df3)
 
+
   if (p > 4) {
 
     cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
