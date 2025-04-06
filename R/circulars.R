@@ -13,7 +13,7 @@
 #' circular_clusters_data <- gen_circles(n = c(200, 500, 300), p = 4, k = 3)
 gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
-  if (k > 2) {
+  if (k < 2) {
     stop("k should be 2 or greater.")
   }
 
@@ -30,7 +30,7 @@ gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
   }
 
   ## Generate scale factors for circles
-  scale_factors_vec <- runif(k - 2, 0, 2)
+  scale_factors_vec <- runif(k - 2, 0, 1)
 
   theta1 <- stats::runif(n[1], 0.0, 2 * pi)
   x1 <- cos(theta1) + stats::rnorm(n[1], 10, 0.03)
