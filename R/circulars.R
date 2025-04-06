@@ -4,16 +4,17 @@
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param a A numeric value (default: 1) representing the scale factor.
 #' @return A data containing a circle.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
 #' circle_data <- gen_circle_pd(n = 500, p = 4)
-gen_circle_pd <- function(n = 500, p = 3){
+gen_circle_pd <- function(n = 500, p = 3, a = 1){
 
-  if (p < 2) {
-    stop("p should be 2 or greater.")
+  if (p <= 2) {
+    stop("p should be greater than 2.")
   }
 
   if (length(n) != 1) {
@@ -22,17 +23,19 @@ gen_circle_pd <- function(n = 500, p = 3){
 
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- cos(theta) + stats::rnorm(n, 10, 0.03)
-  coords[, 2] <- sin(theta) + stats::rnorm(n, 10, 0.03)
+  coords[, 1] <- a * cos(theta) + stats::rnorm(n, 10, 0.03)
+  coords[, 2] <- a * sin(theta) + stats::rnorm(n, 10, 0.03)
 
   # Introduce scaling factors for subsequent pimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
 
-  # Apply remaining dimensions with sinusoidal patterns
-  for (i in 3:p) {
-    # Introduce a phase shift for each dimension to make them distinct
-    phase_shift <- (i - 2) * (pi / (2 * p))
-    coords[, i] <- scaling_factors[i-1] * sin(theta + phase_shift)
+  if (p > 2) {
+    # Apply remaining dimensions with sinusoidal patterns
+    for (i in 3:p) {
+      # Introduce a phase shift for each dimension to make them distinct
+      phase_shift <- (i - 2) * (pi / (2 * p))
+      coords[, i] <- scaling_factors[i-1] * sin(theta + phase_shift)
+    }
   }
 
   df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
@@ -53,15 +56,15 @@ gen_circle_pd <- function(n = 500, p = 3){
 #'
 #' @examples
 #' set.seed(20240412)
-#' circular_clusters_data <- gen_circles(n = c(200, 500, 300), p = 4, k = 3)
-gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
+#' circular_clusters_data <- gen_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
+gen_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
-  if (k < 2) {
-    stop("k should be 2 or greater.")
+  if (k <= 2) {
+    stop("k should be greater than 2.")
   }
 
-  if (p < 4) {
-    stop("p should be 4 or greater.")
+  if (p <= 2) {
+    stop("p should be greater than 2.")
   }
 
   if (length(n) != k) {
@@ -73,50 +76,18 @@ gen_circles <- function(n = c(200, 500, 300), p = 4, k = 3) {
   }
 
   ## Generate scale factors for circles
-  scale_factors_vec <- runif(k - 2, 0, 1)
+  scale_factors_vec <- runif(k, 0, 2)
 
-  theta1 <- stats::runif(n[1], 0.0, 2 * pi)
-  x1 <- cos(theta1) + stats::rnorm(n[1], 10, 0.03)
-  x2 <- sin(theta1) + stats::rnorm(n[1], 10, 0.03)
-  x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
-  x4 <- rep(0, n[1]) - stats::rnorm(n[1], 10, 0.03)
+  df <- tibble::tibble()
 
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4)
+  for (i in 1:k) {
 
-  x1 <- stats::rnorm(n[2], 10, 0.03)
-  x2 <- stats::rnorm(n[2], 10, 0.03)
-  x3 <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
-  x4 <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
+    df3 <- gen_circle_pd(n[i], p = p, a = scale_factors_vec[i])
 
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4)
+    df <- dplyr::bind_rows(df, df3)
 
-  df <- dplyr::bind_rows(df1, df2)
-
-  if (k > 2) {
-    for (i in 1:(k-2)) {
-
-      theta <- stats::runif(n[i], 0.0, 2 * pi)
-
-      x1 <- scale_factors_vec[i] * cos(theta) + stats::rnorm(n[i], 10, 0.03)
-      x2 <- scale_factors_vec[i] * sin(theta) + stats::rnorm(n[i], 10, 0.03)
-      x3 <- rep(0, n[i]) + stats::rnorm(n[i], 10, 0.03)
-      x4 <- rep(0, n[i]) - stats::rnorm(n[i], 10, 0.03)
-
-      df3 <- tibble::tibble(x1 = x1,
-                            x2 = x2,
-                            x3 = x3,
-                            x4 = x4)
-
-      df <- dplyr::bind_rows(df, df3)
-
-    }
   }
+
 
   return(df)
 }

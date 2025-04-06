@@ -1,3 +1,47 @@
+gen_clusts_gau <- function(n = 300, p = 4, k = 3, m = c(0, 0, 0), s = 0.05) {
+  df <- mvtnorm::rmvnorm(n, mean = m, sigma = diag(4) * s)/6
+
+  df <- suppressMessages(tibble::as_tibble(df, .name_repair = "unique"))
+
+  names(df) <- paste0("x", 1:p)
+
+  return(df)
+}
+
+gen_clusts_gau <- function(n = c(300, 100, 200), p = 4, k = 3, m = diag(3), s = rep(0.05, 3)) {
+
+  for (i in 1:k) {
+    # To filter the mean values for specific cluster
+    mean_val_for_cluster <- m[i]
+
+    # To filter the variance values for specific cluster
+    variance_val_for_cluster <- s[i]
+
+    # Initialize an empty list to store the vectors with column
+    # values
+    dim_val_list <- list()
+
+    for (j in 1:p) {
+      dim_val_list[[j]] <- stats::rnorm(n[i],
+                                        mean = mean_val_for_cluster,
+                                        sd = variance_val_for_cluster
+      )
+    }
+    # To generate a tibble for a cluster
+    df_cluster <- matrix(unlist(dim_val_list), ncol = length(dim_val_list))
+
+    df <- rbind(df, df_cluster)
+  }
+
+
+  df <- suppressMessages(tibble::as_tibble(df, .name_repair = "unique"))
+
+  names(df) <- paste0("x", 1:p)
+
+  return(df)
+}
+
+
 #' Generate synthetic data with Gaussian clusters
 #'
 #' Generate Gaussian Clusters
