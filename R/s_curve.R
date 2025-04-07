@@ -190,7 +190,7 @@ mirror_scurves <- function(n = 500, p = 4) {
 two_scurve_hole <- function(n = 500, p = 4) {
 
   ## S curve with a hole
-  df1 <- gen_scurve(n = n, p = p)
+  df1 <- gen_scurve_hole(n = n, p = p)
   df2 <- df1 + 1
 
   df <- rbind(df1, df2)
