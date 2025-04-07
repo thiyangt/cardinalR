@@ -176,7 +176,7 @@ gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 #' @examples
 #' set.seed(20240412)
 #' curvy_cycle_data <- gen_curvy_cycle_pd(n = 500, p = 4)
-gen_curvy_cycle_pd <- function(n = 500, p = 4, r = sqrt(3) / 3){
+gen_curvy_cycle_pd <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_fac = c(1, 1, 1/3)){
 
   if (p <= 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -188,9 +188,9 @@ gen_curvy_cycle_pd <- function(n = 500, p = 4, r = sqrt(3) / 3){
 
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- cos(theta)
-  coords[, 2] <- r + sin(theta)
-  coords[, 3] <- cos(3 * theta) / 3
+  coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
+  coords[, 2] <- scale_fac[2] * (shift[2] + sin(theta))
+  coords[, 3] <- scale_fac[3] * (shift[3] + cos(3 * theta))
 
   # Introduce scaling factors for subsequent dimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 3)))) # Example: decreasing scale
