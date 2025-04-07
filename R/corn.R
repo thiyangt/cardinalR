@@ -111,11 +111,20 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, height = 5, base_width = c
   x_radii <- tip_radius + (base_width_x - tip_radius) * (height_values / height)
   y_radii <- tip_radius + (base_width_y - tip_radius) * (height_values / height)
 
-  # gen points uniformly within the rectangular cross-section at each height level
-  x1 <- runif(n, -x_radii, x_radii)
-  x2 <- runif(n, -y_radii, y_radii)
-  x3 <- runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
-  x4 <- height_values  # Fourth dimension is the height
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- runif(n, -x_radii, x_radii)
+  coords[, 2] <- runif(n, -y_radii, y_radii)
+  coords[, 3] <- runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
+
+  # For the fourth dimension and beyond, taper toward the tip
+  if (p > 3) {
+    for (i in 4:p) {
+      coords[, i - 1] <- runif(n, -0.1, 0.1) * (height - height_values) / height # Tapering
+    }
+  }
+
+  # The last dimension is the height
+  coords[, p] <- height_values
 
   # Create the tibble
   df <- tibble::as_tibble(coords, .name_repair = "minimal")
@@ -167,11 +176,20 @@ gen_corn_triangular_base <- function(n = 500, p = 4, height = 5, base_width = 3,
   u[is_outside] <- 1 - u[is_outside]
   v[is_outside] <- 1 - v[is_outside]
 
-  # Scale the triangular points by the radius (for tapering)
-  x1 <- radii * (1 - u - v)  # First triangle coordinate
-  x2 <- radii * u            # Second triangle coordinate
-  x3 <- radii * v            # Third triangle coordinate
-  x4 <- height_values        # Fourth dimension (height)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- radii * (1 - u - v) # First triangle coordinate (mapped to x1)
+  coords[, 2] <- radii * u         # Second triangle coordinate (mapped to x2)
+  coords[, 3] <- radii * v         # Third triangle coordinate (mapped to x3)
+
+  # For the fourth dimension and beyond, taper toward the tip
+  if (p > 3) {
+    for (i in 4:p) {
+      coords[, i - 1] <- runif(n, -0.1, 0.1) * (height - height_values) / height # Tapering
+    }
+  }
+
+  # The last dimension is the height
+  coords[, p] <- height_values
 
   # Create the tibble
   df <- tibble::as_tibble(coords, .name_repair = "minimal")
