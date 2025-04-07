@@ -25,5 +25,5 @@ This function generates data with curvy branching clusters along with added nois
 
 # Generate curvy branching clusters with noise with custom parameters
 set.seed(20240412)
-data <- curvy_branch(n = 200, num_noise = 2, min_n = -0.05, max_n = 0.05)
+data <- gen_two_curvy(n = c(300, 200), p = 4)
 }

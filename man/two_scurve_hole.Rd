@@ -4,7 +4,7 @@
 \alias{two_scurve_hole}
 \title{Generate Two S-Curve Data with Noise}
 \usage{
-two_scurve_hole(n, num_noise, min_n, max_n)
+two_scurve_hole(n = 500, p = 4)
 }
 \arguments{
 \item{n}{The total number of data points to be generated.}

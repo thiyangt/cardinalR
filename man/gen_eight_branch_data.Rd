@@ -2,29 +2,22 @@
 % Please edit documentation in R/branching.R
 \name{gen_eight_branch_data}
 \alias{gen_eight_branch_data}
-\title{Generate Eight Branching Data with Noise}
+\title{Generate data with eight branches}
 \usage{
-gen_eight_branch_data(n, num_noise, min_n, max_n)
+gen_eight_branch_data(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4)
 }
 \arguments{
-\item{n}{The total number of samples to generate.}
+\item{n}{A numeric vector (default: c(200, 300, 150, 250, 100, 100, 100, 100)) representing the sample sizes.}
 
-\item{num_noise}{The number of additional noise dimensions to add to the data.}
-
-\item{min_n}{The minimum value for the noise dimensions.}
-
-\item{max_n}{The maximum value for the noise dimensions.}
+\item{p}{A numeric value (default: 4) representing the number of dimensions.}
 }
 \value{
-A matrix containing the eight branching data with added noise.
+A data containing eight branches.
 }
 \description{
-This function generates a dataset representing eight branching patterns, with added noise.
+This function generates a dataset representing a structure with eight branches.
 }
 \examples{
 set.seed(20240412)
-branching_data <- eight_branch(
-  n = 400, num_noise = 2, min_n = -0.05,
-  max_n = 0.05
-)
+branching_data <- gen_eight_branch_data(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4)
 }

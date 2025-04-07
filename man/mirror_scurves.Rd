@@ -4,7 +4,7 @@
 \alias{mirror_scurves}
 \title{Generate Mirror S-curve Datasets with Noise}
 \usage{
-mirror_scurves(n, num_noise, min_n, max_n)
+mirror_scurves(n = 500, p = 4)
 }
 \arguments{
 \item{n}{The total number of samples to generate (should be divisible by 2).}
