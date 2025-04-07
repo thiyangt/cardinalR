@@ -1,5 +1,3 @@
-# Function to gen a corn-shaped cluster in 4D space with an offset
-
 #' Generate Blunted Corn
 #'
 #' This function generates a dataset representing a blunted corn.
@@ -120,7 +118,7 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt
     cli::cli_abort("h should be positive.")
   }
 
-  if (any(l_vec) <= 0) {
+  if (any(l_vec <= 0)) {
     cli::cli_abort("Values in the base width vector should be positive.")
   }
 
@@ -261,7 +259,7 @@ gen_corn_triangular_base <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' hexagonal_corn_data <- gen_filled_hexagonal_pyramid((n = 500, p = 4, h = 5, rb = 3))
+#' hexagonal_corn_data <- gen_filled_hexagonal_pyramid(n = 500, p = 4, h = 5, rb = 3)
 gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, h = 5, rb = 3) {
 
   if (p < 2) {
