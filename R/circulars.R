@@ -22,6 +22,10 @@ gen_circle_pd <- function(n = 500, p = 3, shift = c(0, 0), scale_fac = c(1, 1)){
     cli::cli_abort("n should be a single integer specifying the number of points.")
   }
 
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
   coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
@@ -185,6 +189,10 @@ gen_curvy_cycle_pd <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), sca
     cli::cli_abort("n should be a single integer specifying the number of points.")
   }
 
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
   coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
@@ -286,6 +294,10 @@ gen_circular_pd <- function(n = 500, p = 4, shift = c(0, 0, 0),
 
   if (length(n) != 1) {
     cli::cli_abort("n should be a single integer specifying the number of points.")
+  }
+
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
   }
 
   theta <- (0:(n - 1)) * (2 * pi / n)
