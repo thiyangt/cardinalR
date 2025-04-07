@@ -1,46 +1,70 @@
 # Function to gen a corn-shaped cluster in 4D space with an offset
-gen_blunted_corn_cluster_4d <- function(n, height, base_radius, tip_radius, tip_point = c(0, 0, 0, 0)) {
-  if (n < 0) {
-    stop(cli::cli_alert_danger("n should be positive."))
+gen_blunted_corn <- function(n = 500, height = 5, base_radius = 1.5, tip_radius = 0.8) {
+
+  if (p < 2) {
+    stop(cli::cli_alert_danger("p should be 2 or greater."))
   }
 
-  # gen points with a higher density near the tip
-  # Use an exponential distribution to cluster more points closer to the tip
-  height_values <- rexp(n, rate = 1 / (height / 2))  # Exponentially distributed heights
-  height_values <- pmin(height_values, height)  # Cap heights to the maximum height
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
 
-  # Radius decreases linearly from the base to the tip
+  # Gen points with a higher density near the tip (along the last dimension - 'height')
+  height_values <- stats::rexp(n, rate = 1 / (height / 2)) # Exponentially distributed heights
+  height_values <- pmin(height_values, height)       # Cap heights to the maximum height
+
+  # Generalized "radius" decreases linearly from the base to the tip
   radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
 
-  # gen points uniformly distributed in the cross-section (circle) at each height level
-  theta <- runif(n, 0, 2 * pi)
+  # Generate generalized "angles" for the (p-1)-dimensional hypersphere
+  angles <- matrix(runif(n * (p - 2), 0, 2 * pi), nrow = n)
+  phi <- stats::runif(n, 0, pi) # One angle with range 0 to pi
 
-  phi1 <- runif(n, 0, 2 * pi)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, p] <- height_values # The last dimension is our 'height'
 
-  x1 <- radii * cos(theta) * sin(phi)
-  x2 <- radii * sin(theta) * sin(phi)
-  x3 <- radii * cos(theta)
-  x4 <- height_values
+  # Convert hyperspherical coordinates to Cartesian-like coordinates
+  if (p == 2) {
+    coords[, 1] <- radii * cos(phi) # Using phi as the angle in 2D
+    coords[, 2] <- height_values
+  } else if (p == 3) {
+    coords[, 1] <- radii * cos(angles[, 1]) * sin(phi)
+    coords[, 2] <- radii * sin(angles[, 1]) * sin(phi)
+    coords[, 3] <- radii * cos(phi)
+    coords[, 4] <- height_values
+  } else if (p > 3) {
+    coords[, 1] <- radii * cos(angles[, 1]) * sin(phi)
+    coords[, 2] <- radii * sin(angles[, 1]) * sin(phi)
+    coords[, 3] <- radii * cos(phi)
+    for (i in 4:p) {
+      product_of_sines <- 1
+      for (j in 1:(i - 2)) {
+        product_of_sines <- product_of_sines * sin(angles[, j])
+      }
+      coords[, i - 1] <- radii * product_of_sines * cos(ifelse(i == p, phi, angles[, i - 2]))
+      if (i < p) {
+        coords[, i] <- radii * product_of_sines * sin(angles[, i - 2])
+      }
+    }
+    coords[, p] <- height_values
+  }
 
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
-
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
 
 # Function to gen a corn-shaped cluster in 4D with a rectangular base
-gen_corn_cluster_rectangular_base_4d <- function(n, height = 5, base_width_x = 3, base_width_y = 2, tip_radius = 0.5, tip_point = c(0, 0, 0, 0)) {
-  if (n < 0) {
-    stop(cli::cli_alert_danger("n should be positive."))
+gen_corn_cluster_rectangular_base <- function(n, height = 5, base_width_x = 3, base_width_y = 2, tip_radius = 0.5) {
+  if (p < 2) {
+    stop(cli::cli_alert_danger("p should be 2 or greater."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
   # gen points with a higher density near the tip
@@ -73,7 +97,7 @@ gen_corn_cluster_rectangular_base_4d <- function(n, height = 5, base_width_x = 3
 }
 
 # Function to gen a corn-shaped cluster in 4D with a triangular base
-gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, tip_radius = 0.5, tip_point = c(0, 0, 0, 0)) {
+gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, tip_radius = 0.5) {
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
   }
@@ -115,7 +139,7 @@ gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, t
 }
 
 # Function to gen a filled hexagonal pyramid in 4D space
-gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3, tip_point = c(0, 0, 0, 0)) {
+gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3) {
   if (n < 0) {
     stop(cli::cli_alert_danger("n should be positive."))
   }

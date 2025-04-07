@@ -15,11 +15,11 @@
 gen_hyperplane <- function(n = 500, p = 4) {
 
   if (p < 2) {
-    stop(cli::cli_alert_danger("p should be 2 or greater."))
+    cli::cli_abort("p should be greater than 2.")
   }
 
-  if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
   }
 
   # Generate n-1 random dimensions
@@ -55,11 +55,11 @@ gen_hyperplane <- function(n = 500, p = 4) {
 gen_hyperplane_with_hole <- function(n = 500, p = 4) {
 
   if (p < 2) {
-    stop(cli::cli_alert_danger("p should be 2 or greater."))
+    cli::cli_abort("p should be greater than 2.")
   }
 
-  if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
   }
 
   plane_points <- gen_hyperplane(n = n, p = p)
