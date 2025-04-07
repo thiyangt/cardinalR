@@ -4,15 +4,15 @@
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r1 A numeric value (default: 1) representing the radius scale factor along x1.
-#' @param r2 A numeric value (default: 1) representing the radius scale factor along x2.
+#' @param shift A numeric vector (default: c(0, 0)) representing the shift along x1, x2 respectively.
+#' @param scale_fac A numeric vector (default:  c(1, 1)) representing the scale factors along x1, x2 respectively.
 #' @return A data containing a circle.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
 #' circle_data <- gen_circle_pd(n = 500, p = 4)
-gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
+gen_circle_pd <- function(n = 500, p = 3, shift = c(0, 0), scale_fac = c(1, 1)){
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -24,8 +24,8 @@ gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
 
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- r1 * cos(theta) #+ stats::rnorm(n, 10, 0.03)
-  coords[, 2] <- r2 * sin(theta) #+ stats::rnorm(n, 10, 0.03)
+  coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
+  coords[, 2] <- scale_fac[2] * (shift[2] + sin(theta))
 
   # Introduce scaling factors for subsequent dimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
@@ -46,7 +46,7 @@ gen_circle_pd <- function(n = 500, p = 3, r1 = 1, r2 = 1){
   return(df)
 }
 
-#' Generate Shited Any number of Circle Clusters
+#' Generate Shited Any number of 2-D Circle Clusters
 #'
 #' This function generates a dataset representing a structure with any number of shifted circles.
 #'
@@ -77,14 +77,13 @@ gen_shifted_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
     cli::cli_abort("Values in n should be positive.")
   }
 
-  ## Generate scale factors for circles
-  scale_factors_vec <- runif(k, 0, 2)
-
   df <- tibble::tibble()
 
   for (i in 1:k) {
+    ## Generate scale factors for circles
+    scale_factors_vec <- runif(2, 0, 2)
 
-    df3 <- gen_circle_pd(n[i], p = p, r1 = scale_factors_vec[i], r2 = scale_factors_vec[i]) |>
+    df3 <- gen_circle_pd(n[i], p = p, shift = c(0, 0), scale_fac = scale_factors_vec) |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
     df <- dplyr::bind_rows(df, df3)
@@ -270,15 +269,16 @@ gen_overlapped_clusts_curvy_cycle <- function(n = c(200, 500, 300), p = 4, k = 3
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r1 A numeric value (default: 1) representing the radius scale factor along x2.
-#' @param r2 A numeric value (default: 1) representing the radius scale factor along x3.
+#' @param shift A numeric vector (default: c(0, 0, 0)) representing the shift along x1, x2, x3 respectively.
+#' @param scale_fac A numeric vector (default:  c(1, cos(.4), sin(.4))) representing the scale factors along x1, x2, x3 respectively.
 #' @return A data containing a circular.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
 #' circular_data <- gen_circular_pd(n = 500, p = 4)
-gen_circular_pd <- function(n = 500, p = 4, shift = c(0, 0, 0), scale_fac = c(1, cos(.4), sin(.4))){
+gen_circular_pd <- function(n = 500, p = 4, shift = c(0, 0, 0),
+                            scale_fac = c(1, cos(.4), sin(.4))){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -314,22 +314,22 @@ gen_circular_pd <- function(n = 500, p = 4, shift = c(0, 0, 0), scale_fac = c(1,
   return(df)
 }
 
-#' Generate Two Link Circular Clusters
+#' Generate Linked Any number of 3-D Circle Clusters
 #'
-#' This function generates a dataset representing a structure with two link circular clusters.
+#' This function generates a dataset representing a structure with any number of overlapped circles.
 #'
-#' @param n A numeric vector (default: c(200, 300)) representing the sample sizes.
-#' @param p A numeric value (default: 3) representing the number of dimensions.
-#'
-#' @return A data containing the generated two linked circular clusters.
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of overlapped circle clusters.
 #' @export
 #'
 #' @examples
 #'
 #' # Generate linked data with noise with custom parameters
 #' set.seed(20240412)
-#' data <- gen_clusts_circulars(n = c(200, 500, 300), p = 4, k = 3)
-gen_clusts_circulars <- function(n = c(200, 500, 300), p = 4, k = 3) {
+#' data <- gen_linked_clusts_circulars(n = c(200, 500, 300), p = 4, k = 3)
+gen_linked_clusts_circulars <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   if (k < 2) {
     cli::cli_abort("k should be greater than 2.")
