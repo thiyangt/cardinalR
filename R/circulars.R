@@ -242,9 +242,6 @@ gen_overlapped_clusts_curvy_cycle <- function(n = c(200, 500, 300), p = 4, k = 3
     cli::cli_abort("Values in n should be positive.")
   }
 
-  ## Generate shift factors for circles
-  shift_vec <- sample(seq(-1, 1, 0.2), k)
-
   df <- tibble::tibble()
 
   for (i in 1:k) {
@@ -252,7 +249,7 @@ gen_overlapped_clusts_curvy_cycle <- function(n = c(200, 500, 300), p = 4, k = 3
     shift_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
     scale_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
 
-    df3 <- gen_curvy_cycle_pd(n[i], p = p, shift = shift_vec, scale_fac = c(1, 1, 1/3)) |>
+    df3 <- gen_curvy_cycle_pd(n[i], p = p, shift = shift_vec, scale_fac = scale_vec) |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
     df <- dplyr::bind_rows(df, df3)
@@ -281,9 +278,9 @@ gen_overlapped_clusts_curvy_cycle <- function(n = c(200, 500, 300), p = 4, k = 3
 #' @examples
 #' set.seed(20240412)
 #' circular_data <- gen_circular_pd(n = 500, p = 4)
-gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4), shift = 0){
+gen_circular_pd <- function(n = 500, p = 4, shift = c(0, 0, 0), scale_fac = c(1, cos(.4), sin(.4))){
 
-  if (p <= 3) {
+  if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
   }
 
@@ -291,21 +288,11 @@ gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4), shift = 0
     cli::cli_abort("n should be a single integer specifying the number of points.")
   }
 
-  theta <- (0:(n[1] - 1)) * (2 * pi / n[1])
-  x1 <- cos(theta)
-  x2 <- r1 * sin(theta)
-  x3 <- -r2 * sin(theta)
-
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
-
-
   theta <- (0:(n - 1)) * (2 * pi / n)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- shift + cos(theta)
-  coords[, 2] <- r1 * sin(theta1)
-  coords[, 3] <- r2 * sin(theta1)
+  coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
+  coords[, 2] <- scale_fac[2] * (shift[2] + r1 * sin(theta))
+  coords[, 3] <- scale_fac[3] * (shift[3] - r2 * sin(theta))
 
   # Introduce scaling factors for subsequent dimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 3)))) # Example: decreasing scale
@@ -341,57 +328,43 @@ gen_circular_pd <- function(n = 500, p = 4, r = cos(.4), r2 = sin(.4), shift = 0
 #'
 #' # Generate linked data with noise with custom parameters
 #' set.seed(20240412)
-#' data <- gen_two_circulars(n = c(200, 300), p = 3)
-gen_two_circulars <- function(n = c(200, 300), p = 3) {
+#' data <- gen_clusts_circulars(n = c(200, 500, 300), p = 4, k = 3)
+gen_clusts_circulars <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
-  if (p < 3) {
-    stop(cli::cli_alert_danger("p should be 3 or greater."))
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
   }
 
-  if (length(n) != 2) {
-    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+    cli::cli_abort("Values in n should be positive.")
   }
 
-  cs <- cos(.4)
-  sn <- sin(.4)
+  df <- tibble::tibble()
 
-  theta1 <- (0:(n[1] - 1)) * (2 * pi / n[1])
-  x1 <- cos(theta1)
-  x2 <- cs * sin(theta1)
-  x3 <- -sn * sin(theta1)
+  for (i in 1:k) {
 
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
+    shift_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
+    scale_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
 
-  theta2 <- (0:(n[2] - 1)) * (2 * pi / n[2])
-  x1 <- 1 + cos(theta2)
-  x2 <- sn * sin(theta2)
-  x3 <- cs * sin(theta2)
+    df3 <- gen_circular_pd(n[i], p = p, shift = shift_vec, scale_fac = scale_vec) |>
+      dplyr::mutate(cluster = paste0("cluster", i))
 
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
-
-  df <- dplyr::bind_rows(df1, df2)
-
-  if (p > 3) {
-
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
-
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 3,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 4:p)
-    df <- dplyr::bind_cols(df, noise_mat)
+    df <- dplyr::bind_rows(df, df3)
 
   }
+
+  ## To swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
+
 }
