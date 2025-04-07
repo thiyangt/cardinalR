@@ -95,7 +95,7 @@ gen_corn_blunted <- function(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8) {
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param h A numeric value (default: 5) representing the h of the corn.
-#' @param l_vec A numeric vector (default: c(3, 2)) representing the base radius along the and y of the corn.
+#' @param l_vec A numeric vector (default: c(3, 2)) representing the base lengths along the and y of the corn.
 #' @param rt A numeric value (default: 0.5) representing the tip radius of the corn.
 #'
 #' @return A data containing the rectangular based corn.
@@ -119,15 +119,15 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt
   }
 
   if (any(l_vec <= 0)) {
-    cli::cli_abort("Values in the base width vector should be positive.")
+    cli::cli_abort("Values in the base length vector should be positive.")
   }
 
   if (rt <= 0) {
     cli::cli_abort("rt should be positive.")
   }
 
-  if (rt >= any(l_vec)) {
-    cli::cli_abort("The rt should be smaller than the any base width values of the corn.")
+  if (any(rt >= l_vec)) {
+    cli::cli_abort("The rt should be smaller than the any base length values of the corn.")
   }
 
   base_width_x <- l_vec[1]
@@ -171,7 +171,7 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param h A numeric value (default: 5) representing the h of the corn.
-#' @param l A numeric value (default: 3) representing the base radius of the corn.
+#' @param l A numeric value (default: 3) representing the base length of the corn.
 #' @param rt A numeric value (default: 0.5) representing the tip radius of the corn.
 #'
 #' @return A data containing the triangular based corn.
@@ -195,7 +195,7 @@ gen_corn_triangular_base <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   }
 
   if (l <= 0) {
-    cli::cli_abort("The base width should be positive.")
+    cli::cli_abort("The base length should be positive.")
   }
 
   if (rt <= 0) {
@@ -203,7 +203,7 @@ gen_corn_triangular_base <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   }
 
   if (rt >= l) {
-    cli::cli_abort("The tip radius should be smaller than the base width of the corn.")
+    cli::cli_abort("The tip radius should be smaller than the base length of the corn.")
   }
 
   # gen points with a higher density near the tip
