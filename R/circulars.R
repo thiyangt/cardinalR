@@ -175,7 +175,7 @@ gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_cycle_data <- gen_curvy_cycle_pd(n = 500, p = 4)
+#' curvy_cycle_data <- gen_curvy_cycle_pd(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_fac = c(1, 1, 1/3))
 gen_curvy_cycle_pd <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_fac = c(1, 1, 1/3)){
 
   if (p <= 3) {
@@ -211,79 +211,60 @@ gen_curvy_cycle_pd <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), sca
   return(df)
 }
 
-#' Generate Three Curvy Cell Cycle Data
+#' Generate Overlapped Any number of Curvy Circle Clusters
 #'
-#' This function generates a dataset representing a structure with three curvy cell cycles,
+#' This function generates a dataset representing a structure with any number of overlapped curvy circles.
 #'
 #' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
-#' @param p A numeric value (default: 3) representing the number of dimensions.
-#' @return A data containing the three curvy cell cycles.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of overlapped curvy circle clusters.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_cell_cycle_data <- gen_three_curvy_cycle(n = c(200, 500, 300), p = 3)
-gen_three_curvy_cycle <- function(n = c(200, 500, 300), p = 3) {
+#' curvy_cell_cycle_data <- gen_overlapped_clusts_curvy_cycle(n = c(200, 500, 300), p = 4, k = 3)
+gen_overlapped_clusts_curvy_cycle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
-  if (p < 3) {
-    stop(cli::cli_alert_danger("p should be 3 or greater."))
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
   }
 
-  if (length(n) != 3) {
-    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+    cli::cli_abort("Values in n should be positive.")
   }
 
+  ## Generate shift factors for circles
+  shift_vec <- sample(seq(-1, 1, 0.2), k)
 
-  r <- sqrt(3) / 3
+  df <- tibble::tibble()
 
-  theta1 <- stats::runif(n[1], 0, 2 * pi)
-  x1 <- cos(theta1)
-  x2 <- r + sin(theta1)
-  x3 <- cos(3 * theta1) / 3
+  for (i in 1:k) {
 
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
+    shift_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
+    scale_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
 
-  theta2 <- stats::runif(n[2], 0, 2 * pi)
-  x1 <- cos(theta2) + 0.5
-  x2 <- sin(theta2) - r / 2
-  x3 <- cos(3 * theta2) / 3
+    df3 <- gen_curvy_cycle_pd(n[i], p = p, shift = shift_vec, scale_fac = c(1, 1, 1/3)) |>
+      dplyr::mutate(cluster = paste0("cluster", i))
 
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
-
-  theta3 <- stats::runif(n[3], 0, 2 * pi)
-  x1 <- cos(theta3) - 0.5
-  x2 <- sin(theta3) - r / 2
-  x3 <- cos(3 * theta3) / 3
-
-  df3 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3)
-
-  df <- dplyr::bind_rows(df1, df2, df3)
-
-  if (p > 3) {
-
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
-
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 3,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 4:p)
-    df <- dplyr::bind_cols(df, noise_mat)
+    df <- dplyr::bind_rows(df, df3)
 
   }
+
+  ## To swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
+
 }
 
 #' Generate Circular in p-d
