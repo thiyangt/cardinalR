@@ -131,7 +131,6 @@ gen_scurve_hole <- function(n = 500, p = 4) {
 #' )
 two_scurves <- function(n = 500, p = 4) {
 
-
   df1 <- gen_scurve(n = n, p = p) |> as.matrix()
   df2 <- matrix(c(-df1[, 1] + 5, df1[, 2] + 1, df1[, 3] + 1, df1[, 4] + 1), ncol = 4)
 
@@ -159,55 +158,12 @@ two_scurves <- function(n = 500, p = 4) {
 #'   n = 200, num_noise = 2,
 #'   min_n = -0.05, max_n = 0.05
 #' )
-mirror_scurves <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
+mirror_scurves <- function(n = 500, p = 4) {
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by two
-  if ((n %% 2) != 0) {
-    warning("The sample size should be a product of two.")
-    cluster_size <- floor(n / 2)
-  } else {
-    cluster_size <- n / 2
-  }
-
-  df1 <- scurve(n = n, num_noise = 0)
+  df1 <- gen_scurve(n = n, p = p)
   df2 <- matrix(c(-df1[, 1] + 2, df1[, 2], df1[, 3]), ncol = 3)
 
   df <- rbind(df1, df2)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df <- cbind(df, noise_mat)
-
-    df
-  } else {
-    df
-  }
 }
 
 
@@ -231,53 +187,13 @@ mirror_scurves <- function(n, num_noise, min_n, max_n) {
 #'   n = 200, num_noise = 2,
 #'   min_n = -0.05, max_n = 0.05
 #' )
-two_scurve_hole <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
-
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  # To check that the assigned n is divided by two
-  if ((n %% 2) != 0) {
-    warning("The sample size should be a product of two.")
-    cluster_size <- floor(n / 2)
-  } else {
-    cluster_size <- n / 2
-  }
+two_scurve_hole <- function(n = 500, p = 4) {
 
   ## S curve with a hole
-  df1 <- scurve(n = cluster_size, num_noise = 0)
+  df1 <- gen_scurve(n = n, p = p)
   df2 <- df1 + 1
 
   df <- rbind(df1, df2)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df <- cbind(df, noise_mat)
-  }
-
 
   return(df)
 }
