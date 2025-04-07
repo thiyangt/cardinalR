@@ -1,5 +1,5 @@
 # Function to gen a corn-shaped cluster in 4D space with an offset
-gen_corn_blunted <- function(n = 500, height = 5, base_radius = 1.5, tip_radius = 0.8) {
+gen_corn_blunted <- function(n = 500, p = 4, height = 5, base_radius = 1.5, tip_radius = 0.8) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -74,7 +74,7 @@ gen_corn_blunted <- function(n = 500, height = 5, base_radius = 1.5, tip_radius 
 }
 
 # Function to gen a corn-shaped cluster in 4D with a rectangular base
-gen_corn_rectangular_base <- function(n = 500, height = 5, base_width = c(3, 2), tip_radius = 0.5) {
+gen_corn_rectangular_base <- function(n = 500, p = 4, height = 5, base_width = c(3, 2), tip_radius = 0.5) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -117,19 +117,16 @@ gen_corn_rectangular_base <- function(n = 500, height = 5, base_width = c(3, 2),
   x3 <- runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
   x4 <- height_values  # Fourth dimension is the height
 
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
 
 # Function to gen a corn-shaped cluster in 4D with a triangular base
-gen_corn_triangular_base <- function(n = 500, height = 5, base_width = 3, tip_radius = 0.5) {
+gen_corn_triangular_base <- function(n = 500, p = 4, height = 5, base_width = 3, tip_radius = 0.5) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -176,19 +173,16 @@ gen_corn_triangular_base <- function(n = 500, height = 5, base_width = 3, tip_ra
   x3 <- radii * v            # Third triangle coordinate
   x4 <- height_values        # Fourth dimension (height)
 
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
 
 # Function to gen a filled hexagonal pyramid in 4D space
-gen_filled_hexagonal_pyramid <- function(n = 500, height = 5, base_radius = 3) {
+gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, height = 5, base_radius = 3) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -206,38 +200,37 @@ gen_filled_hexagonal_pyramid <- function(n = 500, height = 5, base_radius = 3) {
     cli::cli_abort("base_radius should be positive.")
   }
 
-  # gen height values with more points near the base
-  height_values <- runif(n, 0, height)  # Uniformly distributed heights
+  # Gen height values with more points near the base
+  height_values <- runif(n, 0, height) # Uniformly distributed heights
 
   # The base radius decreases linearly as the height increases
   radii <- (base_radius * (height - height_values)) / height
 
-  # gen points within a hexagonal base in the x, y plane
-  angles <- runif(n, 0, 2 * pi)
-  hexagon_angles <- seq(0, 2 * pi, length.out = 7)[1:6]  # 6 angles for hexagon
+  # Gen points within a hexagonal base in the first two dimensions
+  hexagon_angles <- seq(0, 2 * pi, length.out = 7)[1:6] # 6 angles for hexagon
 
   # Randomly assign each point to a part of the hexagon
   selected_angles <- sample(hexagon_angles, n, replace = TRUE)
 
-  # gen points inside the hexagon (filling the base)
-  radial_factors1 <- sqrt(runif(n, 0, 1))  # Ensures uniform distribution inside the hexagon
-  radial_factors12 <- sqrt(runif(n, 0, 1))  # Ensures uniform distribution inside the hexagon
+  # Gen points inside the hexagon (filling the base)
+  radial_factors <- sqrt(runif(n, 0, 1)) # Ensures uniform distribution inside the hexagon
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- radii * cos(selected_angles) * radial_factors
+  coords[, 2] <- radii * sin(selected_angles) * radial_factors
 
-  x1 <- radii * cos(selected_angles) * radial_factors1
-  x2 <- radii * sin(selected_angles) * radial_factors2
+  # For the third dimension and beyond, taper toward the tip
+  if (p >= 3) {
+    for (i in 3:p) {
+      coords[, i] <- runif(n, -0.1, 0.1) * (height - height_values) / height # Tapering
+    }
+  }
 
-  # For the third dimension (z), gen points inside the volume, tapering toward the tip
-  x3 <- runif(n, -0.1, 0.1) * (height - height_values) / height  # Tapering with small variance
+  # The last dimension is the height
+  coords[, p] <- height_values
 
-  # The fourth dimension (w) is the height
-  x4 <- height_values
-
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
