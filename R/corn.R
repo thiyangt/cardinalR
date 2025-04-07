@@ -1,5 +1,22 @@
 # Function to gen a corn-shaped cluster in 4D space with an offset
-gen_corn_blunted <- function(n = 500, p = 4, height = 5, base_radius = 1.5, tip_radius = 0.8) {
+
+#' Generate Blunted Corn
+#'
+#' This function generates a dataset representing a blunted corn.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the corn.
+#' @param rb A numeric value (default: 1.5) representing the base radius of the corn.
+#' @param rt A numeric value (default: 0.8) representing the tip radius of the corn.
+#'
+#' @return A data containing the blunted corn.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' blunted_corn_data <- gen_corn_blunted(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
+gen_corn_blunted <- function(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -9,35 +26,35 @@ gen_corn_blunted <- function(n = 500, p = 4, height = 5, base_radius = 1.5, tip_
     cli::cli_abort("n should be positive.")
   }
 
-  if (height <= 0) {
-    cli::cli_abort("height should be positive.")
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
   }
 
-  if (base_radius <= 0) {
-    cli::cli_abort("base_radius should be positive.")
+  if (rb <= 0) {
+    cli::cli_abort("rb should be positive.")
   }
 
-  if (tip_radius <= 0) {
-    cli::cli_abort("tip_radius should be positive.")
+  if (rt <= 0) {
+    cli::cli_abort("rt should be positive.")
   }
 
-  if (tip_radius >= base_radius) {
-    cli::cli_abort("The tip_radius should be smaller than the base_radius of the corn.")
+  if (rt >= rb) {
+    cli::cli_abort("The rt should be smaller than the rb of the corn.")
   }
 
-  # Gen points with a higher density near the tip (along the last dimension - 'height')
-  height_values <- stats::rexp(n, rate = 1 / (height / 2)) # Exponentially distributed heights
-  height_values <- pmin(height_values, height)       # Cap heights to the maximum height
+  # Gen points with a higher density near the tip (along the last dimension - 'h')
+  height_values <- stats::rexp(n, rate = 1 / (h / 2)) # Exponentially distributed heights
+  height_values <- pmin(height_values, h)       # Cap heights to the maximum h
 
   # Generalized "radius" decreases linearly from the base to the tip
-  radii <- tip_radius + (base_radius - tip_radius) * (height_values / height)
+  radii <- rt + (rb - rt) * (height_values / h)
 
   # Generate generalized "angles" for the (p-1)-dimensional hypersphere
   angles <- matrix(runif(n * (p - 2), 0, 2 * pi), nrow = n)
   phi <- stats::runif(n, 0, pi) # One angle with range 0 to pi
 
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, p] <- height_values # The last dimension is our 'height'
+  coords[, p] <- height_values # The last dimension is our 'h'
 
   # Convert hyperspherical coordinates to Cartesian-like coordinates
   if (p == 2) {
@@ -73,8 +90,25 @@ gen_corn_blunted <- function(n = 500, p = 4, height = 5, base_radius = 1.5, tip_
   return(df)
 }
 
-# Function to gen a corn-shaped cluster in 4D with a rectangular base
-gen_corn_rectangular_base <- function(n = 500, p = 4, height = 5, base_width = c(3, 2), tip_radius = 0.5) {
+# Function to gen a corn-shaped cluster in 4D space with an offset
+
+#' Generate Blunted Corn
+#'
+#' This function generates a dataset representing a blunted corn.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the corn.
+#' @param rb A numeric value (default: 1.5) representing the base radius of the corn.
+#' @param rt A numeric value (default: 0.8) representing the tip radius of the corn.
+#'
+#' @return A data containing the blunted corn.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' rectangular_corn_data <- gen_corn_rectangular_base(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
+gen_corn_rectangular_base <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -84,32 +118,32 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, height = 5, base_width = c
     cli::cli_abort("n should be positive.")
   }
 
-  if (height <= 0) {
-    cli::cli_abort("height should be positive.")
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
   }
 
-  if (any(base_width) <= 0) {
-    cli::cli_abort("Values in the base_width should be positive.")
+  if (any(l_vec) <= 0) {
+    cli::cli_abort("Values in the base width vector should be positive.")
   }
 
-  if (tip_radius <= 0) {
-    cli::cli_abort("tip_radius should be positive.")
+  if (rt <= 0) {
+    cli::cli_abort("rt should be positive.")
   }
 
-  if (tip_radius >= any(base_width)) {
-    cli::cli_abort("The tip_radius should be smaller than the base_width values of the corn.")
+  if (rt >= any(l_vec)) {
+    cli::cli_abort("The rt should be smaller than the any base width values of the corn.")
   }
 
-  base_width_x <- base_width[1]
-  base_width_y <- base_width[2]
+  base_width_x <- l_vec[1]
+  base_width_y <- l_vec[2]
 
   # gen points with a higher density near the tip
-  height_values <- rexp(n, rate = 1 / (height / 2))  # Exponentially distributed heights
-  height_values <- pmin(height_values, height)  # Cap heights to the maximum height
+  height_values <- rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
+  height_values <- pmin(height_values, h)  # Cap heights to the maximum h
 
-  # Base dimensions decrease linearly as height increases
-  x_radii <- tip_radius + (base_width_x - tip_radius) * (height_values / height)
-  y_radii <- tip_radius + (base_width_y - tip_radius) * (height_values / height)
+  # Base dimensions decrease linearly as h increases
+  x_radii <- rt + (base_width_x - rt) * (height_values / h)
+  y_radii <- rt + (base_width_y - rt) * (height_values / h)
 
   coords <- matrix(0, nrow = n, ncol = p)
   coords[, 1] <- runif(n, -x_radii, x_radii)
@@ -119,11 +153,11 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, height = 5, base_width = c
   # For the fourth dimension and beyond, taper toward the tip
   if (p > 3) {
     for (i in 4:p) {
-      coords[, i - 1] <- runif(n, -0.1, 0.1) * (height - height_values) / height # Tapering
+      coords[, i - 1] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
     }
   }
 
-  # The last dimension is the height
+  # The last dimension is the h
   coords[, p] <- height_values
 
   # Create the tibble
@@ -135,7 +169,7 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, height = 5, base_width = c
 }
 
 # Function to gen a corn-shaped cluster in 4D with a triangular base
-gen_corn_triangular_base <- function(n = 500, p = 4, height = 5, base_width = 3, tip_radius = 0.5) {
+gen_corn_triangular_base <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -145,30 +179,30 @@ gen_corn_triangular_base <- function(n = 500, p = 4, height = 5, base_width = 3,
     cli::cli_abort("n should be positive.")
   }
 
-  if (height <= 0) {
-    cli::cli_abort("height should be positive.")
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
   }
 
-  if (base_width <= 0) {
-    cli::cli_abort("base_width should be positive.")
+  if (l <= 0) {
+    cli::cli_abort("The base width should be positive.")
   }
 
-  if (tip_radius <= 0) {
-    cli::cli_abort("tip_radius should be positive.")
+  if (rt <= 0) {
+    cli::cli_abort("rt should be positive.")
   }
 
-  if (tip_radius >= base_width) {
-    cli::cli_abort("The tip_radius should be smaller than the base_width of the corn.")
+  if (rt >= l) {
+    cli::cli_abort("The tip radius should be smaller than the base width of the corn.")
   }
 
   # gen points with a higher density near the tip
-  height_values <- rexp(n, rate = 1 / (height / 2))  # Exponentially distributed heights
-  height_values <- pmin(height_values, height)  # Cap heights to the maximum height
+  height_values <- rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
+  height_values <- pmin(height_values, h)  # Cap heights to the maximum h
 
-  # Base size decreases linearly as height increases
-  radii <- tip_radius + (base_width - tip_radius) * (height_values / height)
+  # Base size decreases linearly as h increases
+  radii <- rt + (l - rt) * (height_values / h)
 
-  # gen points within a triangular cross-section at each height level
+  # gen points within a triangular cross-section at each h level
   # Using barycentric coordinates to gen points inside a triangle
   u <- runif(n)
   v <- runif(n)
@@ -184,11 +218,11 @@ gen_corn_triangular_base <- function(n = 500, p = 4, height = 5, base_width = 3,
   # For the fourth dimension and beyond, taper toward the tip
   if (p > 3) {
     for (i in 4:p) {
-      coords[, i - 1] <- runif(n, -0.1, 0.1) * (height - height_values) / height # Tapering
+      coords[, i - 1] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
     }
   }
 
-  # The last dimension is the height
+  # The last dimension is the h
   coords[, p] <- height_values
 
   # Create the tibble
@@ -200,7 +234,7 @@ gen_corn_triangular_base <- function(n = 500, p = 4, height = 5, base_width = 3,
 }
 
 # Function to gen a filled hexagonal pyramid in 4D space
-gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, height = 5, base_radius = 3) {
+gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, h = 5, rb = 3) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -210,19 +244,19 @@ gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, height = 5, base_radius
     cli::cli_abort("n should be positive.")
   }
 
-  if (height <= 0) {
-    cli::cli_abort("height should be positive.")
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
   }
 
-  if (base_radius <= 0) {
-    cli::cli_abort("base_radius should be positive.")
+  if (rb <= 0) {
+    cli::cli_abort("rb should be positive.")
   }
 
-  # Gen height values with more points near the base
-  height_values <- runif(n, 0, height) # Uniformly distributed heights
+  # Gen h values with more points near the base
+  height_values <- runif(n, 0, h) # Uniformly distributed heights
 
-  # The base radius decreases linearly as the height increases
-  radii <- (base_radius * (height - height_values)) / height
+  # The base radius decreases linearly as the h increases
+  radii <- (rb * (h - height_values)) / h
 
   # Gen points within a hexagonal base in the first two dimensions
   hexagon_angles <- seq(0, 2 * pi, length.out = 7)[1:6] # 6 angles for hexagon
@@ -239,11 +273,11 @@ gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, height = 5, base_radius
   # For the third dimension and beyond, taper toward the tip
   if (p >= 3) {
     for (i in 3:p) {
-      coords[, i] <- runif(n, -0.1, 0.1) * (height - height_values) / height # Tapering
+      coords[, i] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
     }
   }
 
-  # The last dimension is the height
+  # The last dimension is the h
   coords[, p] <- height_values
 
   # Create the tibble
