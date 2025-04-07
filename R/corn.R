@@ -90,24 +90,22 @@ gen_corn_blunted <- function(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8) {
   return(df)
 }
 
-# Function to gen a corn-shaped cluster in 4D space with an offset
-
-#' Generate Blunted Corn
+#' Generate Rectangular Based Corn
 #'
-#' This function generates a dataset representing a blunted corn.
+#' This function generates a dataset representing a rectangular based corn.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param h A numeric value (default: 5) representing the h of the corn.
-#' @param rb A numeric value (default: 1.5) representing the base radius of the corn.
-#' @param rt A numeric value (default: 0.8) representing the tip radius of the corn.
+#' @param l_vec A numeric vector (default: c(3, 2)) representing the base radius along the and y of the corn.
+#' @param rt A numeric value (default: 0.5) representing the tip radius of the corn.
 #'
-#' @return A data containing the blunted corn.
+#' @return A data containing the rectangular based corn.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' rectangular_corn_data <- gen_corn_rectangular_base(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
+#' rectangular_corn_data <- gen_corn_rectangular_base(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
 gen_corn_rectangular_base <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
 
   if (p < 2) {
@@ -168,7 +166,22 @@ gen_corn_rectangular_base <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt
   return(df)
 }
 
-# Function to gen a corn-shaped cluster in 4D with a triangular base
+#' Generate Triangular Based Corn
+#'
+#' This function generates a dataset representing a triangular based corn.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the corn.
+#' @param l A numeric value (default: 3) representing the base radius of the corn.
+#' @param rt A numeric value (default: 0.5) representing the tip radius of the corn.
+#'
+#' @return A data containing the triangular based corn.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' triangular_corn_data <- gen_corn_triangular_base(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
 gen_corn_triangular_base <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 
   if (p < 2) {
@@ -233,7 +246,22 @@ gen_corn_triangular_base <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   return(df)
 }
 
-# Function to gen a filled hexagonal pyramid in 4D space
+
+#' Generate Hexagonal Based Corn
+#'
+#' This function generates a dataset representing a hexagonal based corn.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the corn.
+#' @param rb A numeric value (default: 3) representing the base radius of the corn.
+#'
+#' @return A data containing the hexagonal based corn.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' hexagonal_corn_data <- gen_filled_hexagonal_pyramid((n = 500, p = 4, h = 5, rb = 3))
 gen_filled_hexagonal_pyramid <- function(n = 500, p = 4, h = 5, rb = 3) {
 
   if (p < 2) {
