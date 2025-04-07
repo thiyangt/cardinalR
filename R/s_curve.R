@@ -16,49 +16,50 @@
 #'   n = 100, num_noise = 2,
 #'   min_n = -0.05, max_n = 0.05
 #' )
-scurve <- function(n, num_noise, min_n, max_n) {
+gen_scurve <- function(n = 500, p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
   if (n <= 0) {
-    stop("Number of points should be a positive number.")
+    cli::cli_abort("n should be positive.")
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  noise_level <- 0.05
+  scaling_factor <- 0.2
 
   a <- 3 * pi * stats::runif(n = n, min = -0.5, max = 0.5)
-  x <- sin(a)
-  y <- 2.0 * stats::runif(n = n)
-  z <- sign(a) * (cos(a) - 1)
+  x1 <- sin(a)
+  x2 <- 2.0 * stats::runif(n = n)
+  x3 <- sign(a) * (cos(a) - 1)
 
-  scurve_mat <- matrix(c(x, y, z), ncol = 3)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- x1
+  coords[, 2] <- x2
+  coords[, 3] <- x3
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
+  if (p > 3) {
+    for (i in 4:p) {
+      # Strategy 1 & 2: Small variations around existing dimensions
+      if (i == 4) coords[, i] <- x1 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+      if (i == 5) coords[, i] <- x2 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+      if (i == 6) coords[, i] <- x3 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+      # Strategy 3: Non-linear transformations with small scaling
+      if (i > 6) {
+        if (i %% 3 == 1) coords[, i] <- x1^2 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+        if (i %% 3 == 2) coords[, i] <- x2 * x3 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+        if (i %% 3 == 0) coords[, i] <- sin(x1 + x3) * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+      }
     }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(scurve_mat)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    scurve_mat <- cbind(scurve_mat, noise_mat)
-
-    scurve_mat
-  } else {
-    scurve_mat
   }
+
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
 #' Generate S-curve Data with a Hole
