@@ -80,49 +80,29 @@ gen_scurve <- function(n = 500, p = 4) {
 #'   n = 100, num_noise = 2,
 #'   min_n = -0.05, max_n = 0.05
 #' )
-scurve_hole <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
+gen_scurve_hole <- function(n = 500, p = 4) {
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
-
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  scurve <- scurve(n = n, num_noise = 0)
+  scurve <- gen_scurve(n = n, p = p) |>
+    as.matrix()
 
   anchor <- c(0, 1, 0)
+
+  if ((p %% 3) == 0) {
+
+    anchor_vec <- rep(anchor, p/3)
+
+  } else if ((p %% 3) == 1) {
+
+  } else { #(p %% 3) == 2
+
+  }
+
   indices <- rowSums((sweep(scurve, 2, anchor, `-`))^2) > 0.3
   scurve <- scurve[indices, ]
   rownames(scurve) <- NULL
 
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
-    }
+  scurve
 
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(scurve)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    scurve <- cbind(scurve, noise_mat)
-
-    scurve
-  } else {
-    scurve
-  }
 }
 
 #' Generate Two S-curve Datasets with Noise
