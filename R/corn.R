@@ -1,12 +1,28 @@
 # Function to gen a corn-shaped cluster in 4D space with an offset
-gen_blunted_corn <- function(n = 500, height = 5, base_radius = 1.5, tip_radius = 0.8) {
+gen_corn_blunted <- function(n = 500, height = 5, base_radius = 1.5, tip_radius = 0.8) {
 
   if (p < 2) {
-    stop(cli::cli_alert_danger("p should be 2 or greater."))
+    cli::cli_abort("p should be greater than 2.")
   }
 
-  if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (height <= 0) {
+    cli::cli_abort("height should be positive.")
+  }
+
+  if (base_radius <= 0) {
+    cli::cli_abort("base_radius should be positive.")
+  }
+
+  if (tip_radius <= 0) {
+    cli::cli_abort("tip_radius should be positive.")
+  }
+
+  if (tip_radius >= base_radius) {
+    cli::cli_abort("The tip_radius should be smaller than the base_radius of the corn.")
   }
 
   # Gen points with a higher density near the tip (along the last dimension - 'height')
@@ -58,14 +74,34 @@ gen_blunted_corn <- function(n = 500, height = 5, base_radius = 1.5, tip_radius 
 }
 
 # Function to gen a corn-shaped cluster in 4D with a rectangular base
-gen_corn_cluster_rectangular_base <- function(n, height = 5, base_width_x = 3, base_width_y = 2, tip_radius = 0.5) {
+gen_corn_rectangular_base <- function(n = 500, height = 5, base_width = c(3, 2), tip_radius = 0.5) {
+
   if (p < 2) {
-    stop(cli::cli_alert_danger("p should be 2 or greater."))
+    cli::cli_abort("p should be greater than 2.")
   }
 
-  if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
   }
+
+  if (height <= 0) {
+    cli::cli_abort("height should be positive.")
+  }
+
+  if (any(base_width) <= 0) {
+    cli::cli_abort("Values in the base_width should be positive.")
+  }
+
+  if (tip_radius <= 0) {
+    cli::cli_abort("tip_radius should be positive.")
+  }
+
+  if (tip_radius >= any(base_width)) {
+    cli::cli_abort("The tip_radius should be smaller than the base_width values of the corn.")
+  }
+
+  base_width_x <- base_width[1]
+  base_width_y <- base_width[2]
 
   # gen points with a higher density near the tip
   height_values <- rexp(n, rate = 1 / (height / 2))  # Exponentially distributed heights
@@ -88,18 +124,35 @@ gen_corn_cluster_rectangular_base <- function(n, height = 5, base_width_x = 3, b
     x4 = x4
   )
 
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
-
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
 
 # Function to gen a corn-shaped cluster in 4D with a triangular base
-gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, tip_radius = 0.5) {
-  if (n < 0) {
-    stop(cli::cli_alert_danger("n should be positive."))
+gen_corn_triangular_base <- function(n = 500, height = 5, base_width = 3, tip_radius = 0.5) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (height <= 0) {
+    cli::cli_abort("height should be positive.")
+  }
+
+  if (base_width <= 0) {
+    cli::cli_abort("base_width should be positive.")
+  }
+
+  if (tip_radius <= 0) {
+    cli::cli_abort("tip_radius should be positive.")
+  }
+
+  if (tip_radius >= base_width) {
+    cli::cli_abort("The tip_radius should be smaller than the base_width of the corn.")
   }
 
   # gen points with a higher density near the tip
@@ -130,18 +183,27 @@ gen_corn_cluster_triangular_base_4d <- function(n, height = 5, base_width = 3, t
     x4 = x4
   )
 
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
-
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
 
 # Function to gen a filled hexagonal pyramid in 4D space
-gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3) {
-  if (n < 0) {
-    stop(cli::cli_alert_danger("n should be positive."))
+gen_filled_hexagonal_pyramid <- function(n = 500, height = 5, base_radius = 3) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (height <= 0) {
+    cli::cli_abort("height should be positive.")
+  }
+
+  if (base_radius <= 0) {
+    cli::cli_abort("base_radius should be positive.")
   }
 
   # gen height values with more points near the base
@@ -176,10 +238,6 @@ gen_filled_hexagonal_pyramid_4d <- function(n, height = 5, base_radius = 3) {
     x3 = x3,
     x4 = x4
   )
-
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
