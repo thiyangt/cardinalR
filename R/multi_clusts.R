@@ -3,8 +3,9 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                             0.18266102, -0.9118574,  0.72919641,
                                             0.30807755, -0.2243636, -0.08371394,
                                             -0.08444208,  0.2832499, -0.19880779), nrow = 4, byrow = TRUE),
-                             scale = c(1, 3, 2), shape = c("gen_gaussian", "gen_bluntedcorn", "gen_pyrrect"),
-                             bkg) {
+                             scale = c(1, 3, 2),
+                             shape = c("gen_gaussian", "gen_bluntedcorn", "gen_pyrrect"),
+                             is_bkg = FALSE) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -50,9 +51,9 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   ## To generate different shaped clusters
   for (i in 1:k) {
 
-    df <- scale[i] * get(shape[i])(n = n[i], p = p)
+    cluster_df <- scale[i] * get(shape[i])(n = n[i], p = p)
 
-    dfs[[i]] <- df |>
+    dfs[[i]] <- cluster_df |>
       tibble::as_tibble() |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
@@ -64,9 +65,12 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   df <- dplyr::bind_rows(dfs)
 
   # ## Add background noise
-  # noise_df <- gen_bkg_noise() |>
-  #   dplyr::mutate(cluster = paste0("bkg_noise"))
-  # df <- dplyr::bind_rows(df, noise_df)
+  if(isTRUE(is_bkg)) {
+    noise_df <- gen_bkgnoise(n = max(n) * 0.1, p = p) |>
+      dplyr::mutate(cluster = paste0("bkg_noise"))
+
+    df <- dplyr::bind_rows(df, noise_df)
+  }
 
   ## Swap rows
   df <- randomize_rows(df)
