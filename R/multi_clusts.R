@@ -1,5 +1,7 @@
 gen_multicluster <- function(n, p, k, location, spread, shape_vec, bkg_param) {
 
+  ## If the location is not given generate simple points to position the clusters
+
   dfs <- list()
 
   ## To generate different shaped clusters
@@ -9,6 +11,8 @@ gen_multicluster <- function(n, p, k, location, spread, shape_vec, bkg_param) {
       dplyr::mutate(cluster = paste0("cluster", "1"))
 
   }
+
+  ## To re-position the data to centroids given
 
   ## To combine the data
   df <- tibble::as_tibble(dfs)
