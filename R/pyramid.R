@@ -1,0 +1,155 @@
+#' Generate Rectangular Based Pyramid
+#'
+#' This function generates a dataset representing a rectangular based pyramid.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the pyramid.
+#' @param l_vec A numeric vector (default: c(3, 2)) representing the base lengths along the and y of the pyramid.
+#' @param rt A numeric value (default: 0.5) representing the tip radius of the pyramid.
+#'
+#' @return A data containing the rectangular based pyramid.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' rectangular_corn_data <- gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
+gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
+  }
+
+  if (any(l_vec <= 0)) {
+    cli::cli_abort("Values in the base length vector should be positive.")
+  }
+
+  if (rt <= 0) {
+    cli::cli_abort("rt should be positive.")
+  }
+
+  if (any(rt >= l_vec)) {
+    cli::cli_abort("The rt should be smaller than the any base length values of the pyramid.")
+  }
+
+  base_width_x <- l_vec[1]
+  base_width_y <- l_vec[2]
+
+  # gen points with a higher density near the tip
+  height_values <- rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
+  height_values <- pmin(height_values, h)  # Cap heights to the maximum h
+
+  # Base dimensions decrease linearly as h increases
+  x_radii <- rt + (base_width_x - rt) * (height_values / h)
+  y_radii <- rt + (base_width_y - rt) * (height_values / h)
+
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- runif(n, -x_radii, x_radii)
+  coords[, 2] <- runif(n, -y_radii, y_radii)
+  coords[, 3] <- runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
+
+  # For the fourth dimension and beyond, taper toward the tip
+  if (p > 3) {
+    for (i in 4:p) {
+      coords[, i - 1] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
+    }
+  }
+
+  # The last dimension is the h
+  coords[, p] <- height_values
+
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Triangular Based Pyramid
+#'
+#' This function generates a dataset representing a triangular based pyramid.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the pyramid.
+#' @param l A numeric value (default: 3) representing the base length of the pyramid.
+#' @param rt A numeric value (default: 0.5) representing the tip radius of the pyramid.
+#'
+#' @return A data containing the triangular based pyramid.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' triangular_corn_data <- gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
+gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
+  }
+
+  if (l <= 0) {
+    cli::cli_abort("The base length should be positive.")
+  }
+
+  if (rt <= 0) {
+    cli::cli_abort("rt should be positive.")
+  }
+
+  if (rt >= l) {
+    cli::cli_abort("The tip radius should be smaller than the base length of the pyramid.")
+  }
+
+  # gen points with a higher density near the tip
+  height_values <- rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
+  height_values <- pmin(height_values, h)  # Cap heights to the maximum h
+
+  # Base size decreases linearly as h increases
+  radii <- rt + (l - rt) * (height_values / h)
+
+  # gen points within a triangular cross-section at each h level
+  # Using barycentric coordinates to gen points inside a triangle
+  u <- runif(n)
+  v <- runif(n)
+  is_outside <- (u + v) > 1
+  u[is_outside] <- 1 - u[is_outside]
+  v[is_outside] <- 1 - v[is_outside]
+
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- radii * (1 - u - v) # First triangle coordinate (mapped to x1)
+  coords[, 2] <- radii * u         # Second triangle coordinate (mapped to x2)
+  coords[, 3] <- radii * v         # Third triangle coordinate (mapped to x3)
+
+  # For the fourth dimension and beyond, taper toward the tip
+  if (p > 3) {
+    for (i in 4:p) {
+      coords[, i - 1] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
+    }
+  }
+
+  # The last dimension is the h
+  coords[, p] <- height_values
+
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
