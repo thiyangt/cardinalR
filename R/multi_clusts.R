@@ -1,8 +1,9 @@
 gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
-                             loc = matrix(c(1.50988357, -0.3136416, -1.19624196,
-                                            0.18266102, -0.9118574,  0.72919641,
-                                            0.30807755, -0.2243636, -0.08371394,
-                                            -0.08444208,  0.2832499, -0.19880779), nrow = 4, byrow = TRUE),
+                             loc = matrix(c(
+                               0, 0, 0, 0,
+                               5, 0, 0, 0,
+                               3, 4, 10, 7  # height of smaller equilateral triangle in 2D
+                             ), nrow = 4, byrow = TRUE),
                              scale = c(1, 3, 2),
                              shape = c("gen_gaussian", "gen_bluntedcorn", "gen_pyrrect"),
                              is_bkg = FALSE) {
@@ -53,8 +54,10 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
 
     cluster_df <- scale[i] * get(shape[i])(n = n[i], p = p)
 
+    cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
+
     ## To re-position the data to centroids given
-    cluster_df <- cluster_df + matrix(rep(loc[i, ], n[i]), ncol=p, byrow=T)
+    cluster_df <- cluster_df + matrix(rep(loc[,i], n[i]), ncol=p, byrow=T)
 
     dfs[[i]] <- cluster_df |>
       tibble::as_tibble() |>
