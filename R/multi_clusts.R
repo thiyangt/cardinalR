@@ -4,7 +4,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                5, 9, 0, 0,
                                3, 4, 10, 7  # height of smaller equilateral triangle in 2D
                              ), nrow = 4, byrow = TRUE),
-                             scale = c(1, 3, 2),
+                             scale = c(3, 1, 2),
                              shape = c("gen_gaussian", "gen_bluntedcorn", "gen_pyrrect"),
                              is_bkg = FALSE) {
 
