@@ -1,4 +1,4 @@
-gen_multicluster <- function(n, p, k, location, spread, shape_vec, bkg_param) {
+gen_multicluster <- function(n, p, k, location, scale, shape_vec, bkg_param) {
 
   ## If the location is not given generate simple points to position the clusters
 
