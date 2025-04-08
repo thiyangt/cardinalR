@@ -53,13 +53,15 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
 
     cluster_df <- scale[i] * get(shape[i])(n = n[i], p = p)
 
+    ## To re-position the data to centroids given
+    cluster_df <- cluster_df + matrix(rep(loc[i, ], n[i]), ncol=p, byrow=T)
+
     dfs[[i]] <- cluster_df |>
       tibble::as_tibble() |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
   }
 
-  ## To re-position the data to centroids given
 
   ## To combine the data
   df <- dplyr::bind_rows(dfs)
