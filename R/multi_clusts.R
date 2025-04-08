@@ -1,4 +1,10 @@
-gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3, loc, scale, shape, bkg) {
+gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
+                             loc = matrix(c(1.50988357, -0.3136416, -1.19624196,
+                                            0.18266102, -0.9118574,  0.72919641,
+                                            0.30807755, -0.2243636, -0.08371394,
+                                            -0.08444208,  0.2832499, -0.19880779), nrow = 4, byrow = TRUE),
+                             scale = c(1, 3, 2), shape = c("gen_gaussian", "gen_bluntedcorn", "gen_pyrrect"),
+                             bkg) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -28,12 +34,12 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3, loc, scale, sha
     cli::cli_abort("loc should be a matrix.")
   }
 
-  if (NROW(loc) != k) {
-    cli::cli_abort("Number of rows in loc should be {.val {k}}.")
+  if (NROW(loc) != p) {
+    cli::cli_abort("Number of rows in loc should be {.val {p}}.")
   }
 
-  if (NCOL(loc) != p) {
-    cli::cli_abort("Number of rows in loc should be {.val {p}}.")
+  if (NCOL(loc) != k) {
+    cli::cli_abort("Number of rows in loc should be {.val {k}}.")
   }
 
 
@@ -42,26 +48,30 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3, loc, scale, sha
   dfs <- list()
 
   ## To generate different shaped clusters
-  if (shape_vec %in% "gen_gaussian") {
+  for (i in 1:k) {
 
-    dfs[[1]] <- gen_gaussian() |>
-      dplyr::mutate(cluster = paste0("cluster", "1"))
+    df <- scale[i] * get(shape[i])(n = n[i], p = p)
+
+    dfs[[i]] <- df |>
+      tibble::as_tibble() |>
+      dplyr::mutate(cluster = paste0("cluster", i))
 
   }
 
   ## To re-position the data to centroids given
 
   ## To combine the data
-  df <- tibble::as_tibble(dfs)
+  df <- dplyr::bind_rows(dfs)
 
-  ## Add background noise
-  noise_df <- gen_bkg_noise() |>
-    dplyr::mutate(cluster = paste0("bkg_noise"))
-  df <- dplyr::bind_rows(df, noise_df)
+  # ## Add background noise
+  # noise_df <- gen_bkg_noise() |>
+  #   dplyr::mutate(cluster = paste0("bkg_noise"))
+  # df <- dplyr::bind_rows(df, noise_df)
 
   ## Swap rows
   df <- randomize_rows(df)
 
+  cli::cli_alert_success("Multiple clusters generation completed successfully! 🎉")
   return(df)
 
 }
