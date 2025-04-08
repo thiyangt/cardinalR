@@ -180,4 +180,15 @@ relocate_clusters <- function(data, vert_mat) {
 
 }
 
+generate_simplex_points <- function(p, k) {
+  # Generate k points in p-dimensional simplex
+  # Sample k points from a (p-1)-dimensional Dirichlet distribution
+  dirichlet_samples <- t(MASS::mvrnorm(n = k, mu = rep(0, p), Sigma = diag(p)))
+
+  # Center the points to form a proper p-simplex
+  simplex_points <- dirichlet_samples - rowMeans(dirichlet_samples)
+
+  return(simplex_points)
+}
+
 utils::globalVariables(c("n"))
