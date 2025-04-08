@@ -10,7 +10,7 @@
 #' @examples
 #' set.seed(20240412)
 #' tree_data <- gen_three_branch_data(n = c(200, 500, 300), p = 4)
-gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
+gen_three_branch_data <- function(n = c(200, 500, 300), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -86,7 +86,7 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
 #' @examples
 #' set.seed(20240412)
 #' tree_data <- gen_five_branch_data(n = c(200, 100, 300, 400, 300), p = 4)
-gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
+gen_five_branch_data <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -183,7 +183,7 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 #' set.seed(20240412)
 #' seven_branching_data <- gen_seven_branch_data(
 #' n = c(200, 100, 250, 300, 150, 400, 50), p = 4)
-gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
+gen_seven_branch_data <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -299,7 +299,7 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 #' @examples
 #' set.seed(20240412)
 #' four_branching_data <- gen_four_branch_data(n = c(200, 300, 150, 250), p = 4)
-gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
+gen_four_branch_data <- function(n = c(200, 300, 150, 250), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -396,7 +396,7 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 #' @examples
 #' set.seed(20240412)
 #' branching_data <- gen_eight_branch_data(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4)
-gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4) {
+gen_eight_branch_data <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
