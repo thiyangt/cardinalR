@@ -198,3 +198,73 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
+
+#' Generate Star Based Pyramid
+#'
+#' This function generates a dataset representing a star based pyramid.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param h A numeric value (default: 5) representing the h of the pyramid.
+#' @param rb A numeric value (default: 3) representing the base radius of the pyramid.
+#'
+#' @return A data containing the star based pyramid.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' hexagonal_corn_data <- gen_filled_hexagonal_pyramid(n = 500, p = 4, h = 5, rb = 3)
+gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
+  }
+
+  if (rb <= 0) {
+    cli::cli_abort("rb should be positive.")
+  }
+
+  # Gen h values with more points near the base
+  height_values <- runif(n, 0, h) # Uniformly distributed heights
+
+  # The base radius decreases linearly as the h increases
+  radii <- (rb * (h - height_values)) / h
+
+  # Gen points within a hexagonal base in the first two dimensions
+  hexagon_angles <- seq(0, 2 * pi, length.out = 7)[1:6] # 6 angles for hexagon
+
+  # Randomly assign each point to a part of the hexagon
+  selected_angles <- sample(hexagon_angles, n, replace = TRUE)
+
+  # Gen points inside the hexagon (filling the base)
+  radial_factors <- sqrt(runif(n, 0, 1)) # Ensures uniform distribution inside the hexagon
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- radii * cos(selected_angles) * radial_factors
+  coords[, 2] <- radii * sin(selected_angles) * radial_factors
+
+  # For the third dimension and beyond, taper toward the tip
+  if (p >= 3) {
+    for (i in 3:p) {
+      coords[, i] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
+    }
+  }
+
+  # The last dimension is the h
+  coords[, p] <- height_values
+
+  # Create the tibble
+  df <- tibble::as_tibble(coords, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
