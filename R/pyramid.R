@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_data <- gen_triprism(n = 300, p = 3)
+#' triangular_data <- gen_pyrhole(n = 300, p = 3)
 gen_pyrhole <- function(n = 500, p = 4) {
 
   if (p < 2) {
@@ -213,7 +213,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' hexagonal_corn_data <- gen_filled_hexagonal_pyramid(n = 500, p = 4, h = 5, rb = 3)
+#' hexagonal_corn_data <- gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
 gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
 
   if (p < 2) {
