@@ -1,5 +1,21 @@
 gen_multicluster <- function(n, p, k, location, scale, shape_vec, bkg_param) {
 
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
+  }
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
   ## If the location is not given generate simple points to position the clusters
 
   dfs <- list()
