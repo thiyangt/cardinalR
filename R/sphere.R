@@ -1,166 +1,103 @@
-#' Generate Coordinates for a Sphere
+#' Generate Circle in p-d
 #'
-#' This function generates the coordinates for a sphere in three-dimensional space.
+#' This function generates a dataset representing a structure with a circle.
 #'
-#' @param radius The radius of the sphere.
-#' @param resolution The number of points used to approximate the surface of the sphere.
-#' @param num_noise The number of additional noise dimensions to add to the coordinates.
-#' @param min_n The minimum value for the random noise added to the coordinates.
-#' @param max_n The maximum value for the random noise added to the coordinates.
-#'
-#' @return A matrix containing the Cartesian coordinates of the points on the sphere.
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param shift A numeric vector (default: c(0, 0)) representing the shift along x1, x2 respectively.
+#' @param scale_fac A numeric vector (default:  c(1, 1)) representing the scale factors along x1, x2 respectively.
+#' @return A data containing a circle.
+#' @export
 #'
 #' @examples
-#' # Generate coordinates for a sphere with radius 1 and resolution 20
 #' set.seed(20240412)
-#' sphere(
-#'   radius = 1, resolution = 20, num_noise = 3, min_n = -0.05,
-#'   max_n = 0.05
-#' )
-#'
-#' @export
-sphere <- function(radius, resolution, num_noise, min_n, max_n) {
-  if (radius <= 0) {
-    stop("The radius of sphere should be a positive number.")
+#' circle_data <- gen_circle(n = 500, p = 4)
+gen_circle <- function(n = 500, p = 3, shift = c(0, 0), scale_fac = c(1, 1)){
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
   }
 
-  if (resolution <= 0) {
-    stop("The number of points on the sphere surface should be a positive number.")
+  if (length(n) != 1) {
+    cli::cli_abort("n should be a single integer specifying the number of points.")
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
   }
 
-  if (missing(radius)) {
-    stop("Missing radius.")
-  }
+  theta <- stats::runif(n, 0.0, 2 * pi)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
+  coords[, 2] <- scale_fac[2] * (shift[2] + sin(theta))
 
-  if (missing(resolution)) {
-    stop("Missing resolution.")
-  }
+  # Introduce scaling factors for subsequent dimensions
+  scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-
-  # Generate the coordinates for the sphere
-  theta <- seq(0, 2 * pi, length.out = resolution)
-  phi <- seq(0, pi, length.out = resolution)
-  coords <- expand.grid(theta = theta, phi = phi)
-
-  # Convert spherical coordinates to Cartesian coordinates
-  x <- radius * sin(coords$phi) * cos(coords$theta)
-  y <- radius * sin(coords$phi) * sin(coords$theta)
-  z <- radius * cos(coords$phi)
-
-  sphere_mat <- matrix(c(x, y, z), ncol = 3)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
+  if (p > 2) {
+    # Apply remaining dimensions with sinusoidal patterns
+    for (i in 3:p) {
+      # Introduce a phase shift for each dimension to make them distinct
+      phase_shift <- (i - 2) * (pi / (2 * p))
+      coords[, i] <- scaling_factors[i-1] * sin(theta + phase_shift)
     }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(sphere_mat)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    sphere_mat <- cbind(sphere_mat, noise_mat)
-
-    sphere_mat
-  } else {
-    sphere_mat
   }
+
+  df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
 
-#' Generate data representing small spheres within a larger encompassing sphere with added noise.
+#' Generate Curvy Cell Cycle in p-d
 #'
-#' This function generates data points representing small spheres within a larger encompassing sphere
-#' and adds noise to the data if specified.
+#' This function generates a dataset representing a structure with a curvy cell cycle.
 #'
-#' @param n Total number of data points to generate, should be a multiple of 13.
-#' @param num_noise Number of additional noise dimensions to add to the data.
-#' @param min_n Minimum value for the noise added to the data.
-#' @param max_n Maximum value for the noise added to the data.
-#'
-#' @return A matrix containing the generated data points with or without added noise.
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric value (default: sqrt(3) / 3) representing the radius factor along x2.
+#' @return A data containing a curvy cell cycle.
+#' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' diff_sphere(
-#'   n = 390, num_noise = 2,
-#'   min_n = -0.05, max_n = 0.05
-#' )
-#'
-#' @export
-diff_sphere <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("The number of points should be a positive number.")
+#' curvy_cycle_data <- gen_curvycycle(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_fac = c(1, 1, 1/3))
+gen_curvycycle <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_fac = c(1, 1, 1/3)){
+
+  if (p <= 3) {
+    cli::cli_abort("p should be greater than 3.")
   }
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
+  if (length(n) != 1) {
+    cli::cli_abort("n should be a single integer specifying the number of points.")
   }
 
-  if (missing(n)) {
-    stop("Missing n.")
+  if (n < 0) {
+    cli::cli_abort("n should be positive.")
   }
 
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
+  theta <- stats::runif(n, 0.0, 2 * pi)
+  coords <- matrix(0, nrow = n, ncol = p)
+  coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
+  coords[, 2] <- scale_fac[2] * (shift[2] + sin(theta))
+  coords[, 3] <- scale_fac[3] * (shift[3] + cos(3 * theta))
 
-  # To check that the assigned n is divided by thirteen
-  if ((n %% 13) != 0) {
-    warning("The sample size should be a product of thirteen.")
-    small_sphere_sample_size <- floor(n / 13)
-  } else {
-    small_sphere_sample_size <- n / 13
-  }
+  # Introduce scaling factors for subsequent dimensions
+  scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 3)))) # Example: decreasing scale
 
-  m <- matrix(stats::rnorm(n = small_sphere_sample_size * 4),
-    nrow = small_sphere_sample_size, ncol = 4
-  )
-  d_dim_sphere <- 3 * m / sqrt(rowSums(m * m))
-
-  small_spheres <-
-    replicate(3,
-      sweep(
-        d_dim_sphere, 2,
-        stats::rnorm(n = 4, sd = 10 / sqrt(3)), `+`
-      ),
-      simplify = FALSE
-    )
-
-  # The larger encompassing sphere
-  n_big_samples <- 10 * small_sphere_sample_size
-  m <- matrix(stats::rnorm(n = n_big_samples * 4), nrow = n_big_samples, ncol = 4)
-  big_sphere <- 3 * 5 * m / sqrt(rowSums(m * m))
-
-  df <- rbind(do.call(rbind, small_spheres), big_sphere)
-
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
+  if (p > 3) {
+    # Apply remaining dimensions with sinusoidal patterns
+    for (i in 4:p) {
+      # Introduce a phase shift for each dimension to make them distinct
+      phase_shift <- (i - 2) * (pi / (2 * p))
+      coords[, i] <- scaling_factors[i-2] * sin(theta + phase_shift)
     }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    noise_mat <- gen_noise_dims(
-      n = dim(df)[1], num_noise = num_noise,
-      min_n = min_n, max_n = max_n
-    )
-    df <- cbind(df, noise_mat)
-
-    df
-  } else {
-    df
   }
+
+  df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
