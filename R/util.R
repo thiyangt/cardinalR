@@ -78,50 +78,24 @@ gen_noise_dims <- function(n, num_noise, min_n, max_n) {
 #'
 #' # Generate background noise with custom mean and standard deviation
 #' set.seed(20240412)
-#' gen_bkg_noise(n = 50, num_dims = 3, mean = 5, sd = 2)
+#' gen_bkgnoise(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 #'
 #' @export
-gen_bkg_noise <- function(n, num_dims, mean, sd) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+gen_bkgnoise <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) {
+
+  # Initialize an empty list to store the vectors
+  noise_bkg <- list()
+
+  for (i in 1:p) {
+    noise_bkg[[i]] <- stats::rnorm(n, mean = m[i], sd = s[i])
   }
 
-  if (num_dims < 0) {
-    stop("Number of dimensions should be a positive number.")
-  }
+  df <- tibble::as_tibble(noise_bkg, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
-  if (missing(n)) {
-    stop("Missing n.")
-  }
+  cli::cli_alert_success("Background noise generation completed successfully! 🎉")
+  return(df)
 
-  if (missing(num_dims)) {
-    stop("Missing num_noise.")
-  }
-
-  if (num_dims != 0) {
-    if (missing(mean)) {
-      stop("Missing mean.")
-    }
-
-    if (missing(sd)) {
-      stop("Missing sd.")
-    }
-
-    # Initialize an empty list to store the vectors
-    noise_bkg_val_list <- list()
-
-    for (j in 1:num_dims) {
-      noise_bkg_val_list[[j]] <- stats::rnorm(n, mean = mean, sd = sd)
-    }
-
-    names(noise_bkg_val_list) <- paste0("x", 1:length(noise_bkg_val_list))
-
-    bkg_mat <- tibble::as_tibble(noise_bkg_val_list)
-  } else {
-    bkg_mat <- NULL
-  }
-
-  return(bkg_mat)
 }
 
 #' Randomize Rows of a Data Frame
