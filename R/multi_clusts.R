@@ -1,3 +1,31 @@
+#' Generate Multiple Clusters
+#'
+#' This function generates a dataset with multiple clusters.
+#'
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @param loc A numeric matrix (default: matrix(c(0, 0, 0, 0,
+#' 5, 9, 0, 0,
+#' 3, 4, 10, 7
+#' ), nrow = 4, byrow = TRUE)) representing the locations/centroids of clusters.
+#' @param scale A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.
+#' @param shape A character vector (default: c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube")) representing the shapes of clusters.
+#' @param is_bkg A Boolean value (default: FALSE) representing the background noise should exist or not.
+#' @return A data containing same/different shaped clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
+#' loc = matrix(c(
+#'   0, 0, 0, 0,
+#'   5, 9, 0, 0,
+#'   3, 4, 10, 7
+#' ), nrow = 4, byrow = TRUE),
+#' scale = c(3, 1, 2),
+#' shape = c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube"),
+#' is_bkg = FALSE)
 gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                              loc = matrix(c(
                                0, 0, 0, 0,
@@ -5,7 +33,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                3, 4, 10, 7  # height of smaller equilateral triangle in 2D
                              ), nrow = 4, byrow = TRUE),
                              scale = c(3, 1, 2),
-                             shape = c("gen_gaussian", "gen_bluntedcorn", "gen_pyrrect"),
+                             shape = c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube"),
                              is_bkg = FALSE) {
 
   if (p < 2) {
