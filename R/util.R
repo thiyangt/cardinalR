@@ -12,53 +12,27 @@
 #' @examples
 #' # Generate random noise dimensions with 3 dimensions, minimum value -1, and maximum value 1
 #' set.seed(20240412)
-#' gen_noise_dims(n = 50, num_noise = 3, min_n = -0.01, max_n = 0.01)
+#' gen_noisedims(n = 50, num_noise = 3, min_n = -0.01, max_n = 0.01)
 #'
 #' @export
-gen_noise_dims <- function(n, num_noise, min_n, max_n) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
-  }
+gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) {
 
-  if (num_noise < 0) {
-    stop("Number of noise dimensions should be a positive number.")
-  }
+  # Initialize an empty list to store the vectors
+  noise_dim <- list()
 
-  if (missing(n)) {
-    stop("Missing n.")
-  }
-
-  if (missing(num_noise)) {
-    stop("Missing num_noise.")
-  }
-
-  ## Is there are noise dimensions?
-  if (num_noise != 0) {
-    if (missing(min_n)) {
-      stop("Missing min_n.")
+  for (j in 1:p) {
+    if ((j %% 2) == 0) {
+      noise_dim[[j]] <- stats::rnorm(n, mean = m[i], sd = s[i])
+    } else {
+      noise_dim[[j]] <- (-1) * stats::rnorm(n, mean = m[i], sd = s[i])
     }
-
-    if (missing(max_n)) {
-      stop("Missing max_n.")
-    }
-
-    # Initialize an empty list to store the vectors
-    noise_dim_val_list <- list()
-
-    for (j in 1:num_noise) {
-      if ((j %% 2) == 0) {
-        noise_dim_val_list[[j]] <- stats::runif(n, min = min_n, max = max_n)
-      } else {
-        noise_dim_val_list[[j]] <- (-1) * stats::runif(n, min = min_n, max = max_n)
-      }
-    }
-
-    noise_mat <- matrix(unlist(noise_dim_val_list), ncol = num_noise)
-  } else {
-    noise_mat <- NULL
   }
 
-  return(noise_mat)
+  df <- tibble::as_tibble(noise_dim, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Noise dimensions generation completed successfully! 🎉")
+  return(df)
 }
 
 #' Generate Background Noise Data
