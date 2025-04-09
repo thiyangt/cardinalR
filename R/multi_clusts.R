@@ -105,7 +105,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
 
     noise_df <- gen_bkgnoise(n = max(n) * 0.1, p = p,
                              m = mean, s = std) |>
-      dplyr::mutate(cluster = paste0("bkg_noise"))
+      dplyr::mutate(cluster = "bkg_noise")
 
     df <- dplyr::bind_rows(df, noise_df)
   }
