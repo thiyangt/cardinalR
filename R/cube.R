@@ -13,7 +13,7 @@
 gen_gridcube <- function(n = 625, p = 4) {
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+    cli::cli_abort("Values in n should be positive.")
   }
 
   # if (length(n) != p) {
@@ -49,7 +49,7 @@ gen_gridcube <- function(n = 625, p = 4) {
 gen_unifcube <- function(n = 625, p = 4) {
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+    cli::cli_abort("Values in n should be positive.")
   }
 
   df <- matrix(runif(n * p, min = -0.5, max = 0.5),
