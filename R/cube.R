@@ -27,6 +27,8 @@ gen_gridcube <- function(n = 625, p = 4) {
   dims <- as.list(n_vec)
   df <- tidyr::expand_grid(!!!purrr::map(dims, seq_len))
 
+  # Create the tibble
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
@@ -54,8 +56,8 @@ gen_unifcube <- function(n = 625, p = 4) {
 
   df <- matrix(runif(n * p, min = -0.5, max = 0.5),
                    nrow = n, ncol = p)
-  df <- tibble::as_tibble(df)
-
+  # Create the tibble
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")

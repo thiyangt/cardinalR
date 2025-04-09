@@ -39,7 +39,7 @@ gen_gaussian <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4)) {
   }
 
   df <- mvtnorm::rmvnorm(n, mean = m, sigma = s)
-
+  # Create the tibble
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
