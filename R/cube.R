@@ -10,17 +10,21 @@
 #' @examples
 #' set.seed(20240412)
 #' one_grid <- gen_gridcube(n = c(10, 10, 10, 10), p = 4)
-gen_gridcube <- function(n = c(10, 10, 10, 10), p = 4) {
-
-  if (length(n) != p) {
-    stop(cli::cli_alert_danger("n should contain exactly p values."))
-  }
+gen_gridcube <- function(n = 625, p = 4) {
 
   if (any(n < 0)) {
     stop(cli::cli_alert_danger("Values in n should be positive."))
   }
 
-  dims <- as.list(n)
+  # if (length(n) != p) {
+  #   stop(cli::cli_alert_danger("n should contain exactly p values."))
+  # }
+
+  if (length(n) <= p) {
+    n_vec <- rep(n^(1/p), p)
+  }
+
+  dims <- as.list(n_vec)
   df <- tidyr::expand_grid(!!!purrr::map(dims, seq_len))
 
   names(df) <- paste0("x", 1:p)
