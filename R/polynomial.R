@@ -160,13 +160,14 @@ gen_swissRoll <- function(n = 500, p = 4) {
   df <- matrix(0, nrow = n, ncol = p)
   df[,1] <- x1
   df[,2] <- x2
-  if (p > 2) {
-    df[,3] <- x3
-  }
+  df[,3] <- x3
+
   if (p > 3) {
-    for (i in 4:p) {
-      df[,i] <- sin(i * t) / i  # Additional non-linearity
-    }
+    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 4:p)
+
+    df <- cbind(df, noise_df)
   }
 
   # Create the tibble
