@@ -93,30 +93,20 @@ gen_scurveHole <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  df <- gen_scurve(n = n, p = 3) |>
-    as.matrix()
+  df <- gen_scurve(n = n, p = 3)
 
   if (p > 3) {
-    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.5, p-3))
-    df <- dplyr::bind_rows(df, noise_df)
+    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3))
+    names(noise_df) <- paste0("x", 4:p)
+
+    df <- dplyr::bind_cols(df, noise_df) |>
+      as.matrix()
 
   }
 
   anchor <- c(0, 1, 0)
 
-  if ((p %% 3) == 0) {
-
-    anchor_vec <- rep(anchor, p/3)
-
-  } else if ((p %% 3) == 1) {
-
-    anchor_vec <- append(rep(anchor, round(p/3)), sample(anchor, 1))
-
-  } else { #(p %% 3) == 2
-
-    anchor_vec <- append(rep(anchor, round(p/3)), sample(anchor, 2))
-
-  }
+  anchor_vec <- append(anchor, rep(0, p-3))
 
   indices <- rowSums((sweep(df, 2, anchor_vec, `-`))^2) > 0.3 #0.3
   df <- df[indices, ]
