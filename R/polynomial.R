@@ -178,9 +178,14 @@ gen_swissRoll <- function(n = 500, p = 4) {
   return(df)
 }
 
-gen_spherical_spiral_4d <- function(n = 500, p = 4, radius = 1, spiral_turns = 1) {
+gen_sphericalSpiral <- function(n = 500, p = 4, radius = 1, spiral_turns = 1) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
   if (n <= 0) {
-    stop("Number of points should be a positive integer.")
+    cli::cli_abort("n should be positive.")
   }
 
   # gen angles (theta, phi) for the spherical coordinates
@@ -193,18 +198,24 @@ gen_spherical_spiral_4d <- function(n = 500, p = 4, radius = 1, spiral_turns = 1
   df[, 1] <- radius * sin(phi) * cos(theta)
   df[, 2] <- radius * sin(phi) * sin(theta)
   df[, 3] <- radius * cos(phi) + runif(n, -0.5, 0.5)
-  df[, 4] <- theta / max(theta) * radius  # Spiral along the 4th dimension
 
-  # Extend to higher dimensions
-  if (p > 4) {
-    for (i in 5:d) {
-      # Introduce non-linearity based on x1 and add random noise
-      # You can experiment with different non-linear functions and noise levels
-      power <- sample(2:5, 1) # Random power for the polynomial
-      scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
-      noise_level <- stats::runif(1, 0, 1)
+  if(p > 3) {
+    if(p == 4) {
 
-      df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n, -noise_level, noise_level * 2)
+      df[, 4] <- theta / max(theta) * radius  # Spiral along the 4th dimension
+
+    } else {
+
+      for (i in 5:p) {
+        # Introduce non-linearity based on x1 and add random noise
+        # You can experiment with different non-linear functions and noise levels
+        power <- sample(2:5, 1) # Random power for the polynomial
+        scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
+        noise_level <- stats::runif(1, 0, 0.05)
+
+        df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (df[, 1]^power) + stats::runif(n, -noise_level, noise_level * 2)
+      }
+
     }
   }
 
@@ -236,12 +247,12 @@ gen_helical_hyper_spiral_4d <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1
 
   # Extend to higher dimensions
   if (p > 4) {
-    for (i in 5:d) {
+    for (i in 5:p) {
       # Introduce non-linearity based on x1 and add random noise
       # You can experiment with different non-linear functions and noise levels
       power <- sample(2:5, 1) # Random power for the polynomial
       scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
-      noise_level <- stats::runif(1, 0, 1)
+      noise_level <- stats::runif(1, 0, 0.05)
 
       df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n, -noise_level, noise_level * 2)
     }
@@ -274,7 +285,7 @@ gen_conic_spiral_4d <- function(n = 500, p = 4, spiral_turns = 1, cone_height = 
 
   # Extend to higher dimensions
   if (p > 4) {
-    for (i in 5:d) {
+    for (i in 5:p) {
       # Introduce non-linearity based on x1 and add random noise
       # You can experiment with different non-linear functions and noise levels
       power <- sample(2:5, 1) # Random power for the polynomial
@@ -313,7 +324,7 @@ gen_nonlinear_hyperbola2_4d <- function(n = 500, p = 4, C = 1, nonlinear_factor 
 
   # Extend to higher dimensions
   if (p > 4) {
-    for (i in 5:d) {
+    for (i in 5:p) {
       # Introduce non-linearity based on x1 and add random noise
       # You can experiment with different non-linear functions and noise levels
       power <- sample(2:5, 1) # Random power for the polynomial
