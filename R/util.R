@@ -20,11 +20,11 @@ gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) 
   # Initialize an empty list to store the vectors
   noise_dim <- list()
 
-  for (j in 1:p) {
-    if ((j %% 2) == 0) {
-      noise_dim[[j]] <- stats::rnorm(n, mean = m[i], sd = s[i])
+  for (i in 1:p) {
+    if ((i %% 2) == 0) {
+      noise_dim[[i]] <- stats::rnorm(n, mean = m[i], sd = s[i])
     } else {
-      noise_dim[[j]] <- (-1) * stats::rnorm(n, mean = m[i], sd = s[i])
+      noise_dim[[i]] <- (-1) * stats::rnorm(n, mean = m[i], sd = s[i])
     }
   }
 
