@@ -31,7 +31,7 @@ gen_scurve <- function(n = 500, p = 4) {
 
   a <- 3 * pi * stats::runif(n = n, min = -0.5, max = 0.5)
   x1 <- sin(a)
-  x2 <- 2.0 * stats::runif(n = n)
+  x2 <- 2.0 * stats::runif(n = n, min = -0.5, max = 0.5)
   x3 <- sign(a) * (cos(a) - 1)
 
   coords <- matrix(0, nrow = n, ncol = p)
