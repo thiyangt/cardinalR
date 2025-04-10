@@ -119,7 +119,30 @@ gen_scurveHole <- function(n = 500, p = 4) {
   return(df)
 }
 
-gen_swissroll <- function(n = 500, p = 4) {
+
+#' Generate Swiss Roll Data
+#'
+#' This function generates swiss roll data.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the generated swiss roll data.
+#' @references
+#' Agrafiotis, D. K., & Xu, H. (2002).
+#' A self-organizing principle for learning nonlinear manifolds.
+#' \emph{Proceedings of the National Academy of Sciences}, \emph{99}(25), 15869-15872.
+#'
+#'
+#' Roweis, S. T., & Saul, L. K. (2000).
+#' Nonlinear dimensionality reduction by locally linear embedding.
+#' \emph{Science}, \emph{290}(5500), 2323-2326.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_swissRoll(n = 500, p = 4)
+#' head(data, 5)
+gen_swissRoll <- function(n = 500, p = 4) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
