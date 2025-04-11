@@ -1,3 +1,128 @@
+gen_curv_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
+
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
+  }
+
+  # gen the core curvilinear pattern in 2D
+  x1 <- stats::runif(n, 0, 2)
+  x2 <- -(x1^2) + stats::runif(n, 0, 0.5)
+
+  # Define additional dimensions for 4D
+  x3 <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+  x4 <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
+
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+# Function to gen a curvilinear cluster in 4D space with an offset
+gen_curv2_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
+  if (n <= 0) {
+    stop("Number of points should be a positive number.")
+  }
+
+  # gen the core curvilinear pattern in 2D
+  x1 <- stats::runif(n, 0, 2)
+  x2 <- -(x1^2 + stats::runif(n, 0, 1)) + stats::runif(n, 0, 0.5)
+
+  # Define additional dimensions for 4D
+  x3 <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+  x4 <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
+
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+# Function to gen a noise-free 4D crescent
+gen_crescent_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
+
+  if (n < 0) {
+    stop(cli::cli_alert_danger("n should be positive."))
+  }
+
+  # Step 1: gen angles for a semi-circle
+  theta <- seq(pi / 6, 12 * pi / 6, length.out = n)  # evenly spaced angles for crescent
+
+  # Step 2: gen points in 2D crescent shape
+  x1 <- cos(theta)  # x-coordinate on the crescent (cosine function)
+  x2 <- sin(theta)  # y-coordinate on the crescent (sine function)
+
+  # Step 3: Add additional 2 dimensions for 4D
+  # x3 could represent an increasing function of theta
+  x3 <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+
+  # x4 could be a linear transformation of theta
+  x4 <- 2 * theta + rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
+
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
+
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+# Function to gen a curvy cylinder in 4D
+gen_curvy_cylinder_4d <- function(n = 500, radius = 1, height = 10, curve_strength = 1, offset = c(0, 0, 0, 0)) {
+
+  # Step 1: gen cylindrical coordinates in 2D (x1, x2)
+  theta <- runif(n, 0, 3 * pi)  # Random angle for the circular base
+  x1 <- radius * cos(theta)            # x1 coordinate (circular)
+  x2 <- radius * sin(theta)            # x2 coordinate (circular)
+
+  # Step 2: gen the curvy components in 3rd and 4th dimensions
+  x3 <- runif(n, 0, height)     # Height along the cylinder
+  x4 <- curve_strength * sin(x3)       # Curvy pattern in the 4th dimension
+
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
+
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+
 gen_sphericalSpiral <- function(n = 500, p = 4, radius = 1, spiral_turns = 1) {
 
   if (p < 3) {
@@ -121,6 +246,33 @@ gen_conic_spiral_4d <- function(n = 500, p = 4, spiral_turns = 1, cone_height = 
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
+}
+
+# Function to gen a non-linear rectangular hyperbola in 4D
+gen_nonlinear_hyperbola_4d <- function(n = 500, C = 1, nonlinear_factor = 0.5, offset = c(0, 0, 0, 0)) {
+
+  # gen random points for x1 and x3 in a range avoiding zero
+  x1 <- runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
+  x3 <- runif(n, 0.1, 2)
+
+  # Define additional dimensions for 4D
+  x2 <- -sin(x1 * pi) + runif(n, -0.1, 0.1)  # A sine-based curve
+  x4 <- cos(x1 * pi) + runif(n, -0.1, 0.1)   # A cosine-based curve
+
+  df <- tibble::tibble(
+    x1 = x1,
+    x2 = x2,
+    x3 = x3,
+    x4 = x4
+  )
+
+  df <- df |>
+    sweep(2, offset, "+") |>
+    tibble::as_tibble()
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
 }
 
 # Function to gen a non-linear rectangular hyperbola in 4D
