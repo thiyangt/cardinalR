@@ -1,17 +1,51 @@
-gen_clusteredSpheres <- function(k = 3, p = 4, n_small = 100, n_big = 1000,
-                                       r_small = 3, r_big = 15, center_sd = 10 / sqrt(3)) {
-  base_sphere <- function(n, p, r) {
-    m <- matrix(rnorm(n * p), nrow = n, ncol = p)
-    r * m / sqrt(rowSums(m^2))
+#' Generate Small Spheres Within a Big Sphere
+#'
+#' This function generates a dataset representing a structure with a small and big spheres.
+#'
+#' @param n A numeric vector (default: c(1000, 100)) representing the sample sizes of the big and small spheres respectively.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of small spheres.
+#' @param r A numeric vector (default: c(15, 3)) representing the radius of the big and small spheres respectively.
+#' @param loc A numeric value (default: 10 / sqrt(3) representing how far the small spheres are placed from each other.
+#' @return A data containing small spheres within a big sphere.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' sphere_data <- gen_clusteredSpheres(n = 500, p = 4, r = 1)
+#' head(sphere_data, 5)
+gen_clusteredSpheres <- function(k = 3, p = 4, n = c(1000, 100), r = c(15, 3),
+                                 loc = 10 / sqrt(3)) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
   }
 
-  d_dim_sphere <- base_sphere(n_small, p, r_small)
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly two values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  if (any(r < 0)) {
+    cli::cli_abort("Values in r should be positive.")
+  }
+
+  n_big <- n[1]
+  n_small <- n[2]
+
+  r_big <- r[1]
+  r_small <- r[2]
+
+  d_dim_sphere <- gen_unifSphere(n_small, p, r_small)
   small_spheres <- lapply(seq_len(k), function(i) {
-    center <- rnorm(p, sd = center_sd)
+    center <- rnorm(p, sd = loc)
     sweep(d_dim_sphere, 2, center, "+")
   })
 
-  big_sphere <- base_sphere(n_big, p, r_big)
+  big_sphere <- gen_unifSphere(n_big, p, r_big)
 
   small_labeled <- lapply(seq_along(small_spheres), function(i) {
     cbind(small_spheres[[i]], cluster = paste0("small_", i))
@@ -19,6 +53,13 @@ gen_clusteredSpheres <- function(k = 3, p = 4, n_small = 100, n_big = 1000,
 
   big_labeled <- cbind(big_sphere, cluster = "big")
 
-  df <- do.call(rbind, c(small_labeled, list(big_labeled)))
-  as.data.frame(df)
+  df <- dplyr::bind_rows(c(small_labeled, list(big_labeled))) |>
+    tibble::as_tibble()
+  names(df) <- append(paste0("x", 1:p), "cluster")
+
+  ## Swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 }
