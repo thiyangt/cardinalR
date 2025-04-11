@@ -102,7 +102,56 @@ gen_curvycycle <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_f
   return(df)
 }
 
-gen_unifSphere <- function(){
+#' Generate Uniform Sphere
+#'
+#' This function generates a dataset representing a structure with a uniform sphere.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric value (default: 1) representing the radius of the sphere.
+#' @return A data containing a uniform sphere.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' sphere_data <- gen_unifSphere(n = 500, p = 4, r = 1)
+#' head(sphere_data, 5)
+gen_unifSphere <- function(n = 500, p = 4, r = 1){
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (r <= 0) {
+    cli::cli_abort("r should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  u <- runif(n, -1, 1)                 # cos(phi)
+  theta <- runif(n, 0, 2 * pi)        # azimuth
+
+  x1 <- r * sqrt(1 - u^2) * cos(theta)
+  x2 <- r * sqrt(1 - u^2) * sin(theta)
+  x3 <- r * u
+
+  df <- matrix(c(x1, x2, x3), ncol = 3)
+
+  if (p > 3) {
+    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 4:p)
+
+    df <- cbind(df, noise_df)
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
 
 }
 
@@ -121,6 +170,18 @@ gen_unifSphere <- function(){
 #' sphere_data <- gen_gridedSphere(n = 20, p = 4, r = 1)
 #' head(sphere_data, 5)
 gen_gridedSphere <- function(n = 20, p = 4, r = 1){
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (r <= 0) {
+    cli::cli_abort("r should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
 
   # Generate the coordinates for the sphere
   theta <- seq(0, 2 * pi, length.out = n)
