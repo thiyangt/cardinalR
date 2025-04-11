@@ -1,0 +1,120 @@
+#' Generate S-curve Data
+#'
+#' This function generates S-curve data.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the generated S-curve data.
+#' @references
+#' Buitinck, L., Louppe, G., Blondel, M., Pedregosa, F., Mueller, A.,
+#' Grisel, O., ... & Varoquaux, G. (2013).
+#' API design for machine learning software: experiences from the scikit-learn
+#' project.
+#' \emph{arXiv preprint} \emph{arXiv:1309.0238}.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_scurve(n = 500, p = 4)
+#' head(data, 5)
+gen_scurve <- function(n = 500, p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  noise_level <- 0.05
+  scaling_factor <- 0.2
+
+  a <- 3 * pi * stats::runif(n = n, min = -0.5, max = 0.5)
+  x1 <- sin(a)
+  x2 <- 2.0 * stats::runif(n = n, min = 0, max = 1)
+  x3 <- sign(a) * (cos(a) - 1)
+
+  df <- matrix(0, nrow = n, ncol = p)
+  df[, 1] <- x1
+  df[, 2] <- x2
+  df[, 3] <- x3
+
+  if (p > 3) {
+    for (i in 4:p) {
+      # Strategy 1 & 2: Small variations around existing dimensions
+      if (i == 4) df[, i] <- x1 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+      if (i == 5) df[, i] <- x2 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+      if (i == 6) df[, i] <- x3 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+      # Strategy 3: Non-linear transformations with small scaling
+      if (i > 6) {
+        if (i %% 3 == 1) df[, i] <- x1^2 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+        if (i %% 3 == 2) df[, i] <- x2 * x3 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+        if (i %% 3 == 0) df[, i] <- sin(x1 + x3) * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+      }
+    }
+  }
+
+  # Create the tibble
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate S-curve Data with a Hole
+#'
+#' This function generates S-curve data with a hole by filtering out samples that
+#' are not close to a specified anchor point.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the generated S-curve data with a hole.
+#' @references
+#' Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).
+#' Understanding how dimension reduction tools work: an empirical approach to
+#' deciphering t-SNE, UMAP, TriMAP, and PaCMAP for data visualization.
+#' \emph{J Mach. Learn. Res}, \emph{22}, 1-73.
+#' @seealso the \href{https://github.com/YingfanWang/PaCMAP}{PaCMAP homepage}.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_scurveHole(n = 500, p = 4)
+#' head(data, 5)
+gen_scurveHole <- function(n = 500, p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  df <- gen_scurve(n = n, p = 3)
+
+  if (p > 3) {
+    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3))
+    names(noise_df) <- paste0("x", 4:p)
+
+    df <- dplyr::bind_cols(df, noise_df) |>
+      as.matrix()
+
+  }
+
+  anchor <- c(0, 1, 0)
+
+  anchor_vec <- append(anchor, rep(0, p-3))
+
+  indices <- rowSums((sweep(df, 2, anchor_vec, `-`))^2) > 0.3 #0.3
+  df <- df[indices, ]
+  rownames(df) <- NULL
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
