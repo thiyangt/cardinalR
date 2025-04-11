@@ -101,3 +101,51 @@ gen_curvycycle <- function(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_f
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
+
+gen_unifSphere <- function(){
+
+}
+
+#' Generate Grided Sphere
+#'
+#' This function generates a dataset representing a structure with a grided sphere.
+#'
+#' @param n A numeric value (default: 20) the number of points or the angular step size between sampled coordinates.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric value (default: 1) representing the radius of the sphere.
+#' @return A data containing a grided sphere.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' sphere_data <- gen_gridedSphere(n = 20, p = 4, r = 1)
+#' head(sphere_data, 5)
+gen_gridedSphere <- function(n = 20, p = 4, r = 1){
+
+  # Generate the coordinates for the sphere
+  theta <- seq(0, 2 * pi, length.out = n)
+  phi <- seq(0, pi, length.out = n)
+  coords <- expand.grid(theta = theta, phi = phi)
+
+  # Convert spherical coordinates to Cartesian coordinates
+  x1 <- r * sin(coords$phi) * cos(coords$theta)
+  x2 <- r * sin(coords$phi) * sin(coords$theta)
+  x3 <- r * cos(coords$phi)
+
+  df <- matrix(c(x1, x2, x3), ncol = 3)
+
+  if (p > 3) {
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 4:p)
+
+    df <- cbind(df, noise_df)
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
