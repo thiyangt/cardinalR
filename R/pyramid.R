@@ -1,16 +1,16 @@
-#' Generate p-D Triangular Pyramid With Pyramid shaped Hole
+#' Generate p-D Triangular Pyramid
 #'
 #' This function generates p-D triangular pyramid datasets.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @return A data containing a triangular pyramid in p-D with a hole.
+#' @return A data containing a triangular pyramid in p-D.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_data <- gen_pyrhole(n = 300, p = 3)
-gen_pyrhole <- function(n = 500, p = 4) {
+#' triangular_data <- gen_pyr(n = 500, p = 4)
+gen_pyr <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -24,18 +24,17 @@ gen_pyrhole <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  trace_point <- stats::runif(p)
   corner_points <- geozoo::simplex(p=p)$points
+  k <- nrow(corner_points)
+  # Dirichlet: Normalize exponential draws to sum to 1
+  bary_coords <- matrix(rexp(n * k), nrow = n)
+  bary_coords <- bary_coords / rowSums(bary_coords)
 
-  data_list <- lapply(1:p, function(i) rep(0, n))
-  names(data_list) <- paste0("x", 1:p)
+  # Matrix multiplication: weighted sum of vertices
+  df <- bary_coords %*% corner_points
 
-  df <- tibble::tibble(!!!data_list)
-
-  for (i in 1:n) {
-    trace_point <- (corner_points[sample((p + 1), 1), ] + trace_point) / 2
-    df[i, ] <- as.list(trace_point)
-  }
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
