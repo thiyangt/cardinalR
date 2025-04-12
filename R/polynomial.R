@@ -303,6 +303,14 @@ gen_helical_hyper_spiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1, s
 #' data <- gen_conicSpiral(n = 500, p = 4, r = 1, spins = 1)
 gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_radius = 1) {
 
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
   # gen theta values to represent the angle of the spiral in the xy-plane
   theta <- seq(0, 2 * pi * spins, length.out = n)
   df <- matrix(0, nrow = n, ncol = p)
