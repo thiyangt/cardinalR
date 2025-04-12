@@ -186,8 +186,21 @@ gen_curvyCylinder <- function(n = 500, p = 4, r = 1, h = 10, a = 1) {
 
 }
 
-
-gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spiral_turns = 1) {
+#' Generate Spherical Spiral
+#'
+#' This function generates a dataset representing a structure with a spherical spiral.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric value (default: 1) representing the radius of the circle.
+#' @param spins A numeric value (default: 1) representing the number of loops of the spiral.
+#' @return A data containing a spherical spiral.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_sphericalSpiral(n = 500, p = 4, r = 1, spins = 1)
+gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spins = 1) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -198,7 +211,7 @@ gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spiral_turns = 1) {
   }
 
   # gen angles (theta, phi) for the spherical coordinates
-  theta <- seq(0, spiral_turns * 2 * pi, length.out = n)  # Controls the number of spiral turns
+  theta <- seq(0, spins * 2 * pi, length.out = n)  # Controls the number of spiral turns
   phi <- seq(0, pi, length.out = n)                       # Controls movement along the latitude
 
   df <- matrix(0, nrow = n, ncol = p)
@@ -206,7 +219,7 @@ gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spiral_turns = 1) {
   # Spherical to Cartesian coordinates for 4D
   df[, 1] <- r * sin(phi) * cos(theta)
   df[, 2] <- r * sin(phi) * sin(theta)
-  df[, 3] <- r * cos(phi) + runif(n, -0.5, 0.5)
+  df[, 3] <- r * cos(phi) + stats::runif(n, -0.5, 0.5)
 
   if(p > 3) {
     if(p == 4) {
