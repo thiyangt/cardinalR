@@ -142,3 +142,55 @@ gen_mobiusGau <- function(n = c(200, 100), p = 4) {
   return(df)
 }
 
+
+#' Generate overlapped tow conic spiral shapes
+#'
+#' This function generates overlapped tow conic spiral shapes.
+#'
+#' @param n A numeric vector (default: c(500, 500)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#'
+#' @return A data containing a two overlapped conic spiral shapes.
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_overlapConicSpirals(n = c(500, 500), p = 3)
+#'
+#' @export
+gen_overlapConicSpirals <- function(n = c(500, 500), p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly 2 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df1 <- tibble::as_tibble(geozoo::conic.spiral(n = n[1])$points, .name_repair = "minimal") |>
+    rlang::set_names(paste0("x", 1:3))
+  df2 <- tibble::as_tibble(geozoo::conic.spiral(n = n[2])$points[,c(3, 1, 2)], .name_repair = "minimal") |>
+    rlang::set_names(paste0("x", 1:3))
+
+  df <- dplyr::bind_rows(df1, df2)
+
+  if (p > 3) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+
+    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 4:p)
+
+    df <- cbind(df, noise_df)
+
+  }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}

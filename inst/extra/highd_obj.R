@@ -27,9 +27,9 @@ gen_overlap_3d_two_conic_spiral <- function(n = c(500, 300), p = 3) {
   }
 
   df1 <- tibble::as_tibble(geozoo::conic.spiral(n = n[1])$points, .name_repair = "unique") |>
-    set_names(paste0("x", 1:3))
+    rlang::set_names(paste0("x", 1:3))
   df2 <- tibble::as_tibble(geozoo::conic.spiral(n = n[2])$points[,c(3, 1, 2)], .name_repair = "unique") |>
-    set_names(paste0("x", 1:3))
+    rlang::set_names(paste0("x", 1:3))
 
   df <- dplyr::bind_rows(df1, df2)
 
