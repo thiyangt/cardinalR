@@ -154,7 +154,7 @@ gen_mobiusGau <- function(n = c(200, 100), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_overlapConicSpirals(n = c(500, 500), p = 3)
+#' data <- gen_overlapConicSpirals(n = c(500, 500), p = 4)
 #'
 #' @export
 gen_overlapConicSpirals <- function(n = c(500, 500), p = 4) {
@@ -172,9 +172,12 @@ gen_overlapConicSpirals <- function(n = c(500, 500), p = 4) {
   }
 
   df1 <- tibble::as_tibble(geozoo::conic.spiral(n = n[1])$points, .name_repair = "minimal") |>
-    rlang::set_names(paste0("x", 1:3))
+    rlang::set_names(paste0("x", 1:3)) |>
+    dplyr::mutate(cluster = "cluster1")
+
   df2 <- tibble::as_tibble(geozoo::conic.spiral(n = n[2])$points[,c(3, 1, 2)], .name_repair = "minimal") |>
-    rlang::set_names(paste0("x", 1:3))
+    rlang::set_names(paste0("x", 1:3)) |>
+    dplyr::mutate(cluster = "cluster2")
 
   df <- dplyr::bind_rows(df1, df2)
 
@@ -182,13 +185,16 @@ gen_overlapConicSpirals <- function(n = c(500, 500), p = 4) {
 
     cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
 
-    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
-      as.matrix()
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3))
     colnames(noise_df) <- paste0("x", 4:p)
 
-    df <- cbind(df, noise_df)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
+
+  ## Swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
