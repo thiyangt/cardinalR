@@ -249,10 +249,30 @@ gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spins = 1) {
 }
 
 
-# Function to gen a Helical Hyper-spiral in 4D
-gen_helical_hyper_spiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1, spiral_radius = 0.5) {
+#' Generate Helical Hyper Spiral
+#'
+#' This function generates a dataset representing a structure with a helical hyper spiral.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param a A numeric value (default: 0.05) representing the scale factor along x2.
+#' @param b A numeric value (default: 0.1) representing the scale factor along x3.
+#' @param c A numeric value (default: 1) representing the scale factor of sine along x3.
+#' @param r A numeric value (default: 0.5) representing the radius of the spiral.
+#' @return A data containing a helical hyper spiral.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_helicalHyperspiral(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r = 0.5)
+gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r = 0.5) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
   if (n <= 0) {
-    stop("Number of points should be a positive integer.")
+    cli::cli_abort("n should be positive.")
   }
 
   # gen angles for the spiral (theta)
@@ -261,23 +281,19 @@ gen_helical_hyper_spiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1, s
   df <- matrix(0, nrow = n, ncol = p)
 
   # Helical spiral coordinates
-  df[, 1] <- spiral_radius * cos(theta)  # x1 is a circular pattern
-  df[, 2] <- spiral_radius * sin(theta)  # x2 is a circular pattern
+  df[, 1] <- r * cos(theta)  # x1 is a circular pattern
+  df[, 2] <- r * sin(theta)  # x2 is a circular pattern
   df[, 3] <- a * theta + runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
-  df[, 4] <- b * sin(k * theta)          # x4 oscillates with sin(k * theta)
+  df[, 4] <- b * sin(c * theta)          # x4 oscillates with sin(k * theta)
 
 
   # Extend to higher dimensions
   if (p > 4) {
-    for (i in 5:p) {
-      # Introduce non-linearity based on x1 and add random noise
-      # You can experiment with different non-linear functions and noise levels
-      power <- sample(2:5, 1) # Random power for the polynomial
-      scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
-      noise_level <- stats::runif(1, 0, 0.05)
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
 
-      df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n, -noise_level, noise_level * 2)
-    }
+    df <- cbind(df, noise_df)
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
