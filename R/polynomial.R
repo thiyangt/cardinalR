@@ -250,7 +250,7 @@ gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spins = 1) {
 
 
 # Function to gen a Helical Hyper-spiral in 4D
-gen_helical_hyper_spiral_4d <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1, spiral_radius = 0.5, scale_factor = 0.1) {
+gen_helical_hyper_spiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1, spiral_radius = 0.5) {
   if (n <= 0) {
     stop("Number of points should be a positive integer.")
   }
@@ -287,11 +287,24 @@ gen_helical_hyper_spiral_4d <- function(n = 500, p = 4, a = 0.05, b = 0.1, k = 1
   return(df)
 }
 
-# Function to gen a conic spiral in 4D
-gen_conic_spiral_4d <- function(n = 500, p = 4, spiral_turns = 1, cone_height = 2, cone_radius = 1) {
+#' Generate Conical Spiral
+#'
+#' This function generates a dataset representing a conical spiral structure.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric value (default: 1) representing the radius of the circle.
+#' @param spins A numeric value (default: 1) representing the number of loops of the spiral.
+#' @return A data containing a conical spiral structure.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_conicSpiral(n = 500, p = 4, r = 1, spins = 1)
+gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_radius = 1) {
 
   # gen theta values to represent the angle of the spiral in the xy-plane
-  theta <- seq(0, 2 * pi * spiral_turns, length.out = n)
+  theta <- seq(0, 2 * pi * spins, length.out = n)
   df <- matrix(0, nrow = n, ncol = p)
 
   # Spiral in the first two dimensions (x1, x2) - Archimedean spiral
@@ -307,15 +320,13 @@ gen_conic_spiral_4d <- function(n = 500, p = 4, spiral_turns = 1, cone_height = 
 
   # Extend to higher dimensions
   if (p > 4) {
-    for (i in 5:p) {
-      # Introduce non-linearity based on x1 and add random noise
-      # You can experiment with different non-linear functions and noise levels
-      power <- sample(2:5, 1) # Random power for the polynomial
-      scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
-      noise_level <- stats::runif(1, 0, 1)
 
-      df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n, -noise_level, noise_level * 2)
-    }
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
+
+    df <- cbind(df, noise_df)
+
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
@@ -325,63 +336,43 @@ gen_conic_spiral_4d <- function(n = 500, p = 4, spiral_turns = 1, cone_height = 
   return(df)
 }
 
-# Function to gen a non-linear rectangular hyperbola in 4D
-gen_nonlinear_hyperbola_4d <- function(n = 500, C = 1, nonlinear_factor = 0.5, offset = c(0, 0, 0, 0)) {
-
-  # gen random points for x1 and x3 in a range avoiding zero
-  x1 <- runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
-  x3 <- runif(n, 0.1, 2)
-
-  # Define additional dimensions for 4D
-  x2 <- -sin(x1 * pi) + runif(n, -0.1, 0.1)  # A sine-based curve
-  x4 <- cos(x1 * pi) + runif(n, -0.1, 0.1)   # A cosine-based curve
-
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
-
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
-
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
-  return(df)
-
-}
-
-# Function to gen a non-linear rectangular hyperbola in 4D
-gen_nonlinear_hyperbola2_4d <- function(n = 500, p = 4, C = 1, nonlinear_factor = 0.5) {
+#' Generate Nonlinear Hyperbola
+#'
+#' This function generates a dataset representing a nonlinear hyperbola structure.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param hc A numeric value (default: 1) representing the hyperbolic component which define the steepness and vertical scaling of the hyperbola. Larger values of this make the curve more pronounced (sharper dips/rises near 0), while smaller values make it flatter.
+#' @param non_fac A numeric value (default: 1) representing the nonlinear factor which describes the strength of this sinusoidal effect. When this is 0, the curve is purely hyperbolic; as it increases, the wave-like fluctuations become more prominent.
+#' @return A data containing a nonlinear hyperbola structure.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_nonlinearHyperbola(n = 500, p = 4, hc = 1, non_fac = 0.5)
+gen_nonlinearHyperbola <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
 
   df <- matrix(0, nrow = n, ncol = p)
 
   # gen random points for x1 and x3 in a range avoiding zero
-  df[, 1] <- runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
-  df[, 3] <- runif(n, 0.1, 0.8)
+  df[, 1] <- stats::runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
+  df[, 3] <- stats::runif(n, 0.1, 0.8)
 
   # # Apply non-linear distortions for the second dimension
-  df[, 2] <-  (C / x1) + nonlinear_factor * sin(x1)  # Hyperbola + sine curve distortion
-  #
-  # # Apply non-linear distortions for the fourth dimension
-  # x4 <- (C / x3) + nonlinear_factor * cos(x3)  # Hyperbola + cosine curve distortion
+  df[, 2] <-  (hc /  df[, 1]) + non_fac * sin( df[, 1])  # Hyperbola + sine curve distortion
 
   # Define additional dimensions for 4D
-  #x2 <- -sin(x1 * pi) + runif(n, -0.1, 0.1)  # A sine-based curve
-  df[, 4] <- cos(x1 * pi) + runif(n, -0.1, 0.1)   # A cosine-based curve
+  df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.1, 0.1)   # A cosine-based curve
 
   # Extend to higher dimensions
   if (p > 4) {
-    for (i in 5:p) {
-      # Introduce non-linearity based on x1 and add random noise
-      # You can experiment with different non-linear functions and noise levels
-      power <- sample(2:5, 1) # Random power for the polynomial
-      scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
-      noise_level <- stats::runif(1, 0, 1)
 
-      df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n, -noise_level, noise_level * 2)
-    }
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
+
+    df <- cbind(df, noise_df)
+
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
