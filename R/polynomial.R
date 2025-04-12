@@ -352,6 +352,14 @@ gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_rad
 #' data <- gen_nonlinearHyperbola(n = 500, p = 4, hc = 1, non_fac = 0.5)
 gen_nonlinearHyperbola <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
 
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
   df <- matrix(0, nrow = n, ncol = p)
 
   # gen random points for x1 and x3 in a range avoiding zero
