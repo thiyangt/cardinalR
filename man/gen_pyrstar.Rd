@@ -11,7 +11,7 @@ gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
-\item{h}{A numeric value (default: 5) representing the h of the pyramid.}
+\item{h}{A numeric value (default: 5) representing the height of the pyramid.}
 
 \item{rb}{A numeric value (default: 3) representing the base radius of the pyramid.}
 }

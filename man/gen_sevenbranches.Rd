@@ -19,6 +19,5 @@ This function generates a dataset representing a structure with seven branches.
 }
 \examples{
 set.seed(20240412)
-seven_branching_data <- gen_sevenbranches(
-n = c(200, 100, 250, 300, 150, 400, 50), p = 4)
+seven_branching_data <- gen_sevenbranches(n = c(200, 100, 250, 300, 150, 400, 50), p = 4)
 }
