@@ -581,59 +581,11 @@ gen_twoCurvyGau <- function(n = c(200, 200, 100), p = 4) {
     cli::cli_abort("Values in n should be positive.")
   }
 
-  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
+  df1 <- gen_twoCurvy(n = n[1:2], p = p)
+  df2 <- gen_gaussian(n = n[3], p = p, m = rep(1, p), s = diag(4) * 0.01) |>
+    dplyr::mutate(cluster = "cluster3")
 
-
-  x1 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
-  x2 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
-  x3 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
-  x4 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
-
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster1")
-
-
-  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
-
-
-  x1 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
-  x2 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
-  x3 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
-  x4 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
-
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster2")
-
-
-  x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
-  x2 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
-  x3 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
-  x4 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
-
-
-  df3 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster3")
-
-  df <- dplyr::bind_rows(df1, df2, df3)
-
-  if (p > 5) {
-
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- dplyr::bind_cols(df, noise_df) |>
-      dplyr::select(dplyr::starts_with("x"), "cluster")
-
-  }
+  df <- dplyr::bind_rows(df1, df2)
 
   ## Swap rows
   df <- randomize_rows(df)
