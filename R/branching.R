@@ -13,16 +13,16 @@
 gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
 
   }
 
   if (length(n) != 3) {
-    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+     cli::cli_abort("n should contain exactly 3 values.")
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
   x1 <- stats::runif(n[1], -2, 2)
@@ -92,16 +92,16 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
 gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
 
   }
 
   if (length(n) != 5) {
-    stop(cli::cli_alert_danger("n should contain exactly 5 values."))
+     cli::cli_abort("n should contain exactly 5 values.")
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
   x1 <- stats::runif(n[1], -3, 3)
@@ -112,7 +112,8 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
   x1 <- stats::runif(n[2], -0.5, 0.5)
   x2 <- abs(10 * x1)
@@ -122,7 +123,8 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
   x1 <- stats::runif(n[3], -6, 3)
   x2 <- (-1) * abs(0.5 * x1 + 5)
@@ -132,7 +134,8 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
   x1 <- stats::runif(n[4], -0.5, 0.5)
   x2 <- (-1) * abs(10 * x1) - 5
@@ -142,7 +145,8 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
   df4 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster4")
 
   x1 <- stats::runif(n[5], -5, 5)
   x2 <- x1
@@ -152,9 +156,10 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
   df5 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster5")
 
-  df <- bind_rows(df1, df2, df3, df4, df5)
+  df <- dplyr::bind_rows(df1, df2, df3, df4, df5)
 
   if (p > 5) {
 
@@ -165,6 +170,9 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
       dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
+
+  ## Swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
@@ -186,16 +194,16 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater."))
 
   }
 
   if (length(n) != 7) {
-    stop(cli::cli_alert_danger("n should contain exactly 7 values."))
+     cli::cli_abort("n should contain exactly 7 values."))
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive."))
   }
 
   x1 <- stats::runif(n[1], -2, 2)
@@ -280,6 +288,10 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 
   }
 
+  ## Swap rows
+  df <- randomize_rows(df)
+
+
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
@@ -299,16 +311,16 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater."))
 
   }
 
   if (length(n) != 4) {
-    stop(cli::cli_alert_danger("n should contain exactly 4 values."))
+     cli::cli_abort("n should contain exactly 4 values."))
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive."))
   }
 
   x1 <- stats::runif(n[1], -5, 1)
@@ -373,6 +385,9 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 
   }
 
+  ## Swap rows
+  df <- randomize_rows(df)
+
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 
@@ -393,16 +408,16 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater."))
 
   }
 
   if (length(n) != 8) {
-    stop(cli::cli_alert_danger("n should contain exactly 5 values."))
+     cli::cli_abort("n should contain exactly 5 values."))
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive."))
   }
 
   x1 <- stats::runif(n[1], -1, 2)
@@ -497,6 +512,9 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
 
   }
 
+  ## Swap rows
+  df <- randomize_rows(df)
+
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 
@@ -519,15 +537,15 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
 gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater."))
   }
 
   if (length(n) != 3) {
-    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+     cli::cli_abort("n should contain exactly 3 values."))
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive."))
   }
 
   theta <- stats::runif(n[1], 0.20, 0.90 * pi)
@@ -581,6 +599,9 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 
   }
 
+  ## Swap rows
+  df <- randomize_rows(df)
+
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 
@@ -602,16 +623,16 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater."))
 
   }
 
   if (length(n) != 4) {
-    stop(cli::cli_alert_danger("n should contain exactly 4 values."))
+     cli::cli_abort("n should contain exactly 4 values."))
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive."))
   }
 
 
@@ -672,6 +693,9 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 
   }
 
+  ## Swap rows
+  df <- randomize_rows(df)
+
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 
@@ -697,15 +721,15 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 gen_two_curvy <- function(n = c(300, 200), p = 4) {
 
   if (p < 4) {
-    stop(cli::cli_alert_danger("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater."))
   }
 
   if (length(n) != 2) {
-    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
+     cli::cli_abort("n should contain exactly 2 values."))
   }
 
   if (any(n < 0)) {
-    stop(cli::cli_alert_danger("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive."))
   }
 
 
@@ -738,6 +762,9 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
       dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
+
+  ## Swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
