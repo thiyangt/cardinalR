@@ -61,7 +61,7 @@ gen_bkgnoise <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) {
   noise_bkg <- list()
 
   for (i in 1:p) {
-    noise_bkg[[i]] <- stats::rnorm(n, mean = m[i], sd = s[i,])
+    noise_bkg[[i]] <- stats::rnorm(n, mean = m[i], sd = s[i])
   }
 
   df <- tibble::as_tibble(noise_bkg, .name_repair = "minimal")

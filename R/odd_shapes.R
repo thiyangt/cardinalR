@@ -625,7 +625,7 @@ gen_twoCurvyGauBkg <- function(n = c(200, 200, 100, 50), p = 4) {
 
 
   df1 <- gen_twoCurvyGau(n = n[1:3], p = p)
-  df2 <- gen_bkgnoise(n = n[4], p = p, m = rep(1, p), s = diag(4)) |>
+  df2 <- gen_bkgnoise(n = n[4], p = p, m = rep(1, p), s = rep(1, p)) |>
     dplyr::mutate(cluster = "bkg_noise")
 
   df <- dplyr::bind_rows(df1, df2)
