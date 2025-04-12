@@ -194,16 +194,16 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 
   if (p < 4) {
-     cli::cli_abort("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
 
   }
 
   if (length(n) != 7) {
-     cli::cli_abort("n should contain exactly 7 values."))
+     cli::cli_abort("n should contain exactly 7 values.")
   }
 
   if (any(n < 0)) {
-     cli::cli_abort("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
   x1 <- stats::runif(n[1], -2, 2)
@@ -214,7 +214,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
   x1 <- stats::runif(n[2], -2, 1.5)
   x2 <- (x1^3 + stats::runif(n[2], 0, 1)) + stats::runif(n[2], 0, 0.2)
@@ -224,7 +225,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
   x1 <- stats::runif(n[3], -2, 1.5)
   x2 <- (1 + (x1 - 3)^2 + stats::runif(n[3], 0, 1)) + stats::runif(n[3], 0, 0.1)
@@ -234,7 +236,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
   x1 <- stats::runif(n[4], -0.5, 3)
   x2 <- (1 + -(x1 - 3)^2 + stats::runif(n[4], 0, 1)) + stats::runif(n[4], 0, 0.1)
@@ -244,7 +247,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df4 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster4")
 
   x1 <- stats::runif(n[5], -1, 1)
   x2 <- (20 + x1^3 + stats::runif(n[5], 0, 0.1)) + stats::runif(n[5], 0, 0.01)
@@ -254,7 +258,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df5 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster5")
 
   x1 <- stats::runif(n[6], -2, 2)
   x2 <- (x1^2 + stats::runif(n[6], 0, 0.1)) + stats::runif(n[6], 0, 0.01) + 10
@@ -264,7 +269,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df6 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster6")
 
   x1 <- stats::runif(n[7], -2, 2)
   x2 <- (x1^2 + stats::runif(n[7], 0, 0.2)) + stats::runif(n[7], 0, 0.01) + 15
@@ -274,9 +280,10 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
   df7 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster7")
 
-  df <- rbind(df1, df2, df3, df4, df5, df6, df7)
+  df <- dplyr::bind_rows(df1, df2, df3, df4, df5, df6, df7)
 
   if (p > 5) {
 
@@ -311,16 +318,16 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 
   if (p < 4) {
-     cli::cli_abort("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
 
   }
 
   if (length(n) != 4) {
-     cli::cli_abort("n should contain exactly 4 values."))
+     cli::cli_abort("n should contain exactly 4 values.")
   }
 
   if (any(n < 0)) {
-     cli::cli_abort("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
   x1 <- stats::runif(n[1], -5, 1)
@@ -331,7 +338,8 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
   x1 <- stats::runif(n[2], -1, 5)
   x2 <- (exp(-x1) + stats::runif(n[2], 0, 0.1)) + stats::runif(n[2], 0, 0.2)
@@ -341,7 +349,8 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
   x1 <- stats::runif(n[3], 0, 5)
   x2 <- (log(x1) + stats::runif(n[3], 0, 0.1)) + stats::runif(n[3], 0, 0.2)
@@ -351,7 +360,8 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
   x1 <- stats::runif(n[4], -5, 0)
   x2 <- (log(-x1) + stats::runif(n[4], 0, 0.1)) + stats::runif(n[4], 0, 0.2)
@@ -361,7 +371,8 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
   df4 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster4")
 
   x1 <- stats::runif(sum(n) * 0.1, -5, 0)
   x2 <- stats::runif(sum(n) * 0.1, 0, 0.8) + stats::runif(sum(n) * 0.1, 0, 0.8)
@@ -371,9 +382,10 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
   df5 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster5")
 
-  df <- bind_rows(df1, df2, df3, df4, df5)
+  df <- dplyr::bind_rows(df1, df2, df3, df4, df5)
 
   if (p > 5) {
 
@@ -408,16 +420,16 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p = 4) {
 
   if (p < 4) {
-     cli::cli_abort("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
 
   }
 
   if (length(n) != 8) {
-     cli::cli_abort("n should contain exactly 5 values."))
+     cli::cli_abort("n should contain exactly 5 values.")
   }
 
   if (any(n < 0)) {
-     cli::cli_abort("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
   x1 <- stats::runif(n[1], -1, 2)
@@ -428,7 +440,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
   x1 <- stats::runif(n[2], -1, 1)
   x2 <- (exp(2 * x1) + stats::runif(n[2], 0, 0.1)) + stats::runif(n[2], 0, 0.2)
@@ -438,7 +451,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
   x1 <- stats::runif(n[3], -1, 0.6)
   x2 <- (exp(3 * x1) + stats::runif(n[3], 0, 0.1)) + stats::runif(n[3], 0, 0.2)
@@ -448,7 +462,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
   x1 <- stats::runif(n[4], -1, 3)
   x2 <- (exp(0.5 * x1) + stats::runif(n[4], 0, 0.1)) + stats::runif(n[4], 0, 0.2)
@@ -458,7 +473,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df4 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster4")
 
   x1 <- stats::runif(n[5], -2, 1)
   x2 <- (exp(-x1) + stats::runif(n[5], 0, 0.1)) + stats::runif(n[5], 0, 0.2)
@@ -468,7 +484,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df5 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster5")
 
   x1 <- stats::runif(n[6], -1, 1)
   x2 <- (exp(2 * -x1) + stats::runif(n[6], 0, 0.1)) + stats::runif(n[6], 0, 0.2)
@@ -478,7 +495,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df6 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster6")
 
   x1 <- stats::runif(n[7], -0.6, 1)
   x2 <- (exp(3 * -x1) + stats::runif(n[7], 0, 0.1)) + stats::runif(n[7], 0, 0.2)
@@ -488,7 +506,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df7 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster7")
 
   x1 <- stats::runif(n[8], -3, 1)
   x2 <- (exp(0.5 * -x1) + stats::runif(n[8], 0, 0.1)) + stats::runif(n[8], 0, 0.2)
@@ -498,7 +517,8 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   df8 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster8")
 
   df <- dplyr::bind_rows(df1, df2, df3, df4, df5, df6, df7, df8)
 
@@ -537,15 +557,15 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
 gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 
   if (p < 4) {
-     cli::cli_abort("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
   }
 
   if (length(n) != 3) {
-     cli::cli_abort("n should contain exactly 3 values."))
+     cli::cli_abort("n should contain exactly 3 values.")
   }
 
   if (any(n < 0)) {
-     cli::cli_abort("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
   theta <- stats::runif(n[1], 0.20, 0.90 * pi)
@@ -559,7 +579,8 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
 
   theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
@@ -573,7 +594,8 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
 
   x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
@@ -585,7 +607,8 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
   df <- dplyr::bind_rows(df1, df2, df3)
 
@@ -623,16 +646,16 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 
   if (p < 4) {
-     cli::cli_abort("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
 
   }
 
   if (length(n) != 4) {
-     cli::cli_abort("n should contain exactly 4 values."))
+     cli::cli_abort("n should contain exactly 4 values.")
   }
 
   if (any(n < 0)) {
-     cli::cli_abort("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
 
@@ -646,7 +669,8 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
   theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
 
@@ -658,7 +682,8 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
   x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
   x2 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
@@ -668,7 +693,8 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
 
   x1 <- stats::rnorm(n[4], mean = 1, sd = 1)
@@ -679,7 +705,8 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
   df4 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster4")
 
   df <- dplyr::bind_rows(df1, df2, df3, df4)
 
@@ -721,15 +748,15 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 gen_two_curvy <- function(n = c(300, 200), p = 4) {
 
   if (p < 4) {
-     cli::cli_abort("p should be 4 or greater."))
+     cli::cli_abort("p should be 4 or greater.")
   }
 
   if (length(n) != 2) {
-     cli::cli_abort("n should contain exactly 2 values."))
+     cli::cli_abort("n should contain exactly 2 values.")
   }
 
   if (any(n < 0)) {
-     cli::cli_abort("Values in n should be positive."))
+     cli::cli_abort("Values in n should be positive.")
   }
 
 
@@ -739,7 +766,8 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
     x1 = cos(theta1) + stats::rnorm(n[1], 1, 0.06),
     x2 = sin(theta1) + stats::rnorm(n[1], 1, 0.06),
     x3 = cos(theta1) + stats::rnorm(n[1], 1, 0.06),
-    x4 = sin(theta1) + stats::rnorm(n[1], 1, 0.06)
+    x4 = sin(theta1) + stats::rnorm(n[1], 1, 0.06),
+    cluster = "cluster1"
   )
 
   theta2 <- stats::runif(n[2], 0.20, 0.90 * pi)
@@ -748,7 +776,8 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
     x1 = cos(-theta2) + stats::rnorm(n[2], 1, 0.06),
     x2 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06),
     x3 = cos(-theta2) + stats::rnorm(n[2], 1, 0.06),
-    x4 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06)
+    x4 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    cluster = "cluster2"
   )
 
   df <- dplyr::bind_rows(df1, df2)
