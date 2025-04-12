@@ -132,11 +132,17 @@ gen_mobiusGau <- function(n = c(200, 100), p = 4) {
     cli::cli_abort("Values in n should be positive.")
   }
 
-  df1 <- gen_mobius(n = n[1], p = p)
+  df1 <- gen_mobius(n = n[1], p = p) |>
+    dplyr::mutate(cluster = "cluster1")
 
   ## To add background noise
-  df2 <- gen_gaussian(n = n[2], p = p, m = rep(0, p), s = diag(p) * 0.01)
+  df2 <- gen_gaussian(n = n[2], p = p, m = rep(0, p), s = diag(p) * 0.01) |>
+    dplyr::mutate(cluster = "cluster2")
+
   df <- dplyr::bind_rows(df1, df2)
+
+  ## Swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
