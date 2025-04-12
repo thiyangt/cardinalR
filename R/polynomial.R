@@ -138,10 +138,6 @@ gen_crescent <- function(n = 500, p = 4) {
 #' data <- gen_curvyCylinder(n = 500, p = 4, r = 1, h = 10, a = 1)
 gen_curvyCylinder <- function(n = 500, p = 4, r = 1, h = 10, a = 1) {
 
-  # Step 1: gen cylindrical coordinates in 2D (x1, x2)
-  theta <- stats::runif(n, 0, 3 * pi)  # Random angle for the circular base
-  df <- matrix(0, nrow = n, ncol = p)
-
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
   }
@@ -149,6 +145,10 @@ gen_curvyCylinder <- function(n = 500, p = 4, r = 1, h = 10, a = 1) {
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
   }
+
+  # Step 1: gen cylindrical coordinates in 2D (x1, x2)
+  theta <- stats::runif(n, 0, 3 * pi)  # Random angle for the circular base
+  df <- matrix(0, nrow = n, ncol = p)
 
   df[, 1] <- r * cos(theta)            # x1 coordinate (circular)
   df[, 2] <- r * sin(theta)            # x2 coordinate (circular)
@@ -284,16 +284,21 @@ gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r =
   df[, 1] <- r * cos(theta)  # x1 is a circular pattern
   df[, 2] <- r * sin(theta)  # x2 is a circular pattern
   df[, 3] <- a * theta + runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
-  df[, 4] <- b * sin(c * theta)          # x4 oscillates with sin(k * theta)
-
 
   # Extend to higher dimensions
-  if (p > 4) {
-    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 5:p)
+  if (p > 3) {
+    if (p == 4) {
+      df[, 4] <- b * sin(c * theta)          # x4 oscillates with sin(k * theta)
 
-    df <- cbind(df, noise_df)
+    } else {
+
+      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 5:p)
+
+      df <- cbind(df, noise_df)
+
+    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
@@ -339,18 +344,21 @@ gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_rad
   # Conical shape in the third dimension (x3) - linear increase with height
   df[, 3] <- cone_height * theta / max(theta) + runif(n, -0.1, 0.6) # Scaling height to range from 0 to cone_height
 
-  # Spiral in the fourth dimension (x4) - a helical shape based on the cone
-  df[, 4] <- cone_radius * sin(2 * theta) + runif(n, -0.1, 0.6) # Helical movement
-
   # Extend to higher dimensions
-  if (p > 4) {
+  if (p > 3) {
+    if (p == 4) {
+      # Spiral in the fourth dimension (x4) - a helical shape based on the cone
+      df[, 4] <- cone_radius * sin(2 * theta) + runif(n, -0.1, 0.6) # Helical movement
 
-    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 5:p)
+    } else {
 
-    df <- cbind(df, noise_df)
+      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 5:p)
 
+      df <- cbind(df, noise_df)
+
+    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
@@ -393,18 +401,21 @@ gen_nonlinearHyperbola <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
   # # Apply non-linear distortions for the second dimension
   df[, 2] <-  (hc /  df[, 1]) + non_fac * sin( df[, 1])  # Hyperbola + sine curve distortion
 
-  # Define additional dimensions for 4D
-  df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.1, 0.1)   # A cosine-based curve
-
   # Extend to higher dimensions
-  if (p > 4) {
+  if (p > 3) {
+    if(p == 4) {
+      # Define additional dimensions for 4D
+      df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.1, 0.1)   # A cosine-based curve
 
-    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 5:p)
+    } else {
 
-    df <- cbind(df, noise_df)
+      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 5:p)
 
+      df <- cbind(df, noise_df)
+
+    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
