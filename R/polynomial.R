@@ -1,4 +1,16 @@
-gen_curv_4d <- function(n = 500, p = 4) {
+#' Generate Curvy
+#'
+#' This function generates a dataset representing a structure with a curvy pattern.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a curvy structure.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' curvy_data <- gen_curve(n = 500, p = 4)
+gen_curve <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -11,22 +23,22 @@ gen_curv_4d <- function(n = 500, p = 4) {
   df <- matrix(0, nrow = n, ncol = p)
   # gen the core curvilinear pattern in 2D
   df[, 1] <- stats::runif(n, 0, 2)
-  df[, 2] <- -(x1^2) + stats::runif(n, 0, 0.5)
+  df[, 2] <- -(df[, 1]^2) + stats::runif(n, 0, 0.5)
 
   if (p > 2){
 
     if(p==3) {
       # Define additional dimensions for 4D
-      df[, 3] <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 3] <- -sin(df[, 1] * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
 
     } else if (p == 4) {
-      df[, 3] <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
-      df[, 4] <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+      df[, 3] <- -sin(df[, 1] * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 4] <- cos(df[, 1] * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
 
     } else {
 
-      df[, 3] <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
-      df[, 4] <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+      df[, 3] <- -sin(df[, 1] * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 4] <- cos(df[, 1] * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
 
       noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
         as.matrix()
@@ -46,67 +58,64 @@ gen_curv_4d <- function(n = 500, p = 4) {
 
 }
 
-# Function to gen a curvilinear cluster in 4D space with an offset
-gen_curv2_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
-  if (n <= 0) {
-    stop("Number of points should be a positive number.")
+
+#' Generate Crescent
+#'
+#' This function generates a dataset representing a structure with a Crescent pattern.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a Crescent structure.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_crescent(n = 500, p = 4)
+gen_crescent <- function(n = 500, p = 4) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
   }
 
-  # gen the core curvilinear pattern in 2D
-  x1 <- stats::runif(n, 0, 2)
-  x2 <- -(x1^2 + stats::runif(n, 0, 1)) + stats::runif(n, 0, 0.5)
-
-  # Define additional dimensions for 4D
-  x3 <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
-  x4 <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
-
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
-
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
-
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
-  return(df)
-
-}
-
-# Function to gen a noise-free 4D crescent
-gen_crescent_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
-
-  if (n < 0) {
-    stop(cli::cli_alert_danger("n should be positive."))
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
   }
 
   # Step 1: gen angles for a semi-circle
   theta <- seq(pi / 6, 12 * pi / 6, length.out = n)  # evenly spaced angles for crescent
 
-  # Step 2: gen points in 2D crescent shape
-  x1 <- cos(theta)  # x-coordinate on the crescent (cosine function)
-  x2 <- sin(theta)  # y-coordinate on the crescent (sine function)
+  df <- matrix(0, nrow = n, ncol = p)
+  # gen the core curvilinear pattern in 2D
+  df[, 1] <- cos(theta)
+  df[, 2] <- sin(theta)
 
-  # Step 3: Add additional 2 dimensions for 4D
-  # x3 could represent an increasing function of theta
-  x3 <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+  if (p > 2){
 
-  # x4 could be a linear transformation of theta
-  x4 <- 2 * theta + rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
+    if(p==3) {
+      # Define additional dimensions for 4D
+      df[, 3] <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
 
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
+    } else if (p == 4) {
+      df[, 3] <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+      df[, 4] <- 2 * theta + rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
 
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
+    } else {
+
+      df[, 3] <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+      df[, 4] <- 2 * theta + rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
+
+      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 5:p)
+
+      df <- cbind(df, noise_df)
+
+    }
+
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
