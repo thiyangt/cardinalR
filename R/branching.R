@@ -33,7 +33,8 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
   df1 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster1")
 
   x1 <- stats::runif(n[2], 0, 2)
   x2 <- (x1^3 + stats::runif(n[2], 0, 6)) + stats::runif(n[2], 0, 0.2)
@@ -43,7 +44,8 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
   df2 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster2")
 
   x1 <- stats::runif(n[3], -2, 0)
   x2 <- -(x1^3 + stats::runif(n[3], 0, 6)) + stats::runif(n[3], 0, 0.2) + 10
@@ -53,22 +55,23 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
   df3 <- tibble::tibble(x1 = x1,
                         x2 = x2,
                         x3 = x3,
-                        x4 = x4)
+                        x4 = x4,
+                        cluster = "cluster3")
 
   df <- dplyr::bind_rows(df1, df2, df3)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
+
+  ## Swap rows
+  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
@@ -153,16 +156,13 @@ gen_fivebranches <- function(n = c(200, 100, 300, 400, 300), p = 4) {
 
   df <- bind_rows(df1, df2, df3, df4, df5)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -270,16 +270,13 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 
   df <- rbind(df1, df2, df3, df4, df5, df6, df7)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -366,16 +363,13 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
 
   df <- bind_rows(df1, df2, df3, df4, df5)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -493,16 +487,13 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
 
   df <- dplyr::bind_rows(df1, df2, df3, df4, df5, df6, df7, df8)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- dplyr::bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -580,16 +571,13 @@ gen_curvy_branch_clust <- function(n = c(200, 200, 100), p = 4) {
 
   df <- dplyr::bind_rows(df1, df2, df3)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- dplyr::bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -674,16 +662,13 @@ gen_curvy_branch_clust_bkg <- function(n = c(200, 200, 100, 50), p = 4) {
 
   df <- dplyr::bind_rows(df1, df2, df3, df4)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- dplyr::bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -744,16 +729,13 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
 
   df <- dplyr::bind_rows(df1, df2)
 
-  if (p > 4) {
+  if (p > 5) {
 
-    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    noise_mat <- gen_noise_dims(
-      n = NROW(df), num_noise = p - 4,
-      min_n = -0.5, max_n = 0.5
-    )
-    colnames(noise_mat) <- paste0("x", 5:p)
-    df <- dplyr::bind_cols(df, noise_mat)
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
 
   }
 
@@ -761,35 +743,3 @@ gen_two_curvy <- function(n = c(300, 200), p = 4) {
   return(df)
 
 }
-
-extend_nonlinear <- function(n, d) {
-  if (length(n) != 1) {
-    stop("n should be a single integer specifying the number of points")
-  }
-  if (d < 2) {
-    stop("d must be at least 2")
-  }
-
-  x1 <- stats::runif(n[1], -2, 2)
-  coords <- matrix(0, nrow = n[1], ncol = d)
-  coords[, 1] <- x1
-
-  # Second dimension (as in the original code)
-  coords[, 2] <- -(x1^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
-
-  # Extend to higher dimensions
-  if (d > 2) {
-    for (i in 3:d) {
-      # Introduce non-linearity based on x1 and add random noise
-      # You can experiment with different non-linear functions and noise levels
-      power <- sample(2:5, 1) # Random power for the polynomial
-      scale_factor <- runif(1, 0.5, 2) # Random scaling
-      noise_level <- runif(1, 0, 1)
-
-      coords[, i] <- scale_factor * ((-1)^(i %/% 2)) * (x1^power) + stats::runif(n[1], -noise_level, noise_level * 2)
-    }
-  }
-
-  return(coords)
-}
-
