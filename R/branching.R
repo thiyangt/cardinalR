@@ -336,7 +336,7 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
     df4 <- df4 |> dplyr::mutate(cluster = "cluster4")
     df5 <- df5 |> dplyr::mutate(cluster = "cluster5")
     df6 <- df6 |> dplyr::mutate(cluster = "cluster6")
-    df6 <- df6 |> dplyr::mutate(cluster = "cluster6")
+    df7 <- df7 |> dplyr::mutate(cluster = "cluster7")
 
     df <- dplyr::bind_rows(df1, df2, df3, df4, df5, df6, df7)
 
@@ -371,8 +371,8 @@ gen_sevenbranches <- function(n = c(200, 100, 250, 300, 150, 400, 50), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' four_branching_data <- gen_fourbranches(n = c(200, 300, 150, 250), p = 4)
-gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
+#' four_branching_data <- gen_fourbranchesBkg(n = c(200, 300, 150, 250), p = 4)
+gen_fourbranchesBkg <- function(n = c(200, 300, 150, 250), p = 4) {
 
   if (p < 4) {
      cli::cli_abort("p should be 4 or greater.")
@@ -387,70 +387,90 @@ gen_fourbranches <- function(n = c(200, 300, 150, 250), p = 4) {
      cli::cli_abort("Values in n should be positive.")
   }
 
-  x1 <- stats::runif(n[1], -5, 1)
-  x2 <- (exp(x1) + stats::runif(n[1], 0, 0.1)) + stats::runif(n[1], 0, 0.2)
-  x3 <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
-  x4 <- rep(0, n[1]) - stats::rnorm(n[1], 10, 0.03)
+  df1 <- matrix(0, nrow = n[1], ncol = p)
+  df1[, 1] <- stats::runif(n[1], -5, 1)
+  df1[, 2] <- (exp(df1[, 1]) + stats::runif(n[1], 0, 0.1)) + stats::runif(n[1], 0, 0.2)
+  df1[, 3] <- rep(0, n[1]) + stats::rnorm(n[1], 10, 0.03)
 
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster1")
+  df2 <- matrix(0, nrow = n[2], ncol = p)
+  df2[, 1] <- stats::runif(n[2], -1, 5)
+  df2[, 2] <- (exp(-df2[, 1]) + stats::runif(n[2], 0, 0.1)) + stats::runif(n[2], 0, 0.2)
+  df2[, 3] <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
 
-  x1 <- stats::runif(n[2], -1, 5)
-  x2 <- (exp(-x1) + stats::runif(n[2], 0, 0.1)) + stats::runif(n[2], 0, 0.2)
-  x3 <- rep(0, n[2]) + stats::rnorm(n[2], 10, 0.03)
-  x4 <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
+  df3 <- matrix(0, nrow = n[3], ncol = p)
+  df3[, 1] <- stats::runif(n[3], 0, 5)
+  df3[, 2] <- (log(df3[, 1]) + stats::runif(n[3], 0, 0.1)) + stats::runif(n[3], 0, 0.2)
+  df3[, 3] <- rep(0, n[3]) + stats::rnorm(n[3], 10, 0.03)
 
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster2")
+  df4 <- matrix(0, nrow = n[4], ncol = p)
+  df4[, 1] <- stats::runif(n[4], -5, 0)
+  df4[, 2] <- (log(-df4[, 1]) + stats::runif(n[4], 0, 0.1)) + stats::runif(n[4], 0, 0.2)
+  df4[, 3] <- rep(0, n[4]) + stats::rnorm(n[4], 10, 0.03)
 
-  x1 <- stats::runif(n[3], 0, 5)
-  x2 <- (log(x1) + stats::runif(n[3], 0, 0.1)) + stats::runif(n[3], 0, 0.2)
-  x3 <- rep(0, n[3]) + stats::rnorm(n[3], 10, 0.03)
-  x4 <- rep(0, n[3]) - stats::rnorm(n[3], 10, 0.03)
+  df5 <- matrix(0, nrow = sum(n) * 0.1, ncol = p)
+  df5[, 1] <- stats::runif(sum(n) * 0.1, -5, 0)
+  df5[, 2] <- stats::runif(sum(n) * 0.1, 0, 0.8) + stats::runif(sum(n) * 0.1, 0, 0.8)
+  df5[, 3] <- rep(0, sum(n) * 0.1) + stats::rnorm(sum(n) * 0.1, 10, 0.03)
 
-  df3 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster3")
+  if(p == 3) {
 
-  x1 <- stats::runif(n[4], -5, 0)
-  x2 <- (log(-x1) + stats::runif(n[4], 0, 0.1)) + stats::runif(n[4], 0, 0.2)
-  x3 <- rep(0, n[4]) + stats::rnorm(n[4], 10, 0.03)
-  x4 <- rep(0, n[4]) - stats::rnorm(n[4], 10, 0.03)
+    df1 <- tibble::as_tibble(df1, .name_repair = "minimal")
+    df2 <- tibble::as_tibble(df2, .name_repair = "minimal")
+    df3 <- tibble::as_tibble(df3, .name_repair = "minimal")
+    df4 <- tibble::as_tibble(df4, .name_repair = "minimal")
+    df5 <- tibble::as_tibble(df5, .name_repair = "minimal")
 
-  df4 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster4")
+    names(df1) <- paste0("x", 1:3)
+    names(df2) <- paste0("x", 1:3)
+    names(df3) <- paste0("x", 1:3)
+    names(df4) <- paste0("x", 1:3)
+    names(df5) <- paste0("x", 1:3)
 
-  x1 <- stats::runif(sum(n) * 0.1, -5, 0)
-  x2 <- stats::runif(sum(n) * 0.1, 0, 0.8) + stats::runif(sum(n) * 0.1, 0, 0.8)
-  x3 <- rep(0, sum(n) * 0.1) + stats::rnorm(sum(n) * 0.1, 10, 0.03)
-  x4 <- rep(0, sum(n) * 0.1) - stats::rnorm(sum(n) * 0.1, 10, 0.03)
+    df1 <- df1 |> dplyr::mutate(cluster = "cluster1")
+    df2 <- df2 |> dplyr::mutate(cluster = "cluster2")
+    df3 <- df3 |> dplyr::mutate(cluster = "cluster3")
+    df4 <- df4 |> dplyr::mutate(cluster = "cluster4")
+    df5 <- df5 |> dplyr::mutate(cluster = "bkg_noise")
 
-  df5 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster5")
+    df <- dplyr::bind_rows(df1, df2, df3, df4, df5)
 
-  df <- dplyr::bind_rows(df1, df2, df3, df4, df5)
+  } else { # p >=4
 
-  if (p > 5) {
+    df1[, 4] <- rep(0, n[1]) - stats::rnorm(n[1], 10, 0.03)
+    df2[, 4] <- rep(0, n[2]) - stats::rnorm(n[2], 10, 0.03)
+    df3[, 4] <- rep(0, n[3]) - stats::rnorm(n[3], 10, 0.03)
+    df4[, 4] <- rep(0, n[4]) - stats::rnorm(n[4], 10, 0.03)
+    df5[, 4] <- rep(0, sum(n) * 0.1) - stats::rnorm(sum(n) * 0.1, 10, 0.03)
 
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
-    colnames(noise_df) <- paste0("x", 5:p)
+    df1 <- tibble::as_tibble(df1, .name_repair = "minimal")
+    df2 <- tibble::as_tibble(df2, .name_repair = "minimal")
+    df3 <- tibble::as_tibble(df3, .name_repair = "minimal")
+    df4 <- tibble::as_tibble(df4, .name_repair = "minimal")
+    df5 <- tibble::as_tibble(df5, .name_repair = "minimal")
 
-    df <- dplyr::bind_cols(df, noise_df) |>
-      dplyr::select(dplyr::starts_with("x"), "cluster")
+    names(df1) <- paste0("x", 1:4)
+    names(df2) <- paste0("x", 1:4)
+    names(df3) <- paste0("x", 1:4)
+    names(df4) <- paste0("x", 1:4)
+    names(df5) <- paste0("x", 1:4)
+
+    df1 <- df1 |> dplyr::mutate(cluster = "cluster1")
+    df2 <- df2 |> dplyr::mutate(cluster = "cluster2")
+    df3 <- df3 |> dplyr::mutate(cluster = "cluster3")
+    df4 <- df4 |> dplyr::mutate(cluster = "cluster4")
+    df5 <- df5 |> dplyr::mutate(cluster = "bkg_noise")
+
+    df <- dplyr::bind_rows(df1, df2, df3, df4, df5)
+
+    if (p > 4) {
+
+      noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+      names(noise_df) <- paste0("x", 5:p)
+
+      df <- dplyr::bind_cols(df, noise_df) |>
+        dplyr::select(dplyr::starts_with("x"), "cluster")
+
+    }
 
   }
 
