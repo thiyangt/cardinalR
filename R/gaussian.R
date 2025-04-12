@@ -11,8 +11,8 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' gaussian_data <- gen_Gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4))
-gen_Gaussian <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4)) {
+#' gaussian_data <- gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4))
+gen_gaussian <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4)) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")

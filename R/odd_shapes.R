@@ -106,3 +106,39 @@ gen_pyrHoles <- function(n = 500, p = 4) {
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
+
+#' Generate Gaussian cluster with the Mobius Cluster
+#'
+#' This function generates a dataset consisting of a mobius cluster and Gaussian cluster.
+#'
+#' @param n A numeric vector (default: c(200, 100)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the mobius cluster and Gaussian cluster.
+#' @export
+#'
+#' @examples
+#' data <- gen_mobiusGau(n = c(200, 100), p = 4)
+gen_mobiusGau <- function(n = c(200, 100), p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly two values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df1 <- gen_mobius(n = n[1], p = p)
+
+  ## To add background noise
+  df2 <- gen_gaussian(n = n[2], p = p, m = rep(0, p), s = diag(p) * 0.01)
+  df <- dplyr::bind_rows(df1, df2)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
