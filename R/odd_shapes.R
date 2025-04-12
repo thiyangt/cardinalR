@@ -371,3 +371,57 @@ gen_intersectDiniSurface <- function(n = c(500, 500), p = 4) {
 
 }
 
+#' Generate two roman surface shaped clusters
+#'
+#' This function generates tow roman surface shaped clusters
+#'
+#' @param n A numeric vector (default: c(500, 500)) representing the sample sizes.
+#' @param p A numeric value (default: 3) representing the number of dimensions.
+#'
+#' @return A data containing the tow roman surface shaped clusters.
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_clustRomanSurface(n = c(500, 500), p = 4)
+#' @export
+gen_clustRomanSurface <- function(n = c(500, 500), p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly 2 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df1 <- tibble::as_tibble(geozoo::roman.surface(n = n[1])$points + 1, .name_repair = "minimal") |>
+    rlang::set_names(paste0("x", 1:3)) |>
+    dplyr::mutate(cluster = "cluster1")
+
+  df2 <- tibble::as_tibble(geozoo::roman.surface(n = n[2])$points[,c(3, 1, 2)], .name_repair = "minimal") |>
+    rlang::set_names(paste0("x", 1:3)) |>
+    dplyr::mutate(cluster = "cluster2")
+
+  df <- dplyr::bind_rows(df1, df2)
+
+  if (p > 3) {
+
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3))
+    colnames(noise_df) <- paste0("x", 4:p)
+
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  }
+
+  ## Swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
