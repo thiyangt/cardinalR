@@ -1,3 +1,15 @@
+#' Generate a 3-D Mobius in High Dimensions
+#'
+#' This function generates a dataset representing a structure with a mobius.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a mobius structure.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' curvy_data <- gen_mobius(n = 500, p = 4)
 gen_mobius <- function(n = 500, p = 4) {
 
   if (p < 3) {
