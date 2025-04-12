@@ -1,27 +1,45 @@
-gen_curv_4d <- function(n = 500, offset = c(0, 0, 0, 0)) {
+gen_curv_4d <- function(n = 500, p = 4) {
 
-  if (n < 0) {
-    stop(cli::cli_alert_danger("n should be positive."))
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
   }
 
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  df <- matrix(0, nrow = n, ncol = p)
   # gen the core curvilinear pattern in 2D
-  x1 <- stats::runif(n, 0, 2)
-  x2 <- -(x1^2) + stats::runif(n, 0, 0.5)
+  df[, 1] <- stats::runif(n, 0, 2)
+  df[, 2] <- -(x1^2) + stats::runif(n, 0, 0.5)
 
-  # Define additional dimensions for 4D
-  x3 <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
-  x4 <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+  if (p > 2){
 
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
+    if(p==3) {
+      # Define additional dimensions for 4D
+      df[, 3] <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
 
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
+    } else if (p == 4) {
+      df[, 3] <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 4] <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+
+    } else {
+
+      df[, 3] <- -sin(x1 * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 4] <- cos(x1 * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+
+      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 5:p)
+
+      df <- cbind(df, noise_df)
+
+    }
+
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
