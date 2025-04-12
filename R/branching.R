@@ -25,31 +25,36 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
      cli::cli_abort("Values in n should be positive.")
   }
 
-  df1 <- matrix(0, nrow = n[1], ncol = p + 1)
+  df1 <- matrix(0, nrow = n[1], ncol = p)
   df1[, 1] <- stats::runif(n[1], -2, 2)
   df1[, 2] <- -(df1[, 1]^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
   df1[, 3] <- stats::rnorm(n[1], 10, 0.1)
 
-  df2 <- matrix(0, nrow = n[2], ncol = p + 1)
+  df2 <- matrix(0, nrow = n[2], ncol = p)
   df2[, 1] <- stats::runif(n[2], 0, 2)
   df2[, 2] <- (df2[, 1]^3 + stats::runif(n[2], 0, 6)) + stats::runif(n[2], 0, 0.2)
   df2[, 3] <- stats::rnorm(n[2], 10, 0.1)
 
-  df3 <- matrix(0, nrow = n[3], ncol = p + 1)
+  df3 <- matrix(0, nrow = n[3], ncol = p)
   df3[, 1] <- stats::runif(n[3], -2, 0)
   df3[, 2] <- -(df3[, 1]^3 + stats::runif(n[3], 0, 6)) + stats::runif(n[3], 0, 0.2) + 10
   df3[, 3] <- stats::rnorm(n[3], 10, 0.1)
 
   if(p == 3) {
 
-    df1[, 4] <- "cluster1"
-    df2[, 4] <- "cluster2"
-    df3[, 4] <- "cluster3"
+    df1 <- tibble::as_tibble(df1, .name_repair = "minimal")
+    df2 <- tibble::as_tibble(df2, .name_repair = "minimal")
+    df3 <- tibble::as_tibble(df3, .name_repair = "minimal")
 
-    df <- rbind(df1, df2, df3) |>
-      tibble::as_tibble(.name_repair = "minimal")
+    names(df1) <- paste0("x", 1:3)
+    names(df2) <- paste0("x", 1:3)
+    names(df3) <- paste0("x", 1:3)
 
-    names(df) <- append(paste0("x", 1:3), "cluster")
+    df1 <- df1 |> dplyr::mutate(cluster = "cluster1")
+    df2 <- df2 |> dplyr::mutate(cluster = "cluster2")
+    df3 <- df3 |> dplyr::mutate(cluster = "cluster3")
+
+    df <- dplyr::bind_rows(df1, df2, df3)
 
   } else { # p >=4
 
@@ -57,19 +62,22 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
     df2[, 4] <- stats::rnorm(n[2], 10, 0.1)
     df3[, 4] <- stats::rnorm(n[3], 10, 0.1)
 
-    df1[, 5] <- "cluster1"
-    df2[, 5] <- "cluster2"
-    df3[, 5] <- "cluster3"
+    df1 <- tibble::as_tibble(df1, .name_repair = "minimal")
+    df2 <- tibble::as_tibble(df2, .name_repair = "minimal")
+    df3 <- tibble::as_tibble(df3, .name_repair = "minimal")
+    names(df1) <- paste0("x", 1:4)
+    names(df2) <- paste0("x", 1:4)
+    names(df3) <- paste0("x", 1:4)
 
-    df <- rbind(df1, df2, df3) |>
-      tibble::as_tibble(.name_repair = "minimal")
+    df1 <- df1 |> dplyr::mutate(cluster = "cluster1")
+    df2 <- df2 |> dplyr::mutate(cluster = "cluster2")
+    df3 <- df3 |> dplyr::mutate(cluster = "cluster3")
 
-    names(df) <- append(paste0("x", 1:4), "cluster")
-
+    df <- dplyr::bind_rows(df1, df2, df3)
     if (p > 4) {
 
       noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
-      colnames(noise_df) <- paste0("x", 5:p)
+      names(noise_df) <- paste0("x", 5:p)
 
       df <- dplyr::bind_cols(df, noise_df) |>
         dplyr::select(dplyr::starts_with("x"), "cluster")
