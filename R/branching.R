@@ -25,48 +25,56 @@ gen_threebranches <- function(n = c(200, 500, 300), p = 4) {
      cli::cli_abort("Values in n should be positive.")
   }
 
-  x1 <- stats::runif(n[1], -2, 2)
-  x2 <- -(x1^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
-  x3 <- stats::rnorm(n[1], 10, 0.1)
-  x4 <- stats::rnorm(n[1], 10, 0.1)
+  df1 <- matrix(0, nrow = n[1], ncol = p + 1)
+  df1[, 1] <- stats::runif(n[1], -2, 2)
+  df1[, 2] <- -(df1[, 1]^3 + stats::runif(n[1], 0, 6)) + stats::runif(n[1], 0, 0.2)
+  df1[, 3] <- stats::rnorm(n[1], 10, 0.1)
 
-  df1 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster1")
+  df2 <- matrix(0, nrow = n[2], ncol = p + 1)
+  df2[, 1] <- stats::runif(n[2], 0, 2)
+  df2[, 2] <- (df2[, 1]^3 + stats::runif(n[2], 0, 6)) + stats::runif(n[2], 0, 0.2)
+  df2[, 3] <- stats::rnorm(n[2], 10, 0.1)
 
-  x1 <- stats::runif(n[2], 0, 2)
-  x2 <- (x1^3 + stats::runif(n[2], 0, 6)) + stats::runif(n[2], 0, 0.2)
-  x3 <- stats::rnorm(n[2], 10, 0.1)
-  x4 <- stats::rnorm(n[2], 10, 0.1)
+  df3 <- matrix(0, nrow = n[3], ncol = p + 1)
+  df3[, 1] <- stats::runif(n[3], -2, 0)
+  df3[, 2] <- -(df3[, 1]^3 + stats::runif(n[3], 0, 6)) + stats::runif(n[3], 0, 0.2) + 10
+  df3[, 3] <- stats::rnorm(n[3], 10, 0.1)
 
-  df2 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster2")
+  if(p == 3) {
 
-  x1 <- stats::runif(n[3], -2, 0)
-  x2 <- -(x1^3 + stats::runif(n[3], 0, 6)) + stats::runif(n[3], 0, 0.2) + 10
-  x3 <- stats::rnorm(n[3], 10, 0.1)
-  x4 <- stats::rnorm(n[3], 10, 0.1)
+    df1[, 4] <- "cluster1"
+    df2[, 4] <- "cluster2"
+    df3[, 4] <- "cluster3"
 
-  df3 <- tibble::tibble(x1 = x1,
-                        x2 = x2,
-                        x3 = x3,
-                        x4 = x4,
-                        cluster = "cluster3")
+    df <- rbind(df1, df2, df3) |>
+      tibble::as_tibble(.name_repair = "minimal")
 
-  df <- dplyr::bind_rows(df1, df2, df3)
+    names(df) <- append(paste0("x", 1:3), "cluster")
 
-  if (p > 5) {
+  } else { # p >=4
 
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
-    colnames(noise_df) <- paste0("x", 5:p)
+    df1[, 4] <- stats::rnorm(n[1], 10, 0.1)
+    df2[, 4] <- stats::rnorm(n[2], 10, 0.1)
+    df3[, 4] <- stats::rnorm(n[3], 10, 0.1)
 
-    df <- dplyr::bind_cols(df, noise_df) |>
-      dplyr::select(dplyr::starts_with("x"), "cluster")
+    df1[, 5] <- "cluster1"
+    df2[, 5] <- "cluster2"
+    df3[, 5] <- "cluster3"
+
+    df <- rbind(df1, df2, df3) |>
+      tibble::as_tibble(.name_repair = "minimal")
+
+    names(df) <- append(paste0("x", 1:4), "cluster")
+
+    if (p > 4) {
+
+      noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+      colnames(noise_df) <- paste0("x", 5:p)
+
+      df <- dplyr::bind_cols(df, noise_df) |>
+        dplyr::select(dplyr::starts_with("x"), "cluster")
+
+    }
 
   }
 
