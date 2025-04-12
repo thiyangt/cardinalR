@@ -482,3 +482,265 @@ gen_overlapTorus <- function(n = c(500, 500), p = 4) {
 
 }
 
+#' Generate Curvy Branching Clusters with Noise
+#'
+#' This function generates data with curvy branching clusters along with added noise.
+#'
+#' @param n The total number of data points to be generated.
+#' @param num_noise The number of additional noise dimensions to be generated.
+#' @param min_n The minimum value for the noise added to the data points.
+#' @param max_n The maximum value for the noise added to the data points.
+#'
+#' @return A matrix containing the generated data, with each row representing a data point.
+#' @export
+#'
+#' @examples
+#'
+#' # Generate curvy branching clusters with noise with custom parameters
+#' set.seed(20240412)
+#' data <- gen_twoCurvy(n = c(300, 200), p = 4)
+gen_twoCurvy <- function(n = c(300, 200), p = 4) {
+
+  if (p < 4) {
+    cli::cli_abort("p should be 4 or greater.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly 2 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+
+  theta1 <- stats::runif(n[1], 0.20, 0.90 * pi)
+
+  df1 <- tibble::tibble(
+    x1 = cos(theta1) + stats::rnorm(n[1], 1, 0.06),
+    x2 = sin(theta1) + stats::rnorm(n[1], 1, 0.06),
+    x3 = cos(theta1) + stats::rnorm(n[1], 1, 0.06),
+    x4 = sin(theta1) + stats::rnorm(n[1], 1, 0.06),
+    cluster = "cluster1"
+  )
+
+  theta2 <- stats::runif(n[2], 0.20, 0.90 * pi)
+
+  df2 <- tibble::tibble(
+    x1 = cos(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    x2 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    x3 = cos(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    x4 = sin(-theta2) + stats::rnorm(n[2], 1, 0.06),
+    cluster = "cluster2"
+  )
+
+  df <- dplyr::bind_rows(df1, df2)
+
+  if (p > 5) {
+
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
+
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  }
+
+  ## Swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+
+
+
+#' Generate Curvy Branching Cluster Data
+#'
+#' This function generates two curvy clusters and one Gaussian cluster in the middle.
+#'
+#' @param n A numeric vector (default: c(200, 200, 100)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing two curvy clusters and one Gaussian cluster.
+#' @export
+#'
+#' @examples
+#'
+#' # Generate curvy branching cluster data with custom parameters
+#' set.seed(20240412)
+#' data <- gen_twoCurvyGau(n = c(200, 200, 100), p = 4)
+gen_twoCurvyGau <- function(n = c(200, 200, 100), p = 4) {
+
+  if (p < 4) {
+    cli::cli_abort("p should be 4 or greater.")
+  }
+
+  if (length(n) != 3) {
+    cli::cli_abort("n should contain exactly 3 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
+
+
+  x1 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x2 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
+  x3 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x4 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
+
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster1")
+
+
+  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
+
+
+  x1 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x2 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x3 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x4 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster2")
+
+
+  x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x2 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x3 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x4 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster3")
+
+  df <- dplyr::bind_rows(df1, df2, df3)
+
+  if (p > 5) {
+
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
+
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  }
+
+  ## Swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+#' Generate Curvy Branching Cluster Data with Background Noise
+#'
+#' This function generates data with two curvy clusters and one Gaussian cluster with background noise.
+#'
+#' @param n A numeric vector (default: c(200, 200, 100, 50)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing two curvy clusters and one Gaussian cluster with background noise.
+#' @export
+#'
+#' @examples
+#' # Generate curvy branching cluster data with background noise with custom parameters
+#' set.seed(20240412)
+#' data <- gen_twoCurvyGauBkg(n = c(200, 200, 100, 50), p = 4)
+gen_twoCurvyGauBkg <- function(n = c(200, 200, 100, 50), p = 4) {
+
+  if (p < 4) {
+    cli::cli_abort("p should be 4 or greater.")
+
+  }
+
+  if (length(n) != 4) {
+    cli::cli_abort("n should contain exactly 4 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+
+  theta <- stats::runif(n[1], 0.20, 0.90 * pi)
+
+  x1 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x2 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
+  x3 <- cos(theta) + stats::rnorm(n[1], 1, 0.06)
+  x4 <- sin(theta) + stats::rnorm(n[1], 1, 0.06)
+
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster1")
+
+  theta1 <- stats::runif(n[2], 0.20, 0.90 * pi)
+
+  x1 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x2 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x3 <- cos(-theta1) + stats::rnorm(n[2], 1, 0.06)
+  x4 <- sin(-theta1) + stats::rnorm(n[2], 1, 0.06)
+
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster2")
+
+  x1 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x2 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x3 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+  x4 <- stats::rnorm(n[3], mean = 1, sd = 0.08)
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster3")
+
+
+  x1 <- stats::rnorm(n[4], mean = 1, sd = 1)
+  x2 <- stats::rnorm(n[4], mean = 1, sd = 1)
+  x3 <- stats::rnorm(n[4], mean = 1, sd = 1)
+  x4 <- stats::rnorm(n[4], mean = 1, sd = 1)
+
+  df4 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4,
+                        cluster = "cluster4")
+
+  df <- dplyr::bind_rows(df1, df2, df3, df4)
+
+  if (p > 5) {
+
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4))
+    colnames(noise_df) <- paste0("x", 5:p)
+
+    df <- dplyr::bind_cols(df, noise_df) |>
+      dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  }
+
+  ## Swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
