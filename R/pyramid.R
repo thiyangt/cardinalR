@@ -48,7 +48,7 @@ gen_pyr <- function(n = 500, p = 4) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param h A numeric value (default: 5) representing the h of the pyramid.
+#' @param h A numeric value (default: 5) representing the height of the pyramid.
 #' @param l_vec A numeric vector (default: c(3, 2)) representing the base lengths along the and y of the pyramid.
 #' @param rt A numeric value (default: 0.5) representing the tip radius of the pyramid.
 #'
@@ -124,7 +124,7 @@ gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param h A numeric value (default: 5) representing the h of the pyramid.
+#' @param h A numeric value (default: 5) representing the height of the pyramid.
 #' @param l A numeric value (default: 3) representing the base length of the pyramid.
 #' @param rt A numeric value (default: 0.5) representing the tip radius of the pyramid.
 #'
@@ -204,7 +204,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param h A numeric value (default: 5) representing the h of the pyramid.
+#' @param h A numeric value (default: 5) representing the height of the pyramid.
 #' @param rb A numeric value (default: 3) representing the base radius of the pyramid.
 #'
 #' @return A data containing the star based pyramid.
