@@ -486,10 +486,8 @@ gen_overlapTorus <- function(n = c(500, 500), p = 4) {
 #'
 #' This function generates data with curvy branching clusters along with added noise.
 #'
-#' @param n The total number of data points to be generated.
-#' @param num_noise The number of additional noise dimensions to be generated.
-#' @param min_n The minimum value for the noise added to the data points.
-#' @param max_n The maximum value for the noise added to the data points.
+#' @param n A numeric vector (default: c(300, 200)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
 #'
 #' @return A matrix containing the generated data, with each row representing a data point.
 #' @export
@@ -553,8 +551,6 @@ gen_twoCurvy <- function(n = c(300, 200), p = 4) {
   return(df)
 
 }
-
-
 
 
 #' Generate Curvy Branching Cluster Data
