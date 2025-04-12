@@ -121,28 +121,65 @@ gen_crescent <- function(n = 500, p = 4) {
   return(df)
 }
 
-# Function to gen a curvy cylinder in 4D
-gen_curvy_cylinder_4d <- function(n = 500, radius = 1, height = 10, curve_strength = 1, offset = c(0, 0, 0, 0)) {
+#' Generate Curvy Cylinder
+#'
+#' This function generates a dataset representing a structure with a curvy cylinder.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric value (default: 1) representing the radius of the cylinder.
+#' @param h A numeric value (default: 10) representing the height of the cylinder.
+#' @param a A numeric value (default: 1) representing the strength of the cylinder in 4th dimension.
+#' @return A data containing a curvy cylinder.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_curvyCylinder(n = 500, p = 4, r = 1, h = 10, a = 1)
+gen_curvyCylinder <- function(n = 500, p = 4, r = 1, h = 10, a = 1) {
 
   # Step 1: gen cylindrical coordinates in 2D (x1, x2)
-  theta <- runif(n, 0, 3 * pi)  # Random angle for the circular base
-  x1 <- radius * cos(theta)            # x1 coordinate (circular)
-  x2 <- radius * sin(theta)            # x2 coordinate (circular)
+  theta <- stats::runif(n, 0, 3 * pi)  # Random angle for the circular base
+  df <- matrix(0, nrow = n, ncol = p)
 
-  # Step 2: gen the curvy components in 3rd and 4th dimensions
-  x3 <- runif(n, 0, height)     # Height along the cylinder
-  x4 <- curve_strength * sin(x3)       # Curvy pattern in the 4th dimension
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
 
-  df <- tibble::tibble(
-    x1 = x1,
-    x2 = x2,
-    x3 = x3,
-    x4 = x4
-  )
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
 
-  df <- df |>
-    sweep(2, offset, "+") |>
-    tibble::as_tibble()
+  df[, 1] <- r * cos(theta)            # x1 coordinate (circular)
+  df[, 2] <- r * sin(theta)            # x2 coordinate (circular)
+
+  if (p > 2){
+
+    if(p==3) {
+      # Define additional dimensions for 4D
+      df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
+
+    } else if (p == 4) {
+      df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
+      df[, 4] <- a * sin(df[, 3])       # Curvy pattern in the 4th dimension
+
+    } else {
+
+      df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
+      df[, 4] <- a * sin(df[, 3])       # Curvy pattern in the 4th dimension
+
+      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 5:p)
+
+      df <- cbind(df, noise_df)
+
+    }
+
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
@@ -150,7 +187,7 @@ gen_curvy_cylinder_4d <- function(n = 500, radius = 1, height = 10, curve_streng
 }
 
 
-gen_sphericalSpiral <- function(n = 500, p = 4, radius = 1, spiral_turns = 1) {
+gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spiral_turns = 1) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -167,14 +204,14 @@ gen_sphericalSpiral <- function(n = 500, p = 4, radius = 1, spiral_turns = 1) {
   df <- matrix(0, nrow = n, ncol = p)
 
   # Spherical to Cartesian coordinates for 4D
-  df[, 1] <- radius * sin(phi) * cos(theta)
-  df[, 2] <- radius * sin(phi) * sin(theta)
-  df[, 3] <- radius * cos(phi) + runif(n, -0.5, 0.5)
+  df[, 1] <- r * sin(phi) * cos(theta)
+  df[, 2] <- r * sin(phi) * sin(theta)
+  df[, 3] <- r * cos(phi) + runif(n, -0.5, 0.5)
 
   if(p > 3) {
     if(p == 4) {
 
-      df[, 4] <- theta / max(theta) * radius  # Spiral along the 4th dimension
+      df[, 4] <- theta / max(theta) * r  # Spiral along the 4th dimension
 
     } else {
 
@@ -245,7 +282,7 @@ gen_conic_spiral_4d <- function(n = 500, p = 4, spiral_turns = 1, cone_height = 
   df <- matrix(0, nrow = n, ncol = p)
 
   # Spiral in the first two dimensions (x1, x2) - Archimedean spiral
-  r <- cone_radius * theta  # Radius increases linearly with theta
+  r <- cone_radius * theta  # r increases linearly with theta
   df[, 1] <- r * cos(theta)
   df[, 2] <- r * sin(theta)
 
