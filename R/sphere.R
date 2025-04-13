@@ -4,15 +4,13 @@
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param shift A numeric vector (default: c(0, 0)) representing the shift along x1, x2 respectively.
-#' @param scale_fac A numeric vector (default:  c(1, 1)) representing the scale factors along x1, x2 respectively.
 #' @return A data containing a circle.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
 #' circle_data <- gen_circle(n = 500, p = 4)
-gen_circle <- function(n = 500, p = 3, shift = c(0, 0), scale_fac = c(1, 1)){
+gen_circle <- function(n = 500, p = 3){
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -28,8 +26,8 @@ gen_circle <- function(n = 500, p = 3, shift = c(0, 0), scale_fac = c(1, 1)){
 
   theta <- stats::runif(n, 0.0, 2 * pi)
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- scale_fac[1] * (shift[1] + cos(theta))
-  coords[, 2] <- scale_fac[2] * (shift[2] + sin(theta))
+  coords[, 1] <- cos(theta)
+  coords[, 2] <- sin(theta)
 
   # Introduce scaling factors for subsequent dimensions
   scaling_factors <- sqrt(cumprod(c(1, rep(0.5, p - 2)))) # Example: decreasing scale
