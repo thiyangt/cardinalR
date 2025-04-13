@@ -637,3 +637,126 @@ gen_twoCurvyGauBkg <- function(n = c(200, 200, 100, 50), p = 4) {
   return(df)
 
 }
+
+#' Generate One Grid with Background Noise
+#'
+#' This function generates a grid data and background noise.
+#'
+#' @param n A numeric vector (default: c(10, 10)) representing the number of grid points along each axes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing one grid data with background noise.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' one_grid_bkg <- gen_oneGridBkg(n = c(10, 10), p = 4)
+gen_oneGridBkg <- function(n = c(10, 10), p = 4) {
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly 2 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df1 <- gen_gridcube(n = n, p = 2)
+  noise_df <- gen_noisedims(n = n[1] * n[2], p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2))
+  names(noise_df) <- paste0("x", 3:p)
+
+  df1 <- dplyr::bind_cols(df1, noise_df)
+
+  df2 <- gen_bkgnoise(n = NROW(df1) * 0.3, p = p, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
+  df <- dplyr::bind_rows(df1, df2)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Two Grids with Different Offset
+#'
+#' This function generates two grids with an offset.
+#'
+#' @param n A numeric vector (default: c(10, 10)) representing the number of grid points along each axes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing two grids data.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' two_grid_comb <- gen_twoGrids(n = c(10, 10), p = 4)
+gen_twoGrids <- function(n = c(10, 10), p = 4) {
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly 2 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df1 <- gen_gridcube(n = n, p = 2)
+
+  df2 <- df1 + 3
+
+  noise_df <- gen_noisedims(n = n[1] * n[2], p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2))
+  names(noise_df) <- paste0("x", 3:p)
+
+  df1 <- dplyr::bind_cols(df1, noise_df)
+
+  noise_df <- gen_noisedims(n = n[1] * n[2], p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2))
+  names(noise_df) <- paste0("x", 3:p)
+
+  df2 <- dplyr::bind_cols(df2, noise_df)
+  df <- dplyr::bind_rows(df1, df2)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+
+#' Generate Two Grids with Background Noise
+#'
+#' This function generates two grids with background noise.
+#'
+#' @param n A numeric vector (default: c(10, 10)) representing the number of grid points along each axes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing two grids data with background noise.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' two_grid_comb_bkg <- gen_twoGridsBkg(n = c(10, 10), p = 4)
+gen_twoGridsBkg <- function(n = c(10, 10), p = 4) {
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly 2 values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df1 <- gen_gridcube(n = n, p = 2)
+  df3 <- df1 + 5
+
+  noise_df <- gen_noisedims(n = n[1] * n[2], p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2))
+  names(noise_df) <- paste0("x", 3:p)
+
+  df1 <- dplyr::bind_cols(df1, noise_df)
+
+  noise_df <- gen_noisedims(n = n[1] * n[2], p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2))
+  names(noise_df) <- paste0("x", 3:p)
+
+  df3 <- dplyr::bind_cols(df3, noise_df)
+
+  df1 <- dplyr::bind_rows(df1, df3)
+
+  df2 <- gen_bkgnoise(n = NROW(df1) * 0.1, p = p, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
+  df <- dplyr::bind_rows(df1, df2)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+
