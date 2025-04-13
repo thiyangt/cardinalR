@@ -7,14 +7,8 @@ set.seed(20240412)
 
 ## To generate mobius clust data
 
-mobius_clust_data <- mobius_clust(
-  n = 500, num_noise = 2, min_n = -0.05,
-  max_n = 0.05
-)
-
-colnames(mobius_clust_data) <- paste0("x", seq_len(NCOL(mobius_clust_data)))
-
-mobius_clust_data <- tibble::as_tibble(mobius_clust_data)
+mobius_clust_data <- gen_mobiusGau(n = c(500, 100), p = 4) |>
+  dplyr::select(-cluster)
 
 usethis::use_data(mobius_clust_data, overwrite = TRUE)
 
