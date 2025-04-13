@@ -4,7 +4,7 @@
 \alias{gen_gaussian}
 \title{Generate Gaussian}
 \usage{
-gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4))
+gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4) * 0.01)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
@@ -13,7 +13,7 @@ gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4))
 
 \item{m}{A numeric vector (default: c(0, 0, 0, 0)) specifying the mean for each cluster.}
 
-\item{s}{A numeric matrix (default:  diag(4)) representing the variance of along each dimension.}
+\item{s}{A numeric matrix (default:  diag(4) * 0.01) representing the variance of along each dimension.}
 }
 \value{
 A data containing a Gaussian.
