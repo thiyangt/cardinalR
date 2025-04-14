@@ -31,13 +31,10 @@ langevitour(gau_data, pointSize = 2)
 
 ## Grid data
 
-```{r, eval=FALSE}
-two_grd_data <- two_grid_comb_bkg(n_value = 15, num_noise = 2, min_n = -0.05, max_n = 0.05)
-two_grd_data$n
+```{r}
+two_grd_data <- gen_twoGridsBkg(n = c(20, 20), p = 4)
 
-colnames(two_grd_data$df) <- paste0("x", seq_len(NCOL(two_grd_data$df)))
-
-langevitour(two_grd_data$df, pointSize = 2)
+langevitour(two_grd_data, pointSize = 2)
 ```
 
 ## Circular data
@@ -61,15 +58,10 @@ langevitour(tree_data, pointSize = 2)
 
 ## Linear data
 
-```{r, eval=FALSE}
-four_linear_data <- four_long_clust(
-  n = 500, num_noise = 2, min_n = -0.05,
-  max_n = 0.05
-)
+```{r}
+four_linear_data <- gen_longClust(n = c(200, 500, 300, 150), p = 4, k = 4)
 
-colnames(four_linear_data) <- paste0("x", seq_len(NCOL(four_linear_data)))
-
-langevitour(four_linear_data, pointSize = 2)
+langevitour(four_linear_data |> dplyr::select(-cluster), pointSize = 2)
 ```
 
 ## Nonlinear data
