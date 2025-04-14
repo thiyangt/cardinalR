@@ -760,3 +760,580 @@ gen_twoGridsBkg <- function(n = c(10, 10), p = 4) {
 }
 
 
+#' Generate Long Cluster Data
+#'
+#' This function generates a dataset consisting of any number of long clusters.
+#'
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the long cluster data.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' long_cluster <- gen_longClust(n = c(200, 500, 300), p = 4, k = 3)
+gen_longClust <- function(n = c(200, 500, 300), p = 4, k = 3) {
+
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
+  }
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df <- tibble::tibble()
+
+  for (j in 1:k) {
+
+    df1 <- gen_longLinear(n = n[j], p = 4) |>
+      dplyr::mutate(cluster = paste0("cluster", j))
+
+    df <- dplyr::bind_rows(df, df1)
+
+  }
+
+  ## To swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+#' Generate Overlapped Any number of Curvy Circle Clusters
+#'
+#' This function generates a dataset representing a structure with any number of overlapped curvy circles.
+#'
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of overlapped curvy circle clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' curvy_cell_cycle_data <- gen_overlappedCurvyCycle(n = c(200, 500, 300), p = 4, k = 3)
+gen_overlappedCurvyCycle <- function(n = c(200, 500, 300), p = 4, k = 3) {
+
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
+  }
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df <- tibble::tibble()
+
+  for (i in 1:k) {
+
+    shift_vec <- append(sample(seq(-0.5, 0.5, 0.2), 3), rep(0, p-3))
+    scale_vec <- append(sample(seq(-0.5, 0.5, 0.2), 3), rep(1, p-3))
+
+    df3 <- gen_curvycycle(n[i], p = p) |>
+      dplyr::mutate(across(where(is.numeric), ~ .x * scale_vec)) |>
+      dplyr::mutate(across(where(is.numeric), ~ .x + shift_vec)) |>
+      dplyr::mutate(cluster = paste0("cluster", i))
+
+    df <- dplyr::bind_rows(df, df3)
+
+  }
+
+  ## To swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+#' Generate Linked Any number of 3-D Circle Clusters
+#'
+#' This function generates a dataset representing a structure with any number of overlapped circles.
+#'
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of overlapped circle clusters.
+#' @export
+#'
+#' @examples
+#'
+#' # Generate linked data with noise with custom parameters
+#' set.seed(20240412)
+#' data <- gen_linked_clusts_circulars(n = c(200, 500, 300), p = 4, k = 3)
+gen_linked_clusts_circulars <- function(n = c(200, 500, 300), p = 4, k = 3) {
+
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
+  }
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df <- tibble::tibble()
+
+  for (i in 1:k) {
+
+    shift_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
+    scale_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
+
+    df3 <- gen_circular_pd(n[i], p = p, shift = shift_vec, scale_fac = scale_vec) |>
+      dplyr::mutate(cluster = paste0("cluster", i))
+
+    df <- dplyr::bind_rows(df, df3)
+
+  }
+
+  ## To swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+#' Generate Shited Any number of 2-D Circle Clusters
+#'
+#' This function generates a dataset representing a structure with any number of shifted circles.
+#'
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of shifted circle clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' circular_clusters_data <- gen_shifted_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
+gen_shifted_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
+
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
+  }
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  df <- tibble::tibble()
+
+  for (i in 1:k) {
+    ## Generate scale factors for circles
+    scale_factors_vec <- runif(2, 0, 2)
+
+    df3 <- gen_circle_pd(n[i], p = p, shift = c(0, 0), scale_fac = scale_factors_vec) |>
+      dplyr::mutate(cluster = paste0("cluster", i))
+
+    df <- dplyr::bind_rows(df, df3)
+
+  }
+
+  ## To swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Overlapped Any number of Circle Clusters
+#'
+#' This function generates a dataset representing a structure with any number of overlapped circles.
+#'
+#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#' @return A data containing the any number of overlapped circle clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' cell_cycle_data <- gen_overlapped_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
+gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
+
+  if (k < 2) {
+    cli::cli_abort("k should be greater than 2.")
+  }
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  r1 <- 2
+  r2 <- 1
+
+  perms <- gtools::permutations(n = p, r = p)
+  num_perms <- NROW(perms)
+
+  # Ensure we don't try to sample more permutations than available
+  selected_permute <- sample(1:num_perms, k, replace = FALSE)
+
+  # Generate k datasets with swapped columns and varying 'n'
+  swapped_datasets_varying_n <- lapply(1:k, function(i) {
+
+    generated_tibble <- gen_circle_pd(n[i], p = p, r1 = r1, r2 = r2)
+
+    # Permute the columns of the tibble
+    perm_indices <- perms[selected_permute[i], ]
+    df <- generated_tibble[, perm_indices]
+    df <- df |>
+      dplyr::mutate(cluster = paste0("cluster", i))
+    names(df) <- append(paste0("x", 1:p), "cluster") # Ensure consistent column names
+
+    df
+
+  })
+
+  df <- dplyr::bind_rows(swapped_datasets_varying_n)
+
+  ## To swap rows
+  df <- randomize_rows(df)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Long Cluster Data
+#'
+#' This function generates a dataset consisting of two long clusters.
+#'
+#' @param n A numeric vector (default: c(200, 300)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the long cluster data.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' long_cluster <- gen_two_long_clusts(n = c(200, 300), p = 4)
+gen_two_long_clusts <- function(n = c(200, 300), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+  }
+
+  if (length(n) != 2) {
+    stop(cli::cli_alert_danger("n should contain exactly 2 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
+  x1 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1])
+  x2 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1])
+  x3 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1])
+  x4 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1])
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x2 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+  x3 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x4 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2)
+
+  if (p > 4) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+
+    noise_mat <- gen_noise_dims(
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
+    )
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- dplyr::bind_cols(df, noise_mat)
+
+  }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Three Different Linear Data
+#'
+#' This function generates a dataset consisting of three different linear clusters.
+#'
+#' @param n A numeric vector (default: c(200, 300, 150)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the three different linear data.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' three_diff_linear <- gen_three_angled_long_clusts(n = c(200, 300, 150), p = 4)
+gen_three_angled_long_clusts <- function(n = c(200, 300, 150), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+  }
+
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
+  x1 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 150
+  x2 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 20
+  x3 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1])
+  x4 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 65
+
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x2 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+  x3 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x4 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- -(0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]))
+  x2 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3])
+  x3 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3])
+  x4 <- -(0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]))
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2, df3)
+
+  if (p > 4) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+
+    noise_mat <- gen_noise_dims(
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
+    )
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- dplyr::bind_cols(df, noise_mat)
+
+  }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+#' Generate Four Different Long Clusters
+#'
+#' This function generates a dataset consisting of four different long clusters.
+#'
+#' @param n A numeric vector (default: c(200, 150, 300, 150)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing the four different long clusters.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' four_diff_long_clusters <- gen_four_long_clusts(n = c(200, 150, 300, 150), p = 4)
+gen_four_long_clusts <- function(n = c(200, 150, 300, 150), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+  }
+
+  if (length(n) != 4) {
+    stop(cli::cli_alert_danger("n should contain exactly 4 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
+  x1 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 150
+  x2 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1])
+  x3 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 20
+  x4 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 85
+
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x2 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+  x3 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x4 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) - 70
+  x2 <- -(0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]))
+  x3 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3])
+  x4 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) - 85
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[4] - 1) + 0.03 * n[4] * stats::rnorm(n[4]) - 70
+  x2 <- -(0:(n[4] - 1) + 0.03 * n[4] * stats::rnorm(n[4])) + 150
+  x3 <- 0:(n[4] - 1) + 0.03 * n[4] * stats::rnorm(n[4])
+  x4 <- 0:(n[4] - 1) + 0.03 * n[4] * stats::rnorm(n[4]) + 85
+
+  df4 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2, df3, df4)
+
+  if (p > 4) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+
+    noise_mat <- gen_noise_dims(
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
+    )
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- dplyr::bind_cols(df, noise_mat)
+
+  }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
+
+
+#' Generate Three Linear Clusters
+#'
+#' This function generates data with three linear clusters.
+#'
+#' @param n A numeric vector (default: c(200, 300, 150)) representing the sample sizes.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#'
+#' @return A data containing the three long clusters.
+#' @export
+#'
+#' @examples
+#'
+#' # Generate three linear clusters with noise with custom parameters
+#' set.seed(20240412)
+#' data <- gen_three_long_clusts(n = c(200, 300, 150), p = 4)
+gen_three_long_clusts <- function(n = c(200, 300, 150), p = 4) {
+
+  if (p < 4) {
+    stop(cli::cli_alert_danger("p should be 4 or greater."))
+  }
+
+  if (length(n) != 3) {
+    stop(cli::cli_alert_danger("n should contain exactly 3 values."))
+  }
+
+  if (any(n < 0)) {
+    stop(cli::cli_alert_danger("Values in n should be positive."))
+  }
+
+  x1 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) + 100
+  x2 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 100
+  x3 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) - 100
+  x4 <- 0:(n[1] - 1) + 0.03 * n[1] * stats::rnorm(n[1]) + 100
+
+  df1 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x2 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+  x3 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) + n[2] / 5
+  x4 <- 0:(n[2] - 1) + 0.03 * n[2] * stats::rnorm(n[2]) - n[2] / 5
+
+  df2 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  x1 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) - 10
+  x2 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) + 10
+  x3 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) - 10
+  x4 <- 0:(n[3] - 1) + 0.03 * n[3] * stats::rnorm(n[3]) + 10
+
+  df3 <- tibble::tibble(x1 = x1,
+                        x2 = x2,
+                        x3 = x3,
+                        x4 = x4)
+
+  df <- dplyr::bind_rows(df1, df2, df3)
+
+  if (p > 4) {
+
+    cli::cli_alert_info("Adding noise dimensions to reach the desired dimensionality.")
+
+    noise_mat <- gen_noise_dims(
+      n = NROW(df), num_noise = p - 4,
+      min_n = -0.5, max_n = 0.5
+    )
+    colnames(noise_mat) <- paste0("x", 5:p)
+    df <- dplyr::bind_cols(df, noise_mat)
+
+  }
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+}
