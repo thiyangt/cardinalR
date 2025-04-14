@@ -932,8 +932,8 @@ gen_linked_clusts_circulars <- function(n = c(200, 500, 300), p = 4, k = 3) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' circular_clusters_data <- gen_shifted_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
-gen_shifted_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
+#' circular_clusters_data <- gen_shiftedCircleClusts(n = c(200, 500, 300), p = 4, k = 3)
+gen_shiftedCircleClusts <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   if (k < 2) {
     cli::cli_abort("k should be greater than 2.")
@@ -955,9 +955,10 @@ gen_shifted_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   for (i in 1:k) {
     ## Generate scale factors for circles
-    scale_factors_vec <- runif(2, 0, 2)
+    scale_factors_vec <- stats::runif(1, 0, 2)
 
-    df3 <- gen_circle_pd(n[i], p = p, shift = c(0, 0), scale_fac = scale_factors_vec) |>
+    df3 <- gen_circle(n[i], p = p) |>
+      dplyr::mutate(across(where(is.numeric), ~ .x * scale_factors_vec)) |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
     df <- dplyr::bind_rows(df, df3)
