@@ -4,6 +4,7 @@
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param w A numeric vector (default: c(-1, 1)) representing the vertical variation.
 #' @return A data containing the generated swiss roll data.
 #' @references
 #' Agrafiotis, D. K., & Xu, H. (2002).
@@ -20,7 +21,7 @@
 #' set.seed(20240412)
 #' data <- gen_swissRoll(n = 500, p = 4)
 #' head(data, 5)
-gen_swissRoll <- function(n = 500, p = 4) {
+gen_swissRoll <- function(n = 500, p = 4, w = c(-1, 1)) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -30,12 +31,12 @@ gen_swissRoll <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  t <- runif(n, min = 0, max = 3 * pi)  # Control parameter
+  t <- stats::runif(n, min = 0, max = 3 * pi)  # Control parameter
   x1 <- t * cos(t)
   x2 <- t * sin(t)
-  x3 <- runif(n, min = -1, max = 1)  # Adding some vertical variation
+  x3 <- stats::runif(n, min = w[1], max = w[2])  # Adding some vertical variation
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 3)
   df[,1] <- x1
   df[,2] <- x2
   df[,3] <- x3
