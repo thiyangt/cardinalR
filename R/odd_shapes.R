@@ -849,8 +849,14 @@ gen_overlappedCurvyCycle <- function(n = c(200, 500, 300), p = 4, k = 3) {
     scale_vec <- append(sample(seq(-0.5, 0.5, 0.2), 3), rep(1, p-3))
 
     df3 <- gen_curvycycle(n[i], p = p) |>
-      dplyr::mutate(across(where(is.numeric), ~ .x * scale_vec)) |>
-      dplyr::mutate(across(where(is.numeric), ~ .x + shift_vec)) |>
+      purrr::map2(scale_vec, ~ .x * .y) |>
+      dplyr::bind_cols() |>
+      purrr::map2(shift_vec, ~ .x * .y) |>
+      dplyr::bind_cols()
+
+    df3 <- df3|>
+      stats::setNames(names(df3)) |>
+      tibble::as_tibble() |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
     df <- dplyr::bind_rows(df, df3)
