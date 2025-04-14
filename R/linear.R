@@ -51,7 +51,7 @@ gen_hyperplane <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' plane_hole_data <- gen_hyperplane_with_hole(n = 1000, p = 4)
+#' plane_hole_data <- gen_hyperplaneHole(n = 1000, p = 4)
 gen_hyperplaneHole <- function(n = 500, p = 4) {
 
   if (p < 2) {
@@ -78,64 +78,43 @@ gen_hyperplaneHole <- function(n = 500, p = 4) {
 }
 
 
-#' Generate Long Cluster Data
+#' Generate Long Linear Data
 #'
-#' This function generates a dataset consisting of any number of long clusters.
+#' This function generates a dataset consisting of long linear data.
 #'
-#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
+#' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param k A numeric value (default: 3) representing the number of clusters.
-#' @return A data containing the long cluster data.
+#' @return A data containing the long linear data.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' long_cluster <- gen_clusts_long(n = c(200, 500, 300), p = 4, k = 3)
-gen_clusts_long <- function(n = c(200, 500, 300), p = 4, k = 3) {
-
-  if (k < 2) {
-    cli::cli_abort("k should be greater than 2.")
-  }
+#' long_cluster <- gen_longLinear(n = 500, p = 4)
+gen_longLinear <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
   }
 
-  if (length(n) != k) {
-    cli::cli_abort("n should contain exactly {.val {k}} values.")
-  }
-
-  if (any(n < 0)) {
-    cli::cli_abort("Values in n should be positive.")
+  if (n < 0){
+    cli::cli_abort("n should be positive.")
   }
 
   df <- tibble::tibble()
 
-  for (j in 1:k) {
+  data_list <- lapply(1:p, function(i) rep(0, n))
+  names(data_list) <- paste0("x", 1:p)
 
-    data_list <- lapply(1:p, function(i) rep(0, n[j]))
-    names(data_list) <- paste0("x", 1:p)
+  df <- tibble::tibble(!!!data_list)
 
-    df1 <- tibble::tibble(!!!data_list)
+  scale_fac_vec <- stats::runif(p, -10, 10)
+  shift_fac_vec <- stats::runif(p, -300, 300)
 
-    scale_fac_vec <- stats::runif(p, -10, 10)
-    shift_fac_vec <- stats::runif(p, -300, 300)
+  for (i in 1:p) {
 
-    for (i in 1:p) {
-
-      df1[, i] <- scale_fac_vec[i] * (0:(n[j] - 1) + 0.03 * n[j] * stats::rnorm(n[j]) + shift_fac_vec[i])
-
-    }
-
-    df1 <- df1 |>
-      dplyr::mutate(cluster = paste0("cluster", j))
-
-    df <- dplyr::bind_rows(df, df1)
+    df[, i] <- scale_fac_vec[i] * (0:(n - 1) + 0.03 * n * stats::rnorm(n) + shift_fac_vec[i])
 
   }
-
-  ## To swap rows
-  df <- randomize_rows(df)
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
