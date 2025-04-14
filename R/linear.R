@@ -23,7 +23,7 @@ gen_hyperplane <- function(n = 500, p = 4) {
   }
 
   # Generate n-1 random dimensions
-  x <- matrix(runif(n * (p - 1), -1, 1), ncol = (p - 1))
+  x <- matrix(stats::runif(n * (p - 1), -1, 1), ncol = (p - 1))
 
   # Compute the last coordinate to satisfy the plane equation
   coeff <- rep(3, p)
@@ -52,7 +52,7 @@ gen_hyperplane <- function(n = 500, p = 4) {
 #' @examples
 #' set.seed(20240412)
 #' plane_hole_data <- gen_hyperplane_with_hole(n = 1000, p = 4)
-gen_hyperplane_with_hole <- function(n = 500, p = 4) {
+gen_hyperplaneHole <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
