@@ -984,8 +984,8 @@ gen_shiftedCircleClusts <- function(n = c(200, 500, 300), p = 4, k = 3) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' cell_cycle_data <- gen_overlapped_clusts_circle(n = c(200, 500, 300), p = 4, k = 3)
-gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
+#' cell_cycle_data <- gen_overlappedCircleClusts(n = c(200, 500, 300), p = 4, k = 3)
+gen_overlappedCircleClusts <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
   if (k < 2) {
     cli::cli_abort("k should be greater than 2.")
@@ -1015,7 +1015,15 @@ gen_overlapped_clusts_circle <- function(n = c(200, 500, 300), p = 4, k = 3) {
   # Generate k datasets with swapped columns and varying 'n'
   swapped_datasets_varying_n <- lapply(1:k, function(i) {
 
-    generated_tibble <- gen_circle_pd(n[i], p = p, r1 = r1, r2 = r2)
+    scale_factors <- append(c(2, 1), rep(1, p-2))
+
+    generated_tibble <- gen_circle(n[i], p = p) |>
+      purrr::map2(scale_factors, ~ .x * .y) |>
+      dplyr::bind_cols()
+
+    generated_tibble <- generated_tibble|>
+      stats::setNames(names(generated_tibble)) |>
+      tibble::as_tibble()
 
     # Permute the columns of the tibble
     perm_indices <- perms[selected_permute[i], ]
