@@ -283,7 +283,7 @@ gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r =
   # Helical spiral coordinates
   df[, 1] <- r * cos(theta)  # x1 is a circular pattern
   df[, 2] <- r * sin(theta)  # x2 is a circular pattern
-  df[, 3] <- a * theta + runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
+  df[, 3] <- a * theta + stats::runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
 
   # Extend to higher dimensions
   if (p > 3) {
@@ -342,13 +342,13 @@ gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_rad
   df[, 2] <- r * sin(theta)
 
   # Conical shape in the third dimension (x3) - linear increase with height
-  df[, 3] <- cone_height * theta / max(theta) + runif(n, -0.1, 0.6) # Scaling height to range from 0 to cone_height
+  df[, 3] <- cone_height * theta / max(theta) + stats::runif(n, -0.1, 0.6) # Scaling height to range from 0 to cone_height
 
   # Extend to higher dimensions
   if (p > 3) {
     if (p == 4) {
       # Spiral in the fourth dimension (x4) - a helical shape based on the cone
-      df[, 4] <- cone_radius * sin(2 * theta) + runif(n, -0.1, 0.6) # Helical movement
+      df[, 4] <- cone_radius * sin(2 * theta) + stats::runif(n, -0.1, 0.6) # Helical movement
 
     } else {
 
