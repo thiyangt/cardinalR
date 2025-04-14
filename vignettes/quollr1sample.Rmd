@@ -39,10 +39,9 @@ langevitour(two_grd_data, pointSize = 2)
 
 ## Circular data
 
-```{r, eval=FALSE}
-curvy_cyc_data <- curvy_cycle(n = 300, num_noise = 2, min_n = -0.05, max_n = 0.05)
-
-colnames(curvy_cyc_data) <- paste0("x", seq_len(NCOL(curvy_cyc_data)))
+```{r}
+curvy_cyc_data <- gen_overlappedCurvyCycle(n = c(200, 500, 300, 250), p = 4, k = 4) |>
+  dplyr::select(-cluster)
 
 langevitour(curvy_cyc_data, pointSize = 2)
 ```
@@ -59,9 +58,10 @@ langevitour(tree_data, pointSize = 2)
 ## Linear data
 
 ```{r}
-four_linear_data <- gen_longClust(n = c(200, 500, 300, 150), p = 4, k = 4)
+four_linear_data <- gen_longClust(n = c(200, 500, 300, 150), p = 4, k = 4) |>
+  dplyr::select(-cluster)
 
-langevitour(four_linear_data |> dplyr::select(-cluster), pointSize = 2)
+langevitour(four_linear_data, pointSize = 2)
 ```
 
 ## Nonlinear data

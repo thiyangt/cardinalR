@@ -10,10 +10,10 @@
 #' @examples
 #' set.seed(20240412)
 #' circle_data <- gen_circle(n = 500, p = 4)
-gen_circle <- function(n = 500, p = 3){
+gen_circle <- function(n = 500, p = 4){
 
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
   }
 
   if (length(n) != 1) {
@@ -62,7 +62,7 @@ gen_circle <- function(n = 500, p = 3){
 #' curvy_cycle_data <- gen_curvycycle(n = 500, p = 4)
 gen_curvycycle <- function(n = 500, p = 4){
 
-  if (p <= 3) {
+  if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
   }
 

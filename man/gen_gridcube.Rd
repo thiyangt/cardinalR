@@ -4,10 +4,10 @@
 \alias{gen_gridcube}
 \title{Generate Cube with grid points}
 \usage{
-gen_gridcube(n = 625, p = 4)
+gen_gridcube(n = c(10, 10, 10, 10), p = 4)
 }
 \arguments{
-\item{n}{A numeric vector (default: c(10, 10)) representing the number of grid points along each axes.}
+\item{n}{A numeric vector (default: c(10, 10, 10, 10)) representing the number of grid points along each axes.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 }

@@ -4,19 +4,12 @@
 \alias{gen_curvycycle}
 \title{Generate Curvy Cell Cycle in p-d}
 \usage{
-gen_curvycycle(
-  n = 500,
-  p = 4,
-  shift = c(0, sqrt(3)/3, 0),
-  scale_fac = c(1, 1, 1/3)
-)
+gen_curvycycle(n = 500, p = 4)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
-\item{r}{A numeric value (default: sqrt(3) / 3) representing the radius factor along x2.}
 }
 \value{
 A data containing a curvy cell cycle.
@@ -26,5 +19,5 @@ This function generates a dataset representing a structure with a curvy cell cyc
 }
 \examples{
 set.seed(20240412)
-curvy_cycle_data <- gen_curvycycle(n = 500, p = 4, shift = c(0, sqrt(3) / 3, 0), scale_fac = c(1, 1, 1/3))
+curvy_cycle_data <- gen_curvycycle(n = 500, p = 4)
 }

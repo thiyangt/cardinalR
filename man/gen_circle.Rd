@@ -4,16 +4,12 @@
 \alias{gen_circle}
 \title{Generate Circle in p-d}
 \usage{
-gen_circle(n = 500, p = 3, shift = c(0, 0), scale_fac = c(1, 1))
+gen_circle(n = 500, p = 4)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
-\item{shift}{A numeric vector (default: c(0, 0)) representing the shift along x1, x2 respectively.}
-
-\item{scale_fac}{A numeric vector (default:  c(1, 1)) representing the scale factors along x1, x2 respectively.}
 }
 \value{
 A data containing a circle.

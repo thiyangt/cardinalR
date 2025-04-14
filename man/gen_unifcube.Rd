@@ -4,10 +4,10 @@
 \alias{gen_unifcube}
 \title{Generate Cube with uniform points}
 \usage{
-gen_unifcube(n = 625, p = 4)
+gen_unifcube(n = 500, p = 4)
 }
 \arguments{
-\item{n}{A numeric vector (default: c(10, 10)) representing the number of grid points along each axes.}
+\item{n}{A numeric vector (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 }
@@ -19,5 +19,5 @@ This function generates a grid dataset with specified uniform points along each 
 }
 \examples{
 set.seed(20240412)
-unif_cube <- gen_unifcube(n = 625, p = 4)
+unif_cube <- gen_unifcube(n = 500, p = 4)
 }

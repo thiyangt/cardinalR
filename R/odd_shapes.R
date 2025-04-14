@@ -871,61 +871,6 @@ gen_overlappedCurvyCycle <- function(n = c(200, 500, 300), p = 4, k = 3) {
 
 }
 
-#' Generate Linked Any number of 3-D Circle Clusters
-#'
-#' This function generates a dataset representing a structure with any number of overlapped circles.
-#'
-#' @param n A numeric vector (default: c(200, 500, 300)) representing the sample sizes.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param k A numeric value (default: 3) representing the number of clusters.
-#' @return A data containing the any number of overlapped circle clusters.
-#' @export
-#'
-#' @examples
-#'
-#' # Generate linked data with noise with custom parameters
-#' set.seed(20240412)
-#' data <- gen_linked_clusts_circulars(n = c(200, 500, 300), p = 4, k = 3)
-gen_linked_clusts_circulars <- function(n = c(200, 500, 300), p = 4, k = 3) {
-
-  if (k < 2) {
-    cli::cli_abort("k should be greater than 2.")
-  }
-
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
-
-  if (length(n) != k) {
-    cli::cli_abort("n should contain exactly {.val {k}} values.")
-  }
-
-  if (any(n < 0)) {
-    cli::cli_abort("Values in n should be positive.")
-  }
-
-  df <- tibble::tibble()
-
-  for (i in 1:k) {
-
-    shift_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
-    scale_vec <- sample(seq(-0.5, 0.5, 0.2), 3)
-
-    df3 <- gen_circular_pd(n[i], p = p, shift = shift_vec, scale_fac = scale_vec) |>
-      dplyr::mutate(cluster = paste0("cluster", i))
-
-    df <- dplyr::bind_rows(df, df3)
-
-  }
-
-  ## To swap rows
-  df <- randomize_rows(df)
-
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
-  return(df)
-
-}
-
 #' Generate Shited Any number of 2-D Circle Clusters
 #'
 #' This function generates a dataset representing a structure with any number of shifted circles.
