@@ -9,8 +9,55 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_data <- gen_curve(n = 500, p = 4)
-gen_curve <- function(n = 500, p = 4) {
+#' curvy_data <- gen_quadratic(n = 500, p = 4)
+gen_quadratic <- function(n = 500, p = 4) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  df <- matrix(0, nrow = n, ncol = p)
+  # gen the core curvilinear pattern in 2D
+  df[, 1] <- stats::runif(n, 0, 2)
+  poly_basis <- stats::poly(df[, 1], degree = 2, raw = TRUE)
+  df[, 2] <- -poly_basis[, 2] + stats::runif(n, 0, 0.5)
+
+  if (p > 2){
+
+    noise_df <- gen_noisedims(n = n, p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df <- cbind(df, noise_df)
+
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+
+#' Generate Curvy
+#'
+#' This function generates a dataset representing a structure with a curvy pattern.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a curvy structure.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' curvy_data <- gen_quadraticWavy(n = 500, p = 4)
+gen_quadraticWavy <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
