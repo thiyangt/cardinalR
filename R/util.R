@@ -139,6 +139,43 @@ generate_simplex_points <- function(p, k) {
   return(simplex_points)
 }
 
+# Approach 2: Adjusting the min-max range per dimension based on weights
+# Assume we have weights for each dimension (lower weight for noisier dimensions)
+dimension_weights <- c(1.0, 1.0, 0.5, 0.5)
+
+data_list <- list(data1, data2, data3, data4)
+
+n_features <- ncol(data1)
+
+global_min <- rep(Inf, n_features)
+global_max <- rep(-Inf, n_features)
+
+for (data in data_list) {
+  current_min <- apply(data, 2, min)
+  current_max <- apply(data, 2, max)
+  global_min <- pmin(global_min, current_min)
+  global_max <- pmax(global_max, current_max)
+}
+
+
+weighted_global_min_max_scale_r <- function(data, weights, global_min, global_max) {
+  n_samples <- nrow(data)
+  n_features <- ncol(data)
+  scaled_data <- matrix(0, nrow = n_samples, ncol = n_features)
+  global_range <- global_max - global_min
+
+  for (j in 1:n_features) {
+    if (global_range[j] == 0) {
+      scaled_data[, j] <- 0.5
+    } else {
+      min_val <- 0.5 - 0.5 * weights[j]
+      max_val <- 0.5 + 0.5 * weights[j]
+      scaled_data[, j] <- min_val + (data[, j] - global_min[j]) * (max_val - min_val) / global_range[j]
+    }
+  }
+  return(scaled_data)
+}
+
 gen_wavydims <- function(n = 500, p = 4) {
 
   df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
