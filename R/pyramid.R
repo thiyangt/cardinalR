@@ -96,14 +96,14 @@ gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
   y_radii <- rt + (base_width_y - rt) * (height_values / h)
 
   coords <- matrix(0, nrow = n, ncol = p)
-  coords[, 1] <- runif(n, -x_radii, x_radii)
-  coords[, 2] <- runif(n, -y_radii, y_radii)
-  coords[, 3] <- runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
+  coords[, 1] <- stats::runif(n, -x_radii, x_radii)
+  coords[, 2] <- stats::runif(n, -y_radii, y_radii)
+  coords[, 3] <- stats::runif(n, -x_radii, x_radii)  # For the third dimension, using the same range as x
 
   # For the fourth dimension and beyond, taper toward the tip
   if (p > 3) {
     for (i in 4:p) {
-      coords[, i - 1] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
+      coords[, i - 1] <- stats::runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
     }
   }
 
@@ -252,7 +252,7 @@ gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
   # For the third dimension and beyond, taper toward the tip
   if (p >= 3) {
     for (i in 3:p) {
-      coords[, i] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
+      coords[, i] <- stats::runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
     }
   }
 

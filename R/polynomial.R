@@ -23,22 +23,23 @@ gen_curve <- function(n = 500, p = 4) {
   df <- matrix(0, nrow = n, ncol = p)
   # gen the core curvilinear pattern in 2D
   df[, 1] <- stats::runif(n, 0, 2)
-  df[, 2] <- -(df[, 1]^2) + stats::runif(n, 0, 0.5)
+  poly_basis <- stats::poly(df[, 1], degree = 2, raw = TRUE)
+  df[, 2] <- -poly_basis[, 2] + stats::runif(n, 0, 0.5)
 
   if (p > 2){
 
     if(p==3) {
       # Define additional dimensions for 4D
-      df[, 3] <- -sin(df[, 1] * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
 
     } else if (p == 4) {
-      df[, 3] <- -sin(df[, 1] * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
-      df[, 4] <- cos(df[, 1] * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+      df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)   # A cosine-based curve
 
     } else {
 
-      df[, 3] <- -sin(df[, 1] * pi) + runif(n, -0.5, 0.5)  # A sine-based curve
-      df[, 4] <- cos(df[, 1] * pi) + runif(n, -0.5, 0.5)   # A cosine-based curve
+      df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
+      df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)   # A cosine-based curve
 
       noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
         as.matrix()
@@ -93,16 +94,16 @@ gen_crescent <- function(n = 500, p = 4) {
 
     if(p==3) {
       # Define additional dimensions for 4D
-      df[, 3] <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+      df[, 3] <- theta + stats::rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
 
     } else if (p == 4) {
-      df[, 3] <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
-      df[, 4] <- 2 * theta + rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
+      df[, 3] <- theta + stats::rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+      df[, 4] <- 2 * theta + stats::rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
 
     } else {
 
-      df[, 3] <- theta + rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
-      df[, 4] <- 2 * theta + rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
+      df[, 3] <- theta + stats::rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+      df[, 4] <- 2 * theta + stats::rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
 
       noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
         as.matrix()
