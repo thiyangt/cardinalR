@@ -77,13 +77,8 @@ reference:
 - title: "Polynomial"
   desc: Polynomial data structures.
   contents:
-  - gen_curve
-  - gen_crescent
-  - gen_curvyCylinder
-  - gen_sphericalSpiral
-  - gen_helicalHyperspiral
-  - gen_conicSpiral
-  - gen_nonlinearHyperbola
+  - gen_quadratic
+  - gen_cubic
 - title: "Pyramid"
   desc: Pyramid data structures.
   contents:
@@ -108,6 +103,15 @@ reference:
   desc: Swiss roll data structures.
   contents:
   - gen_swissRoll
+- title: "trigonometric"
+  desc: Trigonometric data structures.
+  contents:
+  - gen_crescent
+  - gen_curvyCylinder
+  - gen_sphericalSpiral
+  - gen_helicalHyperspiral
+  - gen_conicSpiral
+  - gen_nonlinearHyperbola
 - title: "Additional functions"
   desc: These are additional functionalities.
   contents:
