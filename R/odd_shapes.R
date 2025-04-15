@@ -41,7 +41,7 @@ gen_clusteredSpheres <- function(k = 3, p = 4, n = c(1000, 100), r = c(15, 3),
 
   d_dim_sphere <- gen_unifSphere(n_small, p, r_small)
   small_spheres <- lapply(seq_len(k), function(i) {
-    center <- rnorm(p, sd = loc)
+    center <- stats::rnorm(p, sd = loc)
     sweep(d_dim_sphere, 2, center, "+")
   })
 
@@ -1007,8 +1007,8 @@ gen_overlappedCircleClusts <- function(n = c(200, 500, 300), p = 4, k = 3) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' long_cluster <- gen_two_long_clusts(n = c(200, 300), p = 4)
-gen_two_long_clusts <- function(n = c(200, 300), p = 4) {
+#' long_cluster <- gen_twoLongClusts(n = c(200, 300), p = 4)
+gen_twoLongClusts <- function(n = c(200, 300), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -1070,8 +1070,8 @@ gen_two_long_clusts <- function(n = c(200, 300), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' three_diff_linear <- gen_three_angled_long_clusts(n = c(200, 300, 150), p = 4)
-gen_three_angled_long_clusts <- function(n = c(200, 300, 150), p = 4) {
+#' three_diff_linear <- gen_threeAngledLongClusts(n = c(200, 300, 150), p = 4)
+gen_threeAngledLongClusts <- function(n = c(200, 300, 150), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -1145,8 +1145,8 @@ gen_three_angled_long_clusts <- function(n = c(200, 300, 150), p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' four_diff_long_clusters <- gen_four_long_clusts(n = c(200, 150, 300, 150), p = 4)
-gen_four_long_clusts <- function(n = c(200, 150, 300, 150), p = 4) {
+#' four_diff_long_clusters <- gen_fourLongClusts(n = c(200, 150, 300, 150), p = 4)
+gen_fourLongClusts <- function(n = c(200, 150, 300, 150), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))
@@ -1234,8 +1234,8 @@ gen_four_long_clusts <- function(n = c(200, 150, 300, 150), p = 4) {
 #'
 #' # Generate three linear clusters with noise with custom parameters
 #' set.seed(20240412)
-#' data <- gen_three_long_clusts(n = c(200, 300, 150), p = 4)
-gen_three_long_clusts <- function(n = c(200, 300, 150), p = 4) {
+#' data <- gen_threeLongClusts(n = c(200, 300, 150), p = 4)
+gen_threeLongClusts <- function(n = c(200, 300, 150), p = 4) {
 
   if (p < 4) {
     stop(cli::cli_alert_danger("p should be 4 or greater."))

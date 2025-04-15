@@ -58,8 +58,8 @@ langevitour(tree_data, pointSize = 2)
 ## Linear data
 
 ```{r}
-four_linear_data <- gen_longClust(n = c(200, 500, 300, 150), p = 4, k = 4) |>
-  dplyr::select(-cluster)
+four_linear_data <- gen_fourLongClusts(n = c(200, 500, 300, 150), p = 4) #|>
+  #dplyr::select(-cluster)
 
 langevitour(four_linear_data, pointSize = 2)
 ```

@@ -4,12 +4,14 @@
 \alias{gen_swissRoll}
 \title{Generate Swiss Roll Data}
 \usage{
-gen_swissRoll(n = 500, p = 4)
+gen_swissRoll(n = 500, p = 4, w = c(-1, 1))
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
+
+\item{w}{A numeric vector (default: c(-1, 1)) representing the vertical variation.}
 }
 \value{
 A data containing the generated swiss roll data.
