@@ -22,8 +22,8 @@ install.packages("cardinalR")
 The development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("JayaniLakshika/cardinalR")
+# install.packages("remotes")
+remotes::install_github("JayaniLakshika/cardinalR")
 ```
 
 ## Example

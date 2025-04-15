@@ -14,122 +14,104 @@ reference:
   - mobius_clust_umap_param1
   - mobius_clust_umap_param2
   - mobius_clust_umap_param3
-- title: "Clustering data"
-  desc: The clustering datasets.
+- title: "Branching"
+  desc: Branching data structure.
   contents:
-  - gau_clust
-  - gau_clust_diff
-  - clust_diff_shapes
-  - clust_diff_shapes_pts
-  - gau_curvy_clust_bkg
-  - one_doublet
-  - one_doublet_bkg
-  - one_doublet_four_clusts
-  - one_doublet_diff_var_clust
-  - one_doublet_diff_patterns
-  - two_doublets_parallel
-  - two_doublets_bkg
-  - two_nonlinear
-  - two_curvy
-  - two_curvy_diff_pts
-  - three_clust_diff_dist
-  - three_doublets
-  - three_nonlinear
-  - three_clust_mirror
-  - gau_curvy_clust
-- title: "Branching data"
-  desc: The branching datasets.
+  - gen_threebranches
+  - gen_fivebranches
+  - gen_sevenbranches
+  - gen_fourbranchesBkg
+  - gen_eightbranches
+- title: "Cone"
+  desc: Cone data structure.
   contents:
-  - curvy_tree
-  - tree
-  - seven_branch
-  - four_branch
-  - eight_branch
-  - curvy_branch_clust
-  - curvy_branch_clust_bkg
-  - curvy_branch
-- title: "Circular data"
-  desc: The circular datasets.
+  - gen_bluntedcorn
+- title: "Cube"
+  desc: Cube data structure.
   contents:
-  - three_circulars
-  - cell_cycle
-  - curvy_cycle
-  - two_circulars
-- title: "Grid data"
-  desc: The grid datasets.
+  - gen_gridcube
+  - gen_unifcube
+- title: "Gaussian"
+  desc: Gaussian data structure.
   contents:
-  - one_grid
-  - one_grid_bkg
-  - two_grid
-  - two_grid_comb
-  - two_grid_comb_bkg
-  - three_grid
-- title: "Triangular data"
-  desc: The triangular datasets.
+  - gen_gaussian
+- title: "Linear"
+  desc: Linear data structure.
   contents:
-  - tri_3d
-  - tri_plane_bkg
-- title: "Sphere data"
-  desc: The sphere datasets.
+  - gen_hyperplane
+  - gen_hyperplaneHole
+  - gen_longLinear
+- title: "Mobius"
+  desc: Mobius data structure.
   contents:
-  - sphere
-  - diff_sphere
-- title: "S-curve data"
-  desc: The S-curve datasets.
+  - gen_mobius
+- title: "Multiple clusters"
+  desc: Main function.
   contents:
-  - scurve
-  - scurve_hole
-  - two_scurves
-  - mirror_scurves
-  - two_scurve_hole
-- title: "Nonlinear data"
-  desc: The nonlinear datasets.
+  - gen_multicluster
+- title: "Odd shapes"
+  desc: Different clusters.
   contents:
-  - nonlinear_2d
-  - curv_2d
-  - sine_curve
-  - nonlinear_connect
-  - two_curvilinear
-  - swiss_roll
-  - nonlinear_mirror
-  - two_curvy_panckakes
-- title: "Linear data"
-  desc: The linear datasets.
+  - gen_clusteredSpheres
+  - gen_pyrHoles
+  - gen_mobiusGau
+  - gen_overlapConicSpirals
+  - gen_intersectConicSpirals
+  - gen_overlapDiniSurface
+  - gen_intersectDiniSurface
+  - gen_clustRomanSurface
+  - gen_overlapTorus
+  - gen_twoCurvy
+  - gen_twoCurvyGau
+  - gen_twoCurvyGauBkg
+  - gen_oneGridBkg
+  - gen_twoGrids
+  - gen_twoGridsBkg
+  - gen_longClust
+  - gen_overlappedCurvyCycle
+  - gen_shiftedCircleClusts
+  - gen_overlappedCircleClusts
+  - gen_twoLongClusts
+  - gen_threeAngledLongClusts
+  - gen_fourLongClusts
+  - gen_threeLongClusts
+- title: "Polynomial"
+  desc: Polynomial data structures.
   contents:
-  - plane
-  - two_long_clust
-  - three_diff_linear
-  - four_long_clust
-  - plane_2d_hole
-  - four_long_clust_bkg
-  - three_long_clust
-  - two_long_clust_diff
-- title: "Mobius data"
-  desc: The mobius datasets.
+  - gen_curve
+  - gen_crescent
+  - gen_curvyCylinder
+  - gen_sphericalSpiral
+  - gen_helicalHyperspiral
+  - gen_conicSpiral
+  - gen_nonlinearHyperbola
+- title: "Pyramid"
+  desc: Pyramid data structures.
   contents:
-  - mobius_5d_row
-  - mobius_5d
-  - mobius_clust
-- title: "Additional high-dimensional data"
-  desc: Additional high-dimensional datasets.
+  - gen_pyr
+  - gen_pyrrect
+  - gen_pyrtri
+  - gen_pyrstar
+- title: "S-curve"
+  desc: S-curve data structures.
   contents:
-  - conic_spiral_3d_row
-  - conic_spiral_3d
-  - dini_surface_3d_row
-  - dini_surface_3d
-  - roman_surface_3d_row
-  - roman_surface_3d
-  - spiral_3d
-  - torus_3d_row
-  - torus_3d
-  - cube_3d
-- title: "Add noise dimensions"
-  desc: Generate additional noise dimensions.
+  - gen_scurve
+  - gen_scurveHole
+- title: "Sphere"
+  desc: Sphere data structures.
   contents:
-  - gen_noise_dims
-  - gen_bkg_noise
-
-
-
-
-
+  - gen_circle
+  - gen_curvycycle
+  - gen_unifSphere
+  - gen_gridedSphere
+- title: "Swiss roll"
+  desc: Swiss roll data structures.
+  contents:
+  - gen_swissRoll
+- title: "Additional functions"
+  desc: These are additional functionalities.
+  contents:
+  - gen_noisedims
+  - gen_bkgnoise
+  - randomize_rows
+  - relocate_clusters
