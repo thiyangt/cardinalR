@@ -640,3 +640,58 @@ gen_eightbranches <- function(n = c(200, 300, 150, 250, 100, 100, 100, 100), p =
   return(df)
 
 }
+
+gen_expbranches <- function(n = 400, p = 4, k = 4) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (k <= 0) {
+    cli::cli_abort("k should be positive.")
+  }
+
+  n_vec <- rep(n/k, k)
+
+  scale_vec <- sample(seq(0.5, 2, by = 0.1), size = k)
+
+  df <- matrix(0, nrow = n, ncol = p)
+
+  for (i in 1:k) {
+
+    df1 <- matrix(0, nrow = n_vec[i], ncol = 2)
+
+    # gen the core curvilinear pattern in 2D
+    df1[, 1] <- stats::runif(n_vec[i], -2, 2)
+    df1[, 2] <- exp(scale_vec[i] * df1[, 1]) + stats::runif(n_vec[i], 0, 0.1)
+
+    if (i %% 2 != 0) {
+      # i is odd
+      df1[, 2]< - -1 * df1[, 2] # To generate mirror pattern
+    }
+
+    if (p > 2){
+
+      noise_df <- gen_noisedims(n = n_vec[i], p = (p-2), m = rep(0, p-2), s = rep(0.1, p-2)) |>
+        as.matrix()
+      colnames(noise_df) <- paste0("x", 3:p)
+
+      df1 <- cbind(df1, noise_df)
+
+    }
+
+    df <- rbind(df, df1)
+
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
