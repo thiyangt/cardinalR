@@ -4,14 +4,12 @@
 \alias{gen_gaussian}
 \title{Generate Gaussian}
 \usage{
-gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4) * 0.01)
+gen_gaussian(n = 500, p = 4, s = diag(4) * 0.01)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
-\item{m}{A numeric vector (default: c(0, 0, 0, 0)) specifying the mean for each cluster.}
 
 \item{s}{A numeric matrix (default:  diag(4) * 0.01) representing the variance of along each dimension.}
 }
@@ -23,5 +21,5 @@ This function generates a dataset representing a structure with a Gaussian.
 }
 \examples{
 set.seed(20240412)
-gaussian_data <- gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4))
+gaussian_data <- gen_gaussian(n = 500, p = 4, s = diag(4))
 }

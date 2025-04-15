@@ -136,7 +136,7 @@ gen_mobiusGau <- function(n = c(200, 100), p = 4) {
     dplyr::mutate(cluster = "cluster1")
 
   ## To add background noise
-  df2 <- gen_gaussian(n = n[2], p = p, m = rep(0, p), s = diag(p) * 0.01) |>
+  df2 <- gen_gaussian(n = n[2], p = p, s = diag(p) * 0.01) |>
     dplyr::mutate(cluster = "cluster2")
 
   df <- dplyr::bind_rows(df1, df2)
@@ -582,7 +582,7 @@ gen_twoCurvyGau <- function(n = c(200, 200, 100), p = 4) {
   }
 
   df1 <- gen_twoCurvy(n = n[1:2], p = p)
-  df2 <- gen_gaussian(n = n[3], p = p, m = rep(1, p), s = diag(4) * 0.01) |>
+  df2 <- gen_gaussian(n = n[3], p = p, s = diag(4) * 0.01) |>
     dplyr::mutate(cluster = "cluster3")
 
   df <- dplyr::bind_rows(df1, df2)

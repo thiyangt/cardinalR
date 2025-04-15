@@ -24,7 +24,7 @@ Examples of different data structures that can be generated are shown below.
 ## Gaussian data
 
 ```{r}
-gau_data <- gen_gaussian(n = 500, p = 4, m = c(0, 0, 0, 0), s = diag(4) * 0.01)
+gau_data <- gen_gaussian(n = 500, p = 4, s = diag(4) * 0.01)
 
 langevitour(gau_data, pointSize = 2)
 ```
