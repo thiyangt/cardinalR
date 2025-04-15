@@ -24,7 +24,7 @@
 #'   3, 4, 10, 7
 #' ), nrow = 4, byrow = TRUE),
 #' scale = c(3, 1, 2),
-#' shape = c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube"),
+#' shape = c("gaussian", "bluntedcorn", "unifcube"),
 #' is_bkg = FALSE)
 gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                              loc = matrix(c(
@@ -33,7 +33,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                3, 4, 10, 7  # height of smaller equilateral triangle in 2D
                              ), nrow = 4, byrow = TRUE),
                              scale = c(3, 1, 2),
-                             shape = c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube"),
+                             shape = c("gaussian", "bluntedcorn", "unifcube"),
                              is_bkg = FALSE) {
 
   if (p < 2) {
@@ -80,7 +80,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   ## To generate different shaped clusters
   for (i in 1:k) {
 
-    cluster_df <- scale[i] * get(shape[i])(n = n[i], p = p)
+    cluster_df <- scale[i] * get(paste0("gen_", shape[i]))(n = n[i], p = p)
 
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
 

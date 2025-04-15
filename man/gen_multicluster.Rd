@@ -10,7 +10,7 @@ gen_multicluster(
   k = 3,
   loc = matrix(c(0, 0, 0, 0, 5, 9, 0, 0, 3, 4, 10, 7), nrow = 4, byrow = TRUE),
   scale = c(3, 1, 2),
-  shape = c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube"),
+  shape = c("gaussian", "bluntedcorn", "unifcube"),
   is_bkg = FALSE
 )
 }
@@ -47,6 +47,6 @@ loc = matrix(c(
   3, 4, 10, 7
 ), nrow = 4, byrow = TRUE),
 scale = c(3, 1, 2),
-shape = c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube"),
+shape = c("gaussian", "bluntedcorn", "unifcube"),
 is_bkg = FALSE)
 }
