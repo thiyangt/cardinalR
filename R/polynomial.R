@@ -1,10 +1,10 @@
-#' Generate Curvy
+#' Generate Quadratic
 #'
-#' This function generates a dataset representing a structure with a curvy pattern.
+#' This function generates a dataset representing a structure with a quadratic pattern.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @return A data containing a curvy structure.
+#' @return A data containing a quadratic structure.
 #' @export
 #'
 #' @examples
@@ -20,15 +20,15 @@ gen_quadratic <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 2)
   # gen the core curvilinear pattern in 2D
-  df[, 1] <- stats::runif(n, 0, 2)
+  df[, 1] <- stats::runif(n, -1, 1)
   poly_basis <- stats::poly(df[, 1], degree = 2, raw = TRUE)
   df[, 2] <- -poly_basis[, 2] + stats::runif(n, 0, 0.5)
 
   if (p > 2){
 
-    noise_df <- gen_noisedims(n = n, p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+    noise_df <- gen_noisedims(n = n, p = (p-2), m = rep(0, p-2), s = rep(0.1, p-2)) |>
       as.matrix()
     colnames(noise_df) <- paste0("x", 3:p)
 
@@ -45,19 +45,19 @@ gen_quadratic <- function(n = 500, p = 4) {
 }
 
 
-#' Generate Curvy
+#' Generate Cubic
 #'
-#' This function generates a dataset representing a structure with a curvy pattern.
+#' This function generates a dataset representing a structure with a cubic pattern.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @return A data containing a curvy structure.
+#' @return A data containing a cubic structure.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_data <- gen_quadraticWavy(n = 500, p = 4)
-gen_quadraticWavy <- function(n = 500, p = 4) {
+#' cubic_data <- gen_cubic(n = 500, p = 4)
+gen_cubic <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -67,34 +67,19 @@ gen_quadraticWavy <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 2)
   # gen the core curvilinear pattern in 2D
-  df[, 1] <- stats::runif(n, 0, 2)
-  poly_basis <- stats::poly(df[, 1], degree = 2, raw = TRUE)
-  df[, 2] <- -poly_basis[, 2] + stats::runif(n, 0, 0.5)
+  df[, 1] <- stats::runif(n, -1, 1)
+  poly_basis <- stats::poly(df[, 1], degree = 3, raw = TRUE)
+  df[, 2] <- -poly_basis[, 3] + stats::runif(n, 0, 0.5)
 
   if (p > 2){
 
-    if(p==3) {
-      # Define additional dimensions for 4D
-      df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
+    noise_df <- gen_noisedims(n = n, p = (p-2), m = rep(0, p-2), s = rep(0.1, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
 
-    } else if (p == 4) {
-      df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
-      df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)   # A cosine-based curve
-
-    } else {
-
-      df[, 3] <- -sin(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)  # A sine-based curve
-      df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.5, 0.5)   # A cosine-based curve
-
-      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-        as.matrix()
-      colnames(noise_df) <- paste0("x", 5:p)
-
-      df <- cbind(df, noise_df)
-
-    }
+    df <- cbind(df, noise_df)
 
   }
 
