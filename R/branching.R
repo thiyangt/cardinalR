@@ -700,7 +700,7 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
 }
 
 
-gen_orgcurvybranches <- function(n = 400, p = 4, k = 3) {
+gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -720,7 +720,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 3) {
   comb <- gtools::combinations(p, 2) |> ## Pairs
     tibble::as_tibble()
 
-  if (k <= p) {
+  if (k <= NROW(comb)) {
     comb_select <- dplyr::sample_n(comb, size = k)
     scale_vec <- rep(1, k)
 
@@ -737,7 +737,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 3) {
     # 4. Combine all combinations with the remaining sample
     comb_select <- dplyr::bind_rows(all_combinations, remaining_sample)
 
-    scale_vec <- sample(seq(1, 5, by = 0.5), size = k, replace = TRUE)
+    scale_vec <- sample(seq(1, 8, by = 0.5), size = k, replace = TRUE)
 
     }
 
