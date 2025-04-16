@@ -741,7 +741,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 3) {
 
     }
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = 0, ncol = p)
 
   for (i in 1:k) {
 
