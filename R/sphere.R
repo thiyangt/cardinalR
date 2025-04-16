@@ -155,40 +155,46 @@ gen_unifSphere <- function(n = 500, p = 4){
 #'
 #' This function generates a dataset representing a structure with a grided sphere.
 #'
-#' @param n A numeric value (default: 20) the number of points or the angular step size between sampled coordinates.
+#' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @return A data containing a grided sphere.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_gridedSphere(n = 20, p = 4)
+#' sphere_data <- gen_gridedSphere(n = 500, p = 4)
 #' head(sphere_data, 5)
-gen_gridedSphere <- function(n = 20, p = 4){
+gen_gridedSphere <- function(n = 500, p = 4){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
-  }
-
-  if (r <= 0) {
-    cli::cli_abort("r should be positive.")
   }
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
   }
 
-  # Generate the coordinates for the sphere
-  theta <- seq(0, 2 * pi, length.out = n)
-  phi <- seq(0, pi, length.out = n)
-  coords <- expand.grid(theta = theta, phi = phi)
+  n_vec <- gen_nproduct(n = n, p = p)
 
-  # Convert spherical coordinates to Cartesian coordinates
-  x1 <- sin(coords$phi) * cos(coords$theta)
-  x2 <- sin(coords$phi) * sin(coords$theta)
-  x3 <- cos(coords$phi)
+  df <- matrix(nrow = 0, ncol = 3)
 
-  df <- matrix(c(x1, x2, x3), ncol = 3)
+  for (i in n_vec) {
+
+    # Generate the coordinates for the sphere
+    theta <- seq(0, 2 * pi, length.out = i)
+    phi <- seq(0, pi, length.out = i)
+    coords <- expand.grid(theta = theta, phi = phi)
+
+    # Convert spherical coordinates to Cartesian coordinates
+    x1 <- sin(coords$phi) * cos(coords$theta)
+    x2 <- sin(coords$phi) * sin(coords$theta)
+    x3 <- cos(coords$phi)
+
+    df1 <- matrix(c(x1, x2, x3), ncol = 3)
+
+    df <- rbind(df, df1)
+
+  }
 
   if (p > 3) {
     noise_df <- gen_noisedims(n = NROW(df), p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
