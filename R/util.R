@@ -139,6 +139,41 @@ generate_simplex_points <- function(p, k) {
   return(simplex_points)
 }
 
+generate_n_vec <- function(n, p) {
+  if (p <= 0 || !is.numeric(p) || !is.numeric(n) || n <= 0 || p != round(p)) {
+    stop("n must be a positive number, and p must be a positive integer.")
+  }
+
+  root_p_exact <- n^(1/p)
+  root_p_rounded <- round(root_p_exact)
+
+  if (abs(root_p_exact - root_p_rounded) < .Machine$double.eps^0.5 && root_p_rounded^p == n) {
+    # n is a perfect p-th power (within numerical tolerance)
+    n_vec <- rep(root_p_rounded, p)
+  } else {
+    # Distribute points somewhat evenly
+    n_vec <- integer(p)
+    remaining_n <- n
+
+    # Try to give each dimension at least one point
+    if (p <= n) {
+      n_vec <- rep(1, p)
+      remaining_n <- n - p
+    }
+
+    # Distribute the remaining points
+    if (remaining_n > 0) {
+      indices <- 1:p
+      while (remaining_n > 0) {
+        idx_to_add <- sample(indices, 1)
+        n_vec[idx_to_add] <- n_vec[idx_to_add] + 1
+        remaining_n <- remaining_n - 1
+      }
+    }
+  }
+  return(n_vec)
+}
+
 # Approach 2: Adjusting the min-max range per dimension based on weights
 # Assume we have weights for each dimension (lower weight for noisier dimensions)
 dimension_weights <- c(1.0, 1.0, 0.5, 0.5)
