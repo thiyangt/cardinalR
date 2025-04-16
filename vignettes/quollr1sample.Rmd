@@ -80,7 +80,7 @@ langevitour(two_curvy_panckakes, pointSize = 2)
 ## Sphere data
 
 ```{r}
-sphere_data <- gen_gridedSphere(n = 20, p = 4, r = 1)
+sphere_data <- gen_gridedSphere(n = 160000, p = 4)
 
 langevitour(sphere_data, pointSize = 2)
 ```
