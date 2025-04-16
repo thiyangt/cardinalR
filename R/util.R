@@ -128,20 +128,28 @@ relocate_clusters <- function(data, vert_mat) {
 
 }
 
-generate_simplex_points <- function(p, k) {
-  # Generate k points in p-dimensional simplex
-  # Sample k points from a (p-1)-dimensional Dirichlet distribution
-  dirichlet_samples <- t(MASS::mvrnorm(n = k, mu = rep(0, p), Sigma = diag(p)))
+#' Generates a vector of positive integers whose product is approximately equal to a target value.
+#'
+#' This function takes a target integer `n` and the number of dimensions `p`,
+#' and returns a vector `n_vec` of length `p` containing positive integers.
+#' The goal is to have the product of the elements in `n_vec` be as close as
+#' possible to `n`, especially when `n` is not a perfect p-th power.
+#'
+#' @param n The target positive integer value for the product of the output vector.
+#' @param p The number of dimensions (the length of the output vector). Must be a positive integer.
+#' @return A sorted vector of positive integers of length `p`. The product of the elements
+#'         in this vector will be approximately equal to `n`. If `n` is a perfect
+#'         p-th power, the elements will be equal.
+#' @examples
+#' gen_nproduct(500, 6) # Example with n=500, p=6
+#' gen_nproduct(700, 4) # Example with n=700, p=4
+#' gen_nproduct(625, 4) # Example with n=625 (perfect power)
+#' gen_nproduct(30, 3)  # Example with n=30, p=3
+#' gen_nproduct(7, 2)   # Example where exact product might be hard
+gen_nproduct <- function(n = 500, p = 4) {
 
-  # Center the points to form a proper p-simplex
-  simplex_points <- dirichlet_samples - rowMeans(dirichlet_samples)
-
-  return(simplex_points)
-}
-
-generate_n_vec_approx <- function(n, p) {
   if (p <= 0 || !is.numeric(p) || !is.numeric(n) || n <= 0 || p != round(p)) {
-    stop("n must be a positive number, and p must be a positive integer.")
+    cli::cli_abort("n must be a positive number, and p must be a positive integer.")
   }
 
   n_vec <- rep(round(n^(1/p)), p)
@@ -169,6 +177,17 @@ generate_n_vec_approx <- function(n, p) {
   return(sort(n_vec))
 }
 
+
+generate_simplex_points <- function(p, k) {
+  # Generate k points in p-dimensional simplex
+  # Sample k points from a (p-1)-dimensional Dirichlet distribution
+  dirichlet_samples <- t(MASS::mvrnorm(n = k, mu = rep(0, p), Sigma = diag(p)))
+
+  # Center the points to form a proper p-simplex
+  simplex_points <- dirichlet_samples - rowMeans(dirichlet_samples)
+
+  return(simplex_points)
+}
 
 # Approach 2: Adjusting the min-max range per dimension based on weights
 # Assume we have weights for each dimension (lower weight for noisier dimensions)
