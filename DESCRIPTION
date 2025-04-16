@@ -29,7 +29,8 @@ Imports:
     dplyr,
     tibble,
     purrr,
-    stats
+    stats,
+    rlang
 Suggests: 
     knitr,
     langevitour,
