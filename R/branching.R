@@ -879,40 +879,76 @@ gen_linearbranches <- function(n = 400, p = 4, k = 4) {
 
 
   ## Initialize main branch 1
-  x1 <- stats::runif(500, -2, 5)
-  poly_basis <- stats::poly(x1, degree = 1, raw = TRUE)
-  x2 <- poly_basis[, 1] + stats::runif(500, 0, 0.5)
-
-  df1 <- matrix(c(x1, x2), ncol = 2)
+  x1_1 <- stats::runif(500, -2, 8)
+  poly_basis_1 <- stats::poly(x1_1, degree = 1, raw = TRUE)
+  x2_1 <- 0.5 * poly_basis_1[, 1] + stats::runif(500, 0, 0.5)
+  df1 <- matrix(c(x1_1, x2_1), ncol = 2)
 
   ## Initialize main branch 2
-  x1 <- stats::runif(500, -5, 2)
-  poly_basis <- stats::poly(x1, degree = 1, raw = TRUE)
-  x2 <- -poly_basis[, 1] + stats::runif(500, 0, 0.5)
-
-  df2 <- matrix(c(x1, x2), ncol = 2)
+  x1_2 <- stats::runif(500, -6, 2)
+  poly_basis_2 <- stats::poly(x1_2, degree = 1, raw = TRUE)
+  x2_2 <- -0.5 * poly_basis_2[, 1] + stats::runif(500, 0, 0.5)
+  df2 <- matrix(c(x1_2, x2_2), ncol = 2)
 
   df <- rbind(df1, df2)
 
-  if (k > 2) {
+  k <- 5 # Number of additional branches to create
 
-    ## Pick initial points to start
-    pick_vec <- c(seq(-5, -2, by = 0.5), seq(2, 5, by = 0.5))
-    init_vec <- sample(pick_vec, size = k - 2, replace = TRUE)
-    scale_vec <- sample(seq(-3, 3, by = 0.1), size = k-2, replace = TRUE)
+  # Define the excluded ranges for x and y coordinates of starting points
+  excluded_x_range <- c(-8, -7, -2, 2, 7, 8)
+  excluded_y_range <- c(7, 8)
 
+  # Define the full sequence
+  full_sequence <- seq(-3, 3, by = 0.1)
+
+  # Define the values to exclude
+  excluded_values <- c(-0.5, 0.5)
+
+  # Filter out the excluded values from the sequence
+  filtered_sequence <- full_sequence[!(full_sequence %in% excluded_values)]
+
+  # Sample from the filtered sequence
+  scale_vec <- sample(filtered_sequence, size = k-2, replace = TRUE)
+
+  if (k > 0) {
     for (i in 1:(k-2)) {
+      start_point <- NA
+      while (TRUE) {
+        # Randomly select a starting point (a row) from the existing 'df'
+        start_point_index <- sample(1:nrow(df), 1)
+        potential_start_point <- df[start_point_index, ]
 
-      x1 <- stats::runif(500, init_vec[i], init_vec[i] + 2)
-      poly_basis <- stats::poly(x1, degree = 1, raw = TRUE)
-      x2 <- scale_vec[i] * poly_basis[, 1] + stats::runif(500, 0, 0.5)
+        # Check if the starting point's x and y coordinates are within the excluded ranges
+        x_within_excluded <- (potential_start_point[1] >= excluded_x_range[1] & potential_start_point[1] <= excluded_x_range[2]) |
+          (potential_start_point[1] >= excluded_x_range[3] & potential_start_point[1] <= excluded_x_range[4]) |
+          (potential_start_point[1] >= excluded_x_range[5] & potential_start_point[1] <= excluded_x_range[6])
 
-      df3 <- matrix(c(x1, x2), ncol = 2)
+        # Check if the starting point's y coordinate is within the excluded y range
+        y_within_excluded <- potential_start_point[2] >= excluded_y_range[1] & potential_start_point[2] <= excluded_y_range[2]
 
-      df <- rbind(df, df3)
+        # If the starting point is NOT within either excluded range, accept it
+        if (!x_within_excluded & !y_within_excluded) {
+          start_point <- potential_start_point
+          break
+        }
+        # Otherwise, continue sampling
+      }
 
+      # Define parameters for the new branch (you can customize these)
+      branch_length <- 300 # Number of points in the new branch
+      x1_start <- start_point[1] # Adjust starting x1
+      x1_end <- start_point[1] + 1   # Adjust ending x1
+
+      # Generate x1 values for the new branch
+      x1_branch <- stats::runif(branch_length, x1_start, x1_end)
+      poly_basis_branch <- stats::poly(x1_branch, degree = 1, raw = TRUE)
+      x2_branch <- scale_vec[i] * (poly_basis_branch[, 1] - start_point[1]) + start_point[2] + stats::runif(branch_length, 0, 0.2)
+
+      # Create the new branch data frame
+      df_branch <- matrix(c(x1_branch, x2_branch), ncol = 2)
+
+      # Combine the new branch with the main data frame
+      df <- rbind(df, df_branch)
     }
-
   }
-
 }
