@@ -667,11 +667,14 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
 
     # gen the core curvilinear pattern in 2D
     df1[, 1] <- stats::runif(n_vec[i], -2, 2)
-    df1[, 2] <- exp(scale_vec[i] * df1[, 1]) + stats::runif(n_vec[i], 0, 0.1)
+
 
     if (i %% 2 != 0) {
       # i is odd
-      df1[, 2]< - -1 * df1[, 2] # To generate mirror pattern
+      df1[, 2] <- exp(-scale_vec[i] * df1[, 1]) + stats::runif(n_vec[i], 0, 0.1) # To generate mirror pattern
+
+    } else {
+      df1[, 2] <- exp(scale_vec[i] * df1[, 1]) + stats::runif(n_vec[i], 0, 0.1)
     }
 
     if (p > 2){
