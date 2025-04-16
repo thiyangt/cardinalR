@@ -27,6 +27,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     dplyr,
+    tibble,
     purrr,
     stats
 Suggests: 
