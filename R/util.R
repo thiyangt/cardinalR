@@ -177,6 +177,41 @@ gen_nproduct <- function(n = 500, p = 4) {
   return(sort(n_vec))
 }
 
+#' Generates a vector of positive integers whose summation is approximately equal to a target value.
+#'
+#' This function takes a target integer `n` and the number of clusters `k`,
+#' and returns a vector `n_vec` of length `k` containing positive integers.
+#' The goal is to have the summation of the elements in `n_vec` be as close as
+#' possible to `n`, especially when `n` is not a perfect multiplier of `k`.
+#'
+#' @param n The target positive integer value for the summation of the output vector.
+#' @param p The number of dimensions (the length of the output vector). Must be a positive integer.
+#' @return A sorted vector of positive integers of length `k`. The summation of the elements
+#'         in this vector will be approximately equal to `n`. If `n` is a perfectly
+#'         divisible by `k`, the elements will be equal.
+#' @examples
+#' gen_nsum(500, 6) # Example with n=500, p=6
+#' gen_nsum(700, 4) # Example with n=700, p=4
+#' gen_nsum(625, 5) # Example with n=625 (perfect division)
+#' gen_nsum(30, 3)  # Example with n=30, p=3
+gen_nsum <- function(n = 500, k = 4) {
+  if (!is.numeric(n) || n <= 0 || !is.numeric(k) || k <= 0 || k != round(k)) {
+    stop("n must be a positive number, and k must be a positive integer.")
+  }
+
+  base_size <- floor(n / k)
+  remainder <- n %% k
+  n_vec <- rep(base_size, k)
+
+  # Distribute the remainder among the clusters to balance the sizes
+  if (remainder > 0) {
+    indices_to_add <- sample(1:k, remainder, replace = FALSE)
+    n_vec[indices_to_add] <- n_vec[indices_to_add] + 1
+  }
+
+  return(n_vec)
+}
+
 
 generate_simplex_points <- function(p, k) {
   # Generate k points in p-dimensional simplex
