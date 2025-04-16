@@ -105,15 +105,14 @@ gen_curvycycle <- function(n = 500, p = 4){
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r A numeric value (default: 1) representing the radius of the sphere.
 #' @return A data containing a uniform sphere.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_unifSphere(n = 500, p = 4, r = 1)
+#' sphere_data <- gen_unifSphere(n = 500, p = 4)
 #' head(sphere_data, 5)
-gen_unifSphere <- function(n = 500, p = 4, r = 1){
+gen_unifSphere <- function(n = 500, p = 4){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -130,9 +129,9 @@ gen_unifSphere <- function(n = 500, p = 4, r = 1){
   u <- runif(n, -1, 1)                 # cos(phi)
   theta <- runif(n, 0, 2 * pi)        # azimuth
 
-  x1 <- r * sqrt(1 - u^2) * cos(theta)
-  x2 <- r * sqrt(1 - u^2) * sin(theta)
-  x3 <- r * u
+  x1 <- sqrt(1 - u^2) * cos(theta)
+  x2 <- sqrt(1 - u^2) * sin(theta)
+  x3 <- u
 
   df <- matrix(c(x1, x2, x3), ncol = 3)
 
@@ -158,15 +157,14 @@ gen_unifSphere <- function(n = 500, p = 4, r = 1){
 #'
 #' @param n A numeric value (default: 20) the number of points or the angular step size between sampled coordinates.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r A numeric value (default: 1) representing the radius of the sphere.
 #' @return A data containing a grided sphere.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_gridedSphere(n = 20, p = 4, r = 1)
+#' sphere_data <- gen_gridedSphere(n = 20, p = 4)
 #' head(sphere_data, 5)
-gen_gridedSphere <- function(n = 20, p = 4, r = 1){
+gen_gridedSphere <- function(n = 20, p = 4){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -186,9 +184,9 @@ gen_gridedSphere <- function(n = 20, p = 4, r = 1){
   coords <- expand.grid(theta = theta, phi = phi)
 
   # Convert spherical coordinates to Cartesian coordinates
-  x1 <- r * sin(coords$phi) * cos(coords$theta)
-  x2 <- r * sin(coords$phi) * sin(coords$theta)
-  x3 <- r * cos(coords$phi)
+  x1 <- sin(coords$phi) * cos(coords$theta)
+  x2 <- sin(coords$phi) * sin(coords$theta)
+  x3 <- cos(coords$phi)
 
   df <- matrix(c(x1, x2, x3), ncol = 3)
 
