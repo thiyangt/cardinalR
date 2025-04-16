@@ -862,3 +862,57 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
   return(df)
 
 }
+
+gen_linearbranches <- function(n = 400, p = 4, k = 4) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (k <= 0) {
+    cli::cli_abort("k should be positive.")
+  }
+
+
+  ## Initialize main branch 1
+  x1 <- stats::runif(500, -2, 5)
+  poly_basis <- stats::poly(x1, degree = 1, raw = TRUE)
+  x2 <- poly_basis[, 1] + stats::runif(500, 0, 0.5)
+
+  df1 <- matrix(c(x1, x2), ncol = 2)
+
+  ## Initialize main branch 2
+  x1 <- stats::runif(500, -5, 2)
+  poly_basis <- stats::poly(x1, degree = 1, raw = TRUE)
+  x2 <- -poly_basis[, 1] + stats::runif(500, 0, 0.5)
+
+  df2 <- matrix(c(x1, x2), ncol = 2)
+
+  df <- rbind(df1, df2)
+
+  if (k > 2) {
+
+    ## Pick initial points to start
+    pick_vec <- c(seq(-5, -2, by = 0.5), seq(2, 5, by = 0.5))
+    init_vec <- sample(pick_vec, size = k - 2, replace = TRUE)
+    scale_vec <- sample(seq(-3, 3, by = 0.1), size = k-2, replace = TRUE)
+
+    for (i in 1:(k-2)) {
+
+      x1 <- stats::runif(500, init_vec[i], init_vec[i] + 2)
+      poly_basis <- stats::poly(x1, degree = 1, raw = TRUE)
+      x2 <- scale_vec[i] * poly_basis[, 1] + stats::runif(500, 0, 0.5)
+
+      df3 <- matrix(c(x1, x2), ncol = 2)
+
+      df <- rbind(df, df3)
+
+    }
+
+  }
+
+}
