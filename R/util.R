@@ -140,6 +140,7 @@ relocate_clusters <- function(data, vert_mat) {
 #' @return A sorted vector of positive integers of length `p`. The product of the elements
 #'         in this vector will be approximately equal to `n`. If `n` is a perfect
 #'         p-th power, the elements will be equal.
+#' @export
 #' @examples
 #' gen_nproduct(500, 6) # Example with n=500, p=6
 #' gen_nproduct(700, 4) # Example with n=700, p=4
@@ -189,6 +190,7 @@ gen_nproduct <- function(n = 500, p = 4) {
 #' @return A sorted vector of positive integers of length `k`. The summation of the elements
 #'         in this vector will be approximately equal to `n`. If `n` is a perfectly
 #'         divisible by `k`, the elements will be equal.
+#' @export
 #' @examples
 #' gen_nsum(500, 6) # Example with n=500, p=6
 #' gen_nsum(700, 4) # Example with n=700, p=4
