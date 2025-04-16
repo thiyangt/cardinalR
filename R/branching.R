@@ -780,3 +780,85 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
   return(df)
 
 }
+
+
+gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (k <= 0) {
+    cli::cli_abort("k should be positive.")
+  }
+
+  n_vec <- gen_nsum(n = n, k = k)
+
+  ## Assign the combinations
+  comb <- gtools::combinations(p, 2) |> ## Pairs
+    tibble::as_tibble()
+
+  if (k <= NROW(comb)) {
+    comb_select <- dplyr::sample_n(comb, size = k)
+    scale_vec <- rep(1, k)
+
+  } else {
+    # 1. Select all combinations from 'comb'
+    all_combinations <- comb
+
+    # 2. Calculate the number of remaining combinations needed
+    remaining_needed <- k - NROW(all_combinations)
+
+    # 3. Sample the remaining combinations from 'comb' with replacement
+    remaining_sample <- dplyr::sample_n(comb, size = remaining_needed, replace = TRUE)
+
+    # 4. Combine all combinations with the remaining sample
+    comb_select <- dplyr::bind_rows(all_combinations, remaining_sample)
+
+    scale_vec <- sample(seq(1, 8, by = 0.5), size = k, replace = TRUE)
+
+  }
+
+  df <- matrix(0, nrow = 0, ncol = p)
+
+  for (i in 1:k) {
+
+    index1 <- comb_select$V1[i]
+    index2 <- comb_select$V2[i]
+
+    a <- stats::runif(n_vec[i], 0, 2)
+    poly_basis <- stats::poly(a, degree = 1, raw = TRUE)
+    b <- -scale_vec[i] * poly_basis[, 1] + stats::runif(n_vec[i], 0, 0.5)
+
+    df1 <- matrix(c(a, b), ncol = 2)
+    colnames(df1) <- paste0("x", c(index1, index2))
+
+    if (p > 2){
+
+      noise_df <- gen_noisedims(n = n_vec[i], p = (p-2), m = rep(0, p-2), s = rep(0.1, p-2)) |>
+        as.matrix()
+
+      vector <- 1:p
+      filter_values <- c(index1, index2)
+      colnames(noise_df) <- paste0("x", vector[!(vector %in% filter_values)])
+
+      df1 <- cbind(df1, noise_df)[,paste0("x", 1:p)]
+
+    }
+
+    df <- rbind(df, df1)
+
+  }
+
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
