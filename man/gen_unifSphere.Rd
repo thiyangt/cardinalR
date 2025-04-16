@@ -4,14 +4,12 @@
 \alias{gen_unifSphere}
 \title{Generate Uniform Sphere}
 \usage{
-gen_unifSphere(n = 500, p = 4, r = 1)
+gen_unifSphere(n = 500, p = 4)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
-\item{r}{A numeric value (default: 1) representing the radius of the sphere.}
 }
 \value{
 A data containing a uniform sphere.
@@ -21,6 +19,6 @@ This function generates a dataset representing a structure with a uniform sphere
 }
 \examples{
 set.seed(20240412)
-sphere_data <- gen_unifSphere(n = 500, p = 4, r = 1)
+sphere_data <- gen_unifSphere(n = 500, p = 4)
 head(sphere_data, 5)
 }

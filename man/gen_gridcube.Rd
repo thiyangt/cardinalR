@@ -4,10 +4,10 @@
 \alias{gen_gridcube}
 \title{Generate Cube with grid points}
 \usage{
-gen_gridcube(n = c(10, 10, 10, 10), p = 4)
+gen_gridcube(n = 500, p = 4)
 }
 \arguments{
-\item{n}{A numeric vector (default: c(10, 10, 10, 10)) representing the number of grid points along each axes.}
+\item{n}{A numeric vector (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 }
@@ -19,5 +19,5 @@ This function generates a grid dataset with specified grid points along each axe
 }
 \examples{
 set.seed(20240412)
-one_grid <- gen_gridcube(n = c(10, 10, 10, 10), p = 4)
+one_grid <- gen_gridcube(n = 500, p = 4)
 }

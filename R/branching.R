@@ -655,7 +655,7 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
     cli::cli_abort("k should be positive.")
   }
 
-  n_vec <- rep(n/k, k)
+  n_vec <- gen_nsum(n = n, k = k)
 
   scale_vec <- sample(seq(0.5, 2, by = 0.1), size = k)
 
