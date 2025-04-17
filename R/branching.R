@@ -259,6 +259,20 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
 
 }
 
+
+#' Generate data with linear shaped branches
+#'
+#' This function generates a dataset representing a structure with linear shaped branches.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 4) representing the number of branches.
+#' @return A data containing linear shaped branches.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_linearbranches(n = 400, p = 4, k = 4)
 gen_linearbranches <- function(n = 500, p = 4, k = 4) {
 
   if (p < 2) {
