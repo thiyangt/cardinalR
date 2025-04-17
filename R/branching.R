@@ -281,11 +281,31 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
   x2 <- 0.5 * poly_basis_1[, 1] + stats::runif(n_vec[1], 0, 0.5)
   df1 <- matrix(c(x1, x2), ncol = 2)
 
+  if (p > 2) {
+
+    noise_df <- gen_noisedims(n = NROW(df1), p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df1 <- cbind(df1, noise_df)
+
+  }
+
   ## Initialize main branch 2
   x1 <- stats::runif(n_vec[2], -6, 2)
   poly_basis_2 <- stats::poly(x1, degree = 1, raw = TRUE)
   x2 <- -0.5 * poly_basis_2[, 1] + stats::runif(n_vec[2], 0, 0.5)
   df2 <- matrix(c(x1, x2), ncol = 2)
+
+  if (p > 2) {
+
+    noise_df <- gen_noisedims(n = NROW(df2), p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df2 <- cbind(df2, noise_df)
+
+  }
 
   df <- rbind(df1, df2)
 
@@ -343,11 +363,23 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
       # Create the new branch data frame
       df_branch <- matrix(c(x1, x2), ncol = 2)
 
+      if (p > 2) {
+
+        noise_df <- gen_noisedims(n = NROW(df_branch), p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+          as.matrix()
+        colnames(noise_df) <- paste0("x", 3:p)
+
+        df_branch <- cbind(df_branch, noise_df)
+
+      }
+
       # Combine the new branch with the main data frame
       df <- rbind(df, df_branch)
     }
 
   }
+
+
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
