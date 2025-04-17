@@ -338,7 +338,7 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
       # Generate x1 values for the new branch
       x1 <- stats::runif(branch_length, x1_start, x1_end)
       poly_basis_branch <- stats::poly(x1, degree = 1, raw = TRUE)
-      x2 <- scale_vec[i] * (poly_basis_branch[, 1] - start_point[1]) + start_point[2] + stats::runif(branch_length, 0, 0.2)
+      x2 <- scale_vec[i-2] * (poly_basis_branch[, 1] - start_point[1]) + start_point[2] + stats::runif(branch_length, 0, 0.2)
 
       # Create the new branch data frame
       df_branch <- matrix(c(x1, x2), ncol = 2)
