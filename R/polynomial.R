@@ -24,7 +24,7 @@ gen_quadratic <- function(n = 500, p = 4) {
   # gen the core curvilinear pattern in 2D
   df[, 1] <- stats::runif(n, -1, 1)
   poly_basis <- stats::poly(df[, 1], degree = 2, raw = TRUE)
-  df[, 2] <- -poly_basis[, 2] + stats::runif(n, 0, 0.5)
+  df[, 2] <- poly_basis[, 1] - poly_basis[, 2] + stats::runif(n, 0, 0.5)
 
   if (p > 2){
 
@@ -69,9 +69,9 @@ gen_cubic <- function(n = 500, p = 4) {
 
   df <- matrix(0, nrow = n, ncol = 2)
   # gen the core curvilinear pattern in 2D
-  df[, 1] <- stats::runif(n, -1, 1)
+  df[, 1] <- stats::runif(n, -1, 2)
   poly_basis <- stats::poly(df[, 1], degree = 3, raw = TRUE)
-  df[, 2] <- -poly_basis[, 3] + stats::runif(n, 0, 0.5)
+  df[, 2] <- poly_basis[, 1] + poly_basis[, 2] - poly_basis[, 3] + stats::runif(n, 0, 0.5)
 
   if (p > 2){
 
