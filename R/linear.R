@@ -9,8 +9,8 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' long_cluster <- gen_longLinear(n = 500, p = 4)
-gen_longLinear <- function(n = 500, p = 4) {
+#' long_cluster <- gen_longlinear(n = 500, p = 4)
+gen_longlinear <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
