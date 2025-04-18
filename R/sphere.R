@@ -110,9 +110,9 @@ gen_curvycycle <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_unifSphere(n = 500, p = 4)
+#' sphere_data <- gen_unifsphere(n = 500, p = 4)
 #' head(sphere_data, 5)
-gen_unifSphere <- function(n = 500, p = 4){
+gen_unifsphere <- function(n = 500, p = 4){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -158,9 +158,9 @@ gen_unifSphere <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_gridedSphere(n = 500, p = 4)
+#' sphere_data <- gen_gridedsphere(n = 500, p = 4)
 #' head(sphere_data, 5)
-gen_gridedSphere <- function(n = 500, p = 4){
+gen_gridedsphere <- function(n = 500, p = 4){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
