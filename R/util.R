@@ -1,6 +1,6 @@
 #' Generate Random Noise Dimensions
 #'
-#' This function generates random noise dimensions to be added to the coordinates of a sphere.
+#' This function generates random noise dimensions to be added to the coordinates of a data structure.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
@@ -10,7 +10,6 @@
 #' @return A data containing the generated random noise dimensions.
 #'
 #' @examples
-#' # Generate random noise dimensions with 3 dimensions, minimum value -1, and maximum value 1
 #' set.seed(20240412)
 #' gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 #'
@@ -213,7 +212,26 @@ gen_nsum <- function(n = 500, k = 4) {
   return(n_vec)
 }
 
-gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, length.out = n)) {
+#' Generate Random Noise Dimensions With Wavy Pattern
+#'
+#' This function generates random noise dimensions by adding wavy patterns.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param theta A numeric vector representing the nonlinearity along each dimensions.
+#'
+#' @return A data containing the generated random noise dimensions.
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_wavydims1(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, length.out = 500))
+#'
+#' @export
+gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, length.out = 500)) {
+
+  if (length(theta) != n) {
+    cli::cli_abort("The length of theta should be {.val {n}}.")
+  }
 
   # Initialize an empty list to store the vectors
   wavy_df <- list()
@@ -231,7 +249,28 @@ gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, lengt
 
 }
 
+#' Generate Random Noise Dimensions With Wavy Pattern
+#'
+#' This function generates random noise dimensions by adding wavy patterns.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param x1_vec A numeric vector representing the first dimension of the data structure.
+#'
+#' @return A data containing the generated random noise dimensions.
+#'
+#' @examples
+#' set.seed(20240412)
+#' theta <- seq(0, spins * 2 * pi, length.out = n)
+#' x1 <- sin(phi) * cos(theta)
+#' gen_wavydims2(n = 500, p = 4, x1_vec = x1)
+#'
+#' @export
 gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
+
+  if (length(x1_vec) != n) {
+    cli::cli_abort("The length of x1_vec should be {.val {n}}.")
+  }
 
   # Initialize an empty list to store the vectors
   wavy_df <- list()
@@ -256,6 +295,22 @@ gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
 
 }
 
+#' Generate Random Noise Dimensions With Wavy Pattern
+#'
+#' This function generates random noise dimensions by adding wavy patterns.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param data A matrix representing the first three dimensions of the data structure.
+#'
+#' @return A data containing the generated random noise dimensions.
+#'
+#' @examples
+#' set.seed(20240412)
+#' df <- gen_scurve(n = 500, p = 4) |> as.matrix()
+#' gen_wavydims3(n = 500, p = 4, data = df)
+#'
+#' @export
 gen_wavydims3 <- function(n = 500, p = 4, data) {
 
   noise_level <- 0.05
