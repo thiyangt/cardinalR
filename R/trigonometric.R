@@ -61,8 +61,8 @@ gen_crescent <- function(n = 500, p = 4) {
 #' data <- gen_curvyCylinder(n = 500, p = 4, h = 10)
 gen_curvyCylinder <- function(n = 500, p = 4, h = 10) {
 
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
+  if (p < 4) {
+    cli::cli_abort("p should be greater than 4.")
   }
 
   if (n <= 0) {
@@ -71,7 +71,7 @@ gen_curvyCylinder <- function(n = 500, p = 4, h = 10) {
 
   # Step 1: gen cylindrical coordinates in 2D (x1, x2)
   theta <- stats::runif(n, 0, 3 * pi)  # Random angle for the circular base
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 4)
 
   df[, 1] <- cos(theta)            # x1 coordinate (circular)
   df[, 2] <- sin(theta)            # x2 coordinate (circular)
@@ -103,15 +103,14 @@ gen_curvyCylinder <- function(n = 500, p = 4, h = 10) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r A numeric value (default: 1) representing the radius of the circle.
 #' @param spins A numeric value (default: 1) representing the number of loops of the spiral.
 #' @return A data containing a spherical spiral.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_sphericalSpiral(n = 500, p = 4, r = 1, spins = 1)
-gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spins = 1) {
+#' data <- gen_sphericalSpiral(n = 500, p = 4, spins = 1)
+gen_sphericalSpiral <- function(n = 500, p = 4, spins = 1) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -125,31 +124,23 @@ gen_sphericalSpiral <- function(n = 500, p = 4, r = 1, spins = 1) {
   theta <- seq(0, spins * 2 * pi, length.out = n)  # Controls the number of spiral turns
   phi <- seq(0, pi, length.out = n)                       # Controls movement along the latitude
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 4)
 
   # Spherical to Cartesian coordinates for 4D
-  df[, 1] <- r * sin(phi) * cos(theta)
-  df[, 2] <- r * sin(phi) * sin(theta)
-  df[, 3] <- r * cos(phi) + stats::runif(n, -0.5, 0.5)
+  df[, 1] <- sin(phi) * cos(theta)
+  df[, 2] <- sin(phi) * sin(theta)
+  df[, 3] <- cos(phi) + stats::runif(n, -0.5, 0.5)
+  df[, 4] <- theta / max(theta)  # Spiral along the 4th dimension
 
-  if(p > 3) {
-    if(p == 4) {
 
-      df[, 4] <- theta / max(theta) * r  # Spiral along the 4th dimension
+  if(p > 4) {
 
-    } else {
+    noise_df <- gen_wavydims2(n = n, p = (p-4), x1_vec = df[, 1]) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
 
-      for (i in 5:p) {
-        # Introduce non-linearity based on x1 and add random noise
-        # You can experiment with different non-linear functions and noise levels
-        power <- sample(2:5, 1) # Random power for the polynomial
-        scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
-        noise_level <- stats::runif(1, 0, 0.05)
+    df <- cbind(df, noise_df)
 
-        df[, i] <- scale_factor * ((-1)^(i %/% 2)) * (df[, 1]^power) + stats::runif(n, -noise_level, noise_level * 2)
-      }
-
-    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
