@@ -400,4 +400,76 @@ gen_rotation <- function(p = 4, planes_angles) {
   return(rotation_matrix)
 }
 
+#' Generate Global Minimum and Maximum
+#'
+#' This function generates a list that contains global minimum and maximum.
+#'
+#' @param data_list A matrix list containing data structures.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#'
+#' @return A list containing global minimum and maximum.
+#'
+#' @examples
+#' set.seed(20240412)
+#' data1 <- gen_gaussian(n= 500, p = 4)
+#' data2 <- gen_bluntedcorn(n= 300, p = 4)
+#' dfs <- list(data1, data2)
+#' gen_globalminmax(data_list = dfs, p = 4)
+#'
+#' @export
+gen_globalminmax <- function(data_list, p) {
+
+  global_min <- rep(Inf, p)
+  global_max <- rep(-Inf, p)
+
+  for (data in data_list) {
+    current_min <- apply(data, 2, min)
+    current_max <- apply(data, 2, max)
+    global_min <- pmin(global_min, current_min)
+    global_max <- pmax(global_max, current_max)
+  }
+
+  return(list(global_min = global_min, global_max = global_max))
+
+}
+
+#' Generate Scaled data
+#'
+#' This function generates a scaled data.
+#'
+#' @param data A matrix representing the data which needed to be scaled.
+#' @param weights A numeric vector containing weights for each dimensions.
+#' @param global_val A numeric list containing global minimum and maximum.
+#'
+#' @return A scaled data.
+#'
+#' @examples
+#' set.seed(20240412)
+#' data1 <- gen_gaussian(n= 500, p = 4)
+#' data2 <- gen_bluntedcorn(n= 300, p = 4)
+#' dfs <- list(data1, data2)
+#' global_minmax <- gen_globalminmax(data_list = dfs, p = 4)
+#' scale_data(data = data2, weights = c(1.0, 1.0, 1.0, 0.5),
+#' global_val = global_minmax)
+#'
+#' @export
+scale_data <- function(data, weights, global_val) {
+  n_samples <- NROW(data)
+  n_features <- NCOL(data)
+  scaled_data <- matrix(0, nrow = n_samples, ncol = n_features)
+  global_range <- global_val$global_max - global_val$global_min
+
+  for (j in 1:n_features) {
+    if (global_range[j] == 0) {
+      scaled_data[, j] <- 0.5
+    } else {
+      min_val <- 0.5 - 0.5 * weights[j]
+      max_val <- 0.5 + 0.5 * weights[j]
+      scaled_vec <- min_val + (data[, j] - global_val$global_min[j]) * (max_val - min_val) / global_range[j]
+      scaled_data[, j] <- scaled_vec[[1]]
+    }
+  }
+  return(scaled_data)
+}
+
 utils::globalVariables(c("n"))

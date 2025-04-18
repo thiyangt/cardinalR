@@ -28,11 +28,27 @@ for (data in data_list) {
 }
 
 
-weighted_global_min_max_scale_r <- function(data, weights, global_min, global_max) {
+gen_globalminmax <- function(data_list) {
+
+  global_min <- rep(Inf, p)
+  global_max <- rep(-Inf, p)
+
+  for (data in data_list) {
+    current_min <- apply(data, 2, min)
+    current_max <- apply(data, 2, max)
+    global_min <- pmin(global_min, current_min)
+    global_max <- pmax(global_max, current_max)
+  }
+
+  return(list(global_min = global_min, global_max = global_max))
+
+}
+
+scale_data <- function(data, weights, global_val) {
   n_samples <- NROW(data)
   n_features <- NCOL(data)
   scaled_data <- matrix(0, nrow = n_samples, ncol = n_features)
-  global_range <- global_max - global_min
+  global_range <- global_val$global_max - global_val$global_min
 
   for (j in 1:n_features) {
     if (global_range[j] == 0) {
