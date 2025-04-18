@@ -6,9 +6,8 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cardinalR)](https://CRAN.R-project.org/package=cardinalR)
 [![Downloads](http://cranlogs.r-pkg.org/badges/cardinalR)](https://cran.r-project.org/package=cardinalR)
 
-The `cardinalR` package provides functionality for generating simulation
-high-dimensional datasets for use in various Nonlinear dimension
-reduction techniques.
+The `cardinalR` package provides acollection of functions to generate a
+large variety of structures in high dimensions.
 
 ## Installation
 
@@ -22,8 +21,8 @@ install.packages("cardinalR")
 The development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("JayaniLakshika/cardinalR")
+# install.packages("devtools")
+devtools::install_github("JayaniLakshika/cardinalR")
 ```
 
 ## Example
@@ -34,14 +33,14 @@ library(cardinalR)
 
 ``` r
 head(mobius_clust_data, 5)
-#> # A tibble: 5 × 5
-#>       x1    x2     x3       x4       x5
-#>    <dbl> <dbl>  <dbl>    <dbl>    <dbl>
-#> 1 -1.02   3.57 -0.373  0.00687 -0.0139 
-#> 2  0.793 -3.56  0.620 -0.0261  -0.0457 
-#> 3 -1.91  -3.91 -0.533 -0.0232  -0.0122 
-#> 4 -2.79   2.94 -0.364  0.0415   0.0214 
-#> 5 -1.70  -3.59  0.277 -0.00686  0.00410
+#> # A tibble: 5 × 4
+#>       x1     x2      x3       x4
+#>    <dbl>  <dbl>   <dbl>    <dbl>
+#> 1  0.304  0.706 -0.152   0.0362 
+#> 2  0.916  0.588  0.0260 -0.0436 
+#> 3  0.178  1.20   0.185   0.00820
+#> 4  0.740 -1.05  -0.148  -0.0462 
+#> 5 -0.899  0.304 -0.307  -0.0387
 ```
 
 <table style="width:100%">

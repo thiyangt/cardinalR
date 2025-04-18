@@ -80,7 +80,7 @@ langevitour(two_curvy_panckakes, pointSize = 2)
 ## Sphere data
 
 ```{r}
-sphere_data <- gen_gridedSphere(n = 160000, p = 4)
+sphere_data <- gen_gridedsphere(n = 160000, p = 4)
 
 langevitour(sphere_data, pointSize = 2)
 ```
@@ -97,7 +97,7 @@ langevitour(mobius_clust_data, pointSize = 2)
 ## Pyramid data
 
 ```{r}
-pyr_data <- gen_pyrHoles(n = 500, p = 4)
+pyr_data <- gen_pyrholes(n = 500, p = 4)
 
 langevitour(pyr_data, pointSize = 2)
 ```
