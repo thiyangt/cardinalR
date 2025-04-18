@@ -52,16 +52,14 @@ gen_crescent <- function(n = 500, p = 4) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r A numeric value (default: 1) representing the radius of the cylinder.
 #' @param h A numeric value (default: 10) representing the height of the cylinder.
-#' @param a A numeric value (default: 1) representing the strength of the cylinder in 4th dimension.
 #' @return A data containing a curvy cylinder.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_curvyCylinder(n = 500, p = 4, r = 1, h = 10, a = 1)
-gen_curvyCylinder <- function(n = 500, p = 4, r = 1, h = 10, a = 1) {
+#' data <- gen_curvyCylinder(n = 500, p = 4, h = 10)
+gen_curvyCylinder <- function(n = 500, p = 4, h = 10) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -75,31 +73,19 @@ gen_curvyCylinder <- function(n = 500, p = 4, r = 1, h = 10, a = 1) {
   theta <- stats::runif(n, 0, 3 * pi)  # Random angle for the circular base
   df <- matrix(0, nrow = n, ncol = p)
 
-  df[, 1] <- r * cos(theta)            # x1 coordinate (circular)
-  df[, 2] <- r * sin(theta)            # x2 coordinate (circular)
+  df[, 1] <- cos(theta)            # x1 coordinate (circular)
+  df[, 2] <- sin(theta)            # x2 coordinate (circular)
+  df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
+  df[, 4] <- sin(df[, 3])       # Curvy pattern in the 4th dimension
 
-  if (p > 2){
 
-    if(p==3) {
-      # Define additional dimensions for 4D
-      df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
+  if (p > 4){
 
-    } else if (p == 4) {
-      df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
-      df[, 4] <- a * sin(df[, 3])       # Curvy pattern in the 4th dimension
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
 
-    } else {
-
-      df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
-      df[, 4] <- a * sin(df[, 3])       # Curvy pattern in the 4th dimension
-
-      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-        as.matrix()
-      colnames(noise_df) <- paste0("x", 5:p)
-
-      df <- cbind(df, noise_df)
-
-    }
+    df <- cbind(df, noise_df)
 
   }
 
