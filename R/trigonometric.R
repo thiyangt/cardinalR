@@ -215,8 +215,8 @@ gen_helicalHyperspiral <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_conicSpiral(n = 500, p = 4, r = 1, spins = 1)
-gen_conicSpiral <- function(n = 500, p = 4, cone_height = 2, cone_radius = 1) {
+#' data <- gen_conicSpiral(n = 500, p = 4, spins = 1)
+gen_conicSpiral <- function(n = 500, p = 4, spins = 1) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -231,15 +231,14 @@ gen_conicSpiral <- function(n = 500, p = 4, cone_height = 2, cone_radius = 1) {
   df <- matrix(0, nrow = n, ncol = 4)
 
   # Spiral in the first two dimensions (x1, x2) - Archimedean spiral
-  r <- cone_radius * theta  # r increases linearly with theta
-  df[, 1] <- r * cos(theta)
-  df[, 2] <- r * sin(theta)
+  df[, 1] <- theta * cos(theta)
+  df[, 2] <- theta * sin(theta)
 
   # Conical shape in the third dimension (x3) - linear increase with height
-  df[, 3] <- cone_height * theta / max(theta) + stats::runif(n, -0.1, 0.6) # Scaling height to range from 0 to cone_height
+  df[, 3] <- 2 * theta / max(theta) + stats::runif(n, -0.1, 0.6) # Scaling height to range from 0 to cone_height
 
   # Spiral in the fourth dimension (x4) - a helical shape based on the cone
-  df[, 4] <- cone_radius * sin(2 * theta) + stats::runif(n, -0.1, 0.6) # Helical movement
+  df[, 4] <- theta * sin(2 * theta) + stats::runif(n, -0.1, 0.6) # Helical movement
 
   # Extend to higher dimensions
   if (p > 4) {
