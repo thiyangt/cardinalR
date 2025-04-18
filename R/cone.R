@@ -15,8 +15,8 @@
 #' blunted_corn_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5)
 gen_bluntedcorn <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
 
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
   }
 
   if (n <= 0) {
