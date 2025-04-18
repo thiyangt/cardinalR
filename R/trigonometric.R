@@ -282,7 +282,7 @@ gen_nonlinearHyperbola <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
     cli::cli_abort("n should be positive.")
   }
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 4)
 
   # gen random points for x1 and x3 in a range avoiding zero
   df[, 1] <- stats::runif(n, 0.1, 2)  # Avoid zero to prevent division by zero
@@ -291,21 +291,18 @@ gen_nonlinearHyperbola <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
   # # Apply non-linear distortions for the second dimension
   df[, 2] <-  (hc /  df[, 1]) + non_fac * sin( df[, 1])  # Hyperbola + sine curve distortion
 
+  # Define additional dimensions for 4D
+  df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.1, 0.1)   # A cosine-based curve
+
   # Extend to higher dimensions
-  if (p > 3) {
-    if(p == 4) {
-      # Define additional dimensions for 4D
-      df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.1, 0.1)   # A cosine-based curve
+  if (p > 4) {
 
-    } else {
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
 
-      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-        as.matrix()
-      colnames(noise_df) <- paste0("x", 5:p)
+    df <- cbind(df, noise_df)
 
-      df <- cbind(df, noise_df)
-
-    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
