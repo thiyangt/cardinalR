@@ -14,12 +14,10 @@ Authors@R: c(
     person("Thiyanga", "S. Talagala", , "ttalagala@sjp.ac.lk", role = "aut",
            comment = c(ORCID = "0000-0002-0656-9789"))
   )
-Description: A collection of simple simulation datasets designed for
-    generating Nonlinear Dimension Reduction representations
-    techniques such as t-distributed Stochastic Neighbor Embedding,
-    and Uniform Manifold Approximation and Projection. These
-    datasets serve as a valuable resource for understanding the
-    reliability of Nonlinear Dimension Reduction representations in various contexts.
+Description: A collection of functions to generate a large variety of structures 
+in high dimensions. These data structures are useful for testing, validating, and 
+improving algorithms used in dimensionality reduction, clustering, machine learning, 
+and visualization.
 License: MIT + file LICENSE
 URL: https://github.com/JayaniLakshika/cardinalR
 BugReports: https://github.com/JayaniLakshika/cardinalR/issues
