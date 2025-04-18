@@ -112,7 +112,7 @@ gen_curvycycle <- function(n = 500, p = 4){
 #' set.seed(20240412)
 #' sphere_data <- gen_unifSphere(n = 500, p = 4)
 #' head(sphere_data, 5)
-gen_unitSphere <- function(n = 500, p = 4){
+gen_unifSphere <- function(n = 500, p = 4){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -145,23 +145,6 @@ gen_unitSphere <- function(n = 500, p = 4){
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 
-}
-
-gen_solidsphere <- function(num_points, radius = 1.0) {
-  points <- matrix(NA, nrow = num_points, ncol = 3)
-  for (i in 1:num_points) {
-    # Generate random spherical coordinates
-    r <- radius * runif(1)^(1/3) # Radius between 0 and sphere radius, cubed root for uniform volume
-    theta <- runif(1, 0, 2 * pi)     # Azimuth angle [0, 2*pi)
-    phi <- acos(runif(1, -1, 1))    # Polar angle [0, pi]
-
-    # Convert to Cartesian coordinates
-    x <- r * sin(phi) * cos(theta)
-    y <- r * sin(phi) * sin(theta)
-    z <- r * cos(phi)
-    points[i, ] <- c(x, y, z)
-  }
-  return(points)
 }
 
 #' Generate Grided Sphere
