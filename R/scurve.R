@@ -81,9 +81,9 @@ gen_scurve <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_scurveHole(n = 500, p = 4)
+#' data <- gen_scurvehole(n = 500, p = 4)
 #' head(data, 5)
-gen_scurveHole <- function(n = 500, p = 4) {
+gen_scurvehole <- function(n = 500, p = 4) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
