@@ -5,16 +5,15 @@
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param h A numeric value (default: 5) representing the h of the corn.
-#' @param rb A numeric value (default: 1.5) representing the base radius of the corn.
-#' @param rt A numeric value (default: 0.8) representing the tip radius of the corn.
+#' @param ratio A numeric value (default: 0.5) representing the radius tip to radius base ratio of the corn. Should be less than 1.
 #'
 #' @return A data containing the blunted corn.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' blunted_corn_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
-gen_bluntedcorn <- function(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8) {
+#' blunted_corn_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5)
+gen_bluntedcorn <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -28,24 +27,17 @@ gen_bluntedcorn <- function(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8) {
     cli::cli_abort("h should be positive.")
   }
 
-  if (rb <= 0) {
-    cli::cli_abort("rb should be positive.")
+  if (ratio >= 1) {
+    cli::cli_abort("The ratio should be less than 1.")
   }
-
-  if (rt <= 0) {
-    cli::cli_abort("rt should be positive.")
-  }
-
-  if (rt >= rb) {
-    cli::cli_abort("The rt should be smaller than the rb of the corn.")
-  }
+  #ratio = rt/rb
 
   # Gen points with a higher density near the tip (along the last dimension - 'h')
   height_values <- stats::rexp(n, rate = 1 / (h / 2)) # Exponentially distributed heights
   height_values <- pmin(height_values, h)       # Cap heights to the maximum h
 
   # Generalized "radius" decreases linearly from the base to the tip
-  radii <- rt + (rb - rt) * (height_values / h)
+  radii <- ratio + (1 - ratio) * (height_values / h)
 
   # Generate generalized "angles" for the (p-1)-dimensional hypersphere
   angles <- matrix(runif(n * (p - 2), 0, 2 * pi), nrow = n)
@@ -54,20 +46,13 @@ gen_bluntedcorn <- function(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8) {
   coords <- matrix(0, nrow = n, ncol = p)
   coords[, p] <- height_values # The last dimension is our 'h'
 
-  # Convert hyperspherical coordinates to Cartesian-like coordinates
-  if (p == 2) {
-    coords[, 1] <- radii * cos(phi) # Using phi as the angle in 2D
-    coords[, 2] <- height_values
-  } else if (p == 3) {
-    coords[, 1] <- radii * cos(angles[, 1]) * sin(phi)
-    coords[, 2] <- radii * sin(angles[, 1]) * sin(phi)
-    coords[, 3] <- radii * cos(phi)
-    coords[, 4] <- height_values
-  } else if (p > 3) {
-    coords[, 1] <- radii * cos(angles[, 1]) * sin(phi)
-    coords[, 2] <- radii * sin(angles[, 1]) * sin(phi)
-    coords[, 3] <- radii * cos(phi)
-    for (i in 4:p) {
+  coords[, 1] <- radii * cos(angles[, 1]) * sin(phi)
+  coords[, 2] <- radii * sin(angles[, 1]) * sin(phi)
+  coords[, 3] <- radii * cos(phi)
+
+  if(p > 3) {
+
+    for (i in 4:p-1) {
       product_of_sines <- 1
       for (j in 1:(i - 2)) {
         product_of_sines <- product_of_sines * sin(angles[, j])
