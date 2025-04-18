@@ -27,32 +27,24 @@ gen_scurve <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  noise_level <- 0.05
-  scaling_factor <- 0.2
-
   a <- 3 * pi * stats::runif(n = n, min = -0.5, max = 0.5)
   x1 <- sin(a)
   x2 <- 2.0 * stats::runif(n = n, min = 0, max = 1)
   x3 <- sign(a) * (cos(a) - 1)
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 3)
   df[, 1] <- x1
   df[, 2] <- x2
   df[, 3] <- x3
 
   if (p > 3) {
-    for (i in 4:p) {
-      # Strategy 1 & 2: Small variations around existing dimensions
-      if (i == 4) df[, i] <- x1 + scaling_factor * stats::runif(n, -noise_level, noise_level)
-      if (i == 5) df[, i] <- x2 + scaling_factor * stats::runif(n, -noise_level, noise_level)
-      if (i == 6) df[, i] <- x3 + scaling_factor * stats::runif(n, -noise_level, noise_level)
-      # Strategy 3: Non-linear transformations with small scaling
-      if (i > 6) {
-        if (i %% 3 == 1) df[, i] <- x1^2 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
-        if (i %% 3 == 2) df[, i] <- x2 * x3 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
-        if (i %% 3 == 0) df[, i] <- sin(x1 + x3) * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
-      }
-    }
+
+    noise_df <- gen_wavydims3(n = n, p = (p-3), data = df) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 4:p)
+
+    df <- cbind(df, noise_df)
+
   }
 
   # Create the tibble
