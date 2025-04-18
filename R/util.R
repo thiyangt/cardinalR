@@ -343,4 +343,60 @@ gen_wavydims3 <- function(n = 500, p = 4, data) {
 
 }
 
+#' Generate Rotations
+#'
+#' This function generates a rotation matrix.
+#'
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param planes_angles A numeric list which contains plane and the corresponsing angle along that plane.
+#'
+#' @return A matrix containing the rotations.
+#'
+#' @examples
+#' set.seed(20240412)
+#' rotations_4d <- list(
+#' list(plane = c(1, 2), angle = 60), # Rotation in the (1, 2) plane
+#' list(plane = c(3, 4), angle = 90)  # Rotation in the (3, 4) plane
+#' )
+#' gen_rotation(planes_angles = rotations_4d)
+#'
+#' @export
+gen_rotation <- function(p = 4, planes_angles) {
+  if (!is.list(planes_angles) || length(planes_angles) == 0) {
+    cli::cli_abort("The 'planes_angles' argument must be a non-empty list.")
+  }
+
+  # Initialize an p x p identity matrix
+  rotation_matrix <- diag(p)
+
+  for (item in planes_angles) {
+    if (!is.list(item) || length(item) != 2 || length(item[[1]]) != 2 ||
+        !all(item[[1]] >= 1 & item[[1]] <= p) || item[[1]][1] == item[[1]][2] ||
+        !is.numeric(item[[2]]) || length(item[[2]]) != 1) {
+      cli::cli_abort("Each item in 'planes_angles' must be a list containing a plane (vector of two distinct axis indices) and an angle (numeric in degrees).")
+    }
+
+    plane <- item[[1]]
+    angle_degrees <- item[[2]]
+    angle_radians <- angle_degrees * pi / 180
+    cos_theta <- cos(angle_radians)
+    sin_theta <- sin(angle_radians)
+
+    # Get the indices of the rotation plane
+    i <- plane[1]
+    j <- plane[2]
+
+    # Create a rotation matrix for the current plane
+    plane_rotation_matrix <- diag(p)
+    plane_rotation_matrix[i, i] <- cos_theta
+    plane_rotation_matrix[j, j] <- cos_theta
+    plane_rotation_matrix[i, j] <- -sin_theta
+    plane_rotation_matrix[j, i] <- sin_theta
+
+    # Multiply the overall rotation matrix by the current plane's rotation matrix
+    rotation_matrix <- plane_rotation_matrix %*% rotation_matrix
+  }
+
+  return(rotation_matrix)
+}
 utils::globalVariables(c("n"))
