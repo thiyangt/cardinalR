@@ -7,23 +7,22 @@
 gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 }
 \arguments{
-\item{n}{The number of observations for which to generate noise dimensions.}
+\item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{num_noise}{The number of noise dimensions to generate.}
+\item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
-\item{min_n}{The minimum value for the random noise.}
+\item{m}{A numeric vector (default: c(0, 0, 0, 0)) representing the mean along each dimensions.}
 
-\item{max_n}{The maximum value for the random noise.}
+\item{s}{A numeric vector (default: c(2, 2, 2, 2)) representing the standard deviation along each dimensions.}
 }
 \value{
-A matrix containing the generated random noise dimensions.
+A data containing the generated random noise dimensions.
 }
 \description{
-This function generates random noise dimensions to be added to the coordinates of a sphere.
+This function generates random noise dimensions to be added to the coordinates of a data structure.
 }
 \examples{
-# Generate random noise dimensions with 3 dimensions, minimum value -1, and maximum value 1
 set.seed(20240412)
-gen_noisedims(n = 50, num_noise = 3, min_n = -0.01, max_n = 0.01)
+gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 
 }

@@ -7,17 +7,16 @@
 gen_bkgnoise(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 }
 \arguments{
-\item{n}{Number of samples to generate.}
+\item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{num_dims}{Number of dimensions (columns) of the data.}
+\item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
-\item{mean}{Mean of the normal distribution used to generate noise (default is 0).}
+\item{m}{A numeric vector (default: c(0, 0, 0, 0)) representing the mean along each dimensions.}
 
-\item{sd}{Standard deviation of the normal distribution used to generate noise (default is 1).}
+\item{s}{A numeric vector (default: c(2, 2, 2, 2)) representing the standard deviation along each dimensions.}
 }
 \value{
-A matrix containing the generated background noise data, with
-\code{n} rows and \code{num_dims} columns.
+A data containing the generated background noise data.
 }
 \description{
 This function generates background noise data with specified parameters such as

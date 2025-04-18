@@ -4,7 +4,7 @@
 \alias{gen_bluntedcorn}
 \title{Generate Blunted Corn}
 \usage{
-gen_bluntedcorn(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
+gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
@@ -13,9 +13,7 @@ gen_bluntedcorn(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
 
 \item{h}{A numeric value (default: 5) representing the h of the corn.}
 
-\item{rb}{A numeric value (default: 1.5) representing the base radius of the corn.}
-
-\item{rt}{A numeric value (default: 0.8) representing the tip radius of the corn.}
+\item{ratio}{A numeric value (default: 0.5) representing the radius tip to radius base ratio of the corn. Should be less than 1.}
 }
 \value{
 A data containing the blunted corn.
@@ -25,5 +23,5 @@ This function generates a dataset representing a blunted corn.
 }
 \examples{
 set.seed(20240412)
-blunted_corn_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, rb = 1.5, rt = 0.8)
+blunted_corn_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5)
 }
