@@ -157,17 +157,13 @@ gen_sphericalSpiral <- function(n = 500, p = 4, spins = 1) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param a A numeric value (default: 0.05) representing the scale factor along x2.
-#' @param b A numeric value (default: 0.1) representing the scale factor along x3.
-#' @param c A numeric value (default: 1) representing the scale factor of sine along x3.
-#' @param r A numeric value (default: 0.5) representing the radius of the spiral.
 #' @return A data containing a helical hyper spiral.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_helicalHyperspiral(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r = 0.5)
-gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r = 0.5) {
+#' data <- gen_helicalHyperspiral(n = 500, p = 4)
+gen_helicalHyperspiral <- function(n = 500, p = 4) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -180,27 +176,24 @@ gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r =
   # gen angles for the spiral (theta)
   theta <- seq(0, 5/4 * pi, length.out = n)
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 4)
 
   # Helical spiral coordinates
-  df[, 1] <- r * cos(theta)  # x1 is a circular pattern
-  df[, 2] <- r * sin(theta)  # x2 is a circular pattern
-  df[, 3] <- a * theta + stats::runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
+  df[, 1] <- cos(theta)  # x1 is a circular pattern
+  df[, 2] <- sin(theta)  # x2 is a circular pattern
+  df[, 3] <- 0.05 * theta + stats::runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
+  df[, 4] <- 0.1 * sin(theta)          # x4 oscillates with sin(k * theta)
+
 
   # Extend to higher dimensions
-  if (p > 3) {
-    if (p == 4) {
-      df[, 4] <- b * sin(c * theta)          # x4 oscillates with sin(k * theta)
+  if (p > 4) {
 
-    } else {
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
 
-      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-        as.matrix()
-      colnames(noise_df) <- paste0("x", 5:p)
+    df <- cbind(df, noise_df)
 
-      df <- cbind(df, noise_df)
-
-    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
@@ -216,7 +209,6 @@ gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r =
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param r A numeric value (default: 1) representing the radius of the circle.
 #' @param spins A numeric value (default: 1) representing the number of loops of the spiral.
 #' @return A data containing a conical spiral structure.
 #' @export
@@ -224,7 +216,7 @@ gen_helicalHyperspiral <- function(n = 500, p = 4, a = 0.05, b = 0.1, c = 1, r =
 #' @examples
 #' set.seed(20240412)
 #' data <- gen_conicSpiral(n = 500, p = 4, r = 1, spins = 1)
-gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_radius = 1) {
+gen_conicSpiral <- function(n = 500, p = 4, cone_height = 2, cone_radius = 1) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -236,7 +228,7 @@ gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_rad
 
   # gen theta values to represent the angle of the spiral in the xy-plane
   theta <- seq(0, 2 * pi * spins, length.out = n)
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 4)
 
   # Spiral in the first two dimensions (x1, x2) - Archimedean spiral
   r <- cone_radius * theta  # r increases linearly with theta
@@ -246,21 +238,18 @@ gen_conicSpiral <- function(n = 500, p = 4, spins = 1, cone_height = 2, cone_rad
   # Conical shape in the third dimension (x3) - linear increase with height
   df[, 3] <- cone_height * theta / max(theta) + stats::runif(n, -0.1, 0.6) # Scaling height to range from 0 to cone_height
 
+  # Spiral in the fourth dimension (x4) - a helical shape based on the cone
+  df[, 4] <- cone_radius * sin(2 * theta) + stats::runif(n, -0.1, 0.6) # Helical movement
+
   # Extend to higher dimensions
-  if (p > 3) {
-    if (p == 4) {
-      # Spiral in the fourth dimension (x4) - a helical shape based on the cone
-      df[, 4] <- cone_radius * sin(2 * theta) + stats::runif(n, -0.1, 0.6) # Helical movement
+  if (p > 4) {
 
-    } else {
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
 
-      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-        as.matrix()
-      colnames(noise_df) <- paste0("x", 5:p)
+    df <- cbind(df, noise_df)
 
-      df <- cbind(df, noise_df)
-
-    }
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
