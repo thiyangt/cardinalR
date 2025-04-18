@@ -30,12 +30,18 @@
 #'   list(plane = c(2, 4), angle = 45) # Rotation in the (2, 4) plane
 #'   )
 #' )
+#' dim4_weights <- list(
+#' cluster1 = c(1.0, 1.0, 1,0, 1,0),
+#' cluster2 = c(1.0, 1.0, 1,0, 0.3),
+#' cluster3 = c(1.0, 1.0, 1,0, 0.3)
+#' )
 #' clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
 #' loc = matrix(c(
 #'   0, 0, 0, 0,
 #'   5, 9, 0, 0,
 #'   3, 4, 10, 7
 #' ), nrow = 4, byrow = TRUE),
+#' dim_weights = dim4_weights,
 #' scale = c(3, 1, 2),
 #' shape = c("gaussian", "bluntedcorn", "unifcube"),
 #' rotation = rotations_4d,
@@ -46,6 +52,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                5, 9, 0, 0,
                                3, 4, 10, 7  # height of smaller equilateral triangle in 2D
                              ), nrow = 4, byrow = TRUE),
+                             dim_weights,
                              scale = c(3, 1, 2),
                              shape = c("gaussian", "bluntedcorn", "unifcube"),
                              rotation,
@@ -87,22 +94,34 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cli::cli_abort("Number of rows in loc should be {.val {k}}.")
   }
 
-
-  ## If the location is not given generate simple points to position the clusters
-
   dfs <- list()
 
   ## To generate different shaped clusters
   for (i in 1:k) {
 
     ## To generate the cluster
-    cluster_df <- scale[i] * get(paste0("gen_", shape[i]))(n = n[i], p = p)
-    cluster_df <- cluster_df |> as.matrix()
+    dfs[[i]] <- get(paste0("gen_", shape[i]))(n = n[i], p = p)
+
+  }
+
+  ## To generate global min and max
+  global_minmax <- gen_globalminmax(data_list = dfs, p = p)
+
+  for (i in 1:k) {
+    ## Weights for each dimension (lower weights for noise dimensions)
+    dimension_weights <- dim_weights[[i]]
+
+    ## To scale the data
+    cluster_df <- scale_data(data = dfs[[i]], weights = dimension_weights, global_val = global_minmax)
+
+    ## To multiply by the scale factor
+    cluster_df <- scale[i] * cluster_df
 
     ## To rotate the cluster
     rotation_clust <- gen_rotation(p = p, planes_angles = rotation[[i]])
     cluster_df <- t(rotation_clust %*% t(cluster_df))
 
+    ## To move to the center
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
 
     ## To re-position the data to centroids given
@@ -113,6 +132,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
 
     names(cluster_df) <- paste0("x", 1:p)
 
+    ## To add cluster label
     dfs[[i]] <- cluster_df |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
