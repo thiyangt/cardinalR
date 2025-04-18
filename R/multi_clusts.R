@@ -11,12 +11,25 @@
 #' ), nrow = 4, byrow = TRUE)) representing the locations/centroids of clusters.
 #' @param scale A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.
 #' @param shape A character vector (default: c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube")) representing the shapes of clusters.
+#' @param rotation A numeric list which contains plane and the corresponding angle along that plane for each cluster.
 #' @param is_bkg A Boolean value (default: FALSE) representing the background noise should exist or not.
 #' @return A data containing same/different shaped clusters.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
+#' rotations_4d <- list(
+#' cluster1 = list(
+#'   list(plane = c(1, 2), angle = 60), # Rotation in the (1, 2) plane
+#'   list(plane = c(3, 4), angle = 90)  # Rotation in the (3, 4) plane
+#'   ),
+#' cluster2 = list(
+#'   list(plane = c(1, 3), angle = 30) # Rotation in the (1, 3) plane
+#'   ),
+#' cluster3 = list(
+#'   list(plane = c(2, 4), angle = 45) # Rotation in the (2, 4) plane
+#'   )
+#' )
 #' clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
 #' loc = matrix(c(
 #'   0, 0, 0, 0,
@@ -25,6 +38,7 @@
 #' ), nrow = 4, byrow = TRUE),
 #' scale = c(3, 1, 2),
 #' shape = c("gaussian", "bluntedcorn", "unifcube"),
+#' rotation = rotations_4d,
 #' is_bkg = FALSE)
 gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                              loc = matrix(c(
@@ -34,6 +48,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                              ), nrow = 4, byrow = TRUE),
                              scale = c(3, 1, 2),
                              shape = c("gaussian", "bluntedcorn", "unifcube"),
+                             rotation,
                              is_bkg = FALSE) {
 
   if (p < 2) {
@@ -80,15 +95,25 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   ## To generate different shaped clusters
   for (i in 1:k) {
 
+    ## To generate the cluster
     cluster_df <- scale[i] * get(paste0("gen_", shape[i]))(n = n[i], p = p)
+    cluster_df <- cluster_df |> as.matrix()
+
+    ## To rotate the cluster
+    rotation_clust <- gen_rotation(p = p, planes_angles = rotation[[i]])
+    cluster_df <- t(rotation_clust %*% t(cluster_df))
 
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
 
     ## To re-position the data to centroids given
     cluster_df <- cluster_df + matrix(rep(loc[,i], n[i]), ncol=p, byrow=T)
 
+    cluster_df <- cluster_df |>
+      tibble::as_tibble(.name_repair = "minimal")
+
+    names(cluster_df) <- paste0("x", 1:p)
+
     dfs[[i]] <- cluster_df |>
-      tibble::as_tibble() |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
   }
