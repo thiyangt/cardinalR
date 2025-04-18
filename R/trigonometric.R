@@ -23,33 +23,18 @@ gen_crescent <- function(n = 500, p = 4) {
   # Step 1: gen angles for a semi-circle
   theta <- seq(pi / 6, 12 * pi / 6, length.out = n)  # evenly spaced angles for crescent
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- matrix(0, nrow = n, ncol = 2)
   # gen the core curvilinear pattern in 2D
   df[, 1] <- cos(theta)
   df[, 2] <- sin(theta)
 
-  if (p > 2){
+  if (p > 2) {
 
-    if(p==3) {
-      # Define additional dimensions for 4D
-      df[, 3] <- theta + stats::rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
+    noise_df <- gen_wavydims1(n = n, p = (p-2), theta = theta) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
 
-    } else if (p == 4) {
-      df[, 3] <- theta + stats::rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
-      df[, 4] <- 2 * theta + stats::rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
-
-    } else {
-
-      df[, 3] <- theta + stats::rnorm(n, 0, 0.5)  # Simply map theta to the third dimension
-      df[, 4] <- 2 * theta + stats::rnorm(n, 0, 0.5)  # Linear function for the fourth dimension
-
-      noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
-        as.matrix()
-      colnames(noise_df) <- paste0("x", 5:p)
-
-      df <- cbind(df, noise_df)
-
-    }
+    df <- cbind(df, noise_df)
 
   }
 
