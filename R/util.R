@@ -2,17 +2,17 @@
 #'
 #' This function generates random noise dimensions to be added to the coordinates of a sphere.
 #'
-#' @param n The number of observations for which to generate noise dimensions.
-#' @param num_noise The number of noise dimensions to generate.
-#' @param min_n The minimum value for the random noise.
-#' @param max_n The maximum value for the random noise.
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param m A numeric vector (default: c(0, 0, 0, 0)) representing the mean along each dimensions.
+#' @param s A numeric vector (default: c(2, 2, 2, 2)) representing the standard deviation along each dimensions.
 #'
-#' @return A matrix containing the generated random noise dimensions.
+#' @return A data containing the generated random noise dimensions.
 #'
 #' @examples
 #' # Generate random noise dimensions with 3 dimensions, minimum value -1, and maximum value 1
 #' set.seed(20240412)
-#' gen_noisedims(n = 50, num_noise = 3, min_n = -0.01, max_n = 0.01)
+#' gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 #'
 #' @export
 gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) {
@@ -40,13 +40,12 @@ gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) 
 #' This function generates background noise data with specified parameters such as
 #' the number of samples, number of dimensions, mean, and standard deviation.
 #'
-#' @param n Number of samples to generate.
-#' @param num_dims Number of dimensions (columns) of the data.
-#' @param mean Mean of the normal distribution used to generate noise (default is 0).
-#' @param sd Standard deviation of the normal distribution used to generate noise (default is 1).
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param m A numeric vector (default: c(0, 0, 0, 0)) representing the mean along each dimensions.
+#' @param s A numeric vector (default: c(2, 2, 2, 2)) representing the standard deviation along each dimensions.
 #'
-#' @return A matrix containing the generated background noise data, with
-#' \code{n} rows and \code{num_dims} columns.
+#' @return A data containing the generated background noise data.
 #'
 #' @examples
 #'
@@ -212,6 +211,81 @@ gen_nsum <- function(n = 500, k = 4) {
   }
 
   return(n_vec)
+}
+
+gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, length.out = n)) {
+
+  # Initialize an empty list to store the vectors
+  wavy_df <- list()
+  scale_vec <- sample(seq(1, 4, by = 0.3), size = p, replace = TRUE)
+
+  for (i in 1:p) {
+    wavy_df[[i]] <- scale_vec[i] * theta + stats::rnorm(n, 0, 0.5)
+  }
+
+  df <- tibble::as_tibble(wavy_df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully! 🎉")
+  return(df)
+
+}
+
+gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
+
+  # Initialize an empty list to store the vectors
+  wavy_df <- list()
+
+  for (i in 1:p) {
+
+    # Introduce non-linearity based on x1 and add random noise
+    # You can experiment with different non-linear functions and noise levels
+    power <- sample(2:5, 1) # Random power for the polynomial
+    scale_factor <- stats::runif(1, 0.5, 2) # Random scaling
+    noise_level <- stats::runif(1, 0, 0.05)
+
+    wavy_df[[i]] <- scale_factor * ((-1)^(i %/% 2)) * (x1_vec^power) + stats::runif(n, -noise_level, noise_level * 2)
+
+  }
+
+  df <- tibble::as_tibble(wavy_df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully! 🎉")
+  return(df)
+
+}
+
+gen_wavydims3 <- function(n = 500, p = 4, data) {
+
+  noise_level <- 0.05
+  scaling_factor <- 0.2
+
+  x1 <- data[, 1]
+  x2 <- data[, 2]
+  x3 <- data[, 3]
+
+  df <- matrix(0, nrow = n, ncol = p)
+
+  for (i in 1:p) {
+    # Strategy 1 & 2: Small variations around existing dimensions
+    if (i == 1) df[, i] <- x1 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+    if (i == 2) df[, i] <- x2 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+    if (i == 3) df[, i] <- x3 + scaling_factor * stats::runif(n, -noise_level, noise_level)
+    # Strategy 3: Non-linear transformations with small scaling
+    if (i > 4) {
+      if (i %% 3 == 1) df[, i] <- x1^2 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+      if (i %% 3 == 2) df[, i] <- x2 * x3 * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+      if (i %% 3 == 0) df[, i] <- sin(x1 + x3) * scaling_factor * noise_level + stats::runif(n, -noise_level * 0.5, noise_level * 0.5)
+    }
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully! 🎉")
+  return(df)
+
 }
 
 utils::globalVariables(c("n"))
