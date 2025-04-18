@@ -348,7 +348,7 @@ gen_wavydims3 <- function(n = 500, p = 4, data) {
 #' This function generates a rotation matrix.
 #'
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param planes_angles A numeric list which contains plane and the corresponsing angle along that plane.
+#' @param planes_angles A numeric list which contains plane and the corresponding angle along that plane.
 #'
 #' @return A matrix containing the rotations.
 #'
@@ -399,4 +399,5 @@ gen_rotation <- function(p = 4, planes_angles) {
 
   return(rotation_matrix)
 }
+
 utils::globalVariables(c("n"))
