@@ -35,7 +35,7 @@ cluster3 = list(
 
 dim4_weights <- list(
 cluster1 = c(1.0, 1.0, 1,0, 1,0),
-cluster2 = c(1.0, 1.0, 1,0, 0.3),
+cluster2 = c(1.0, 1.0, 1,0, 1.0),
 cluster3 = c(1.0, 1.0, 1,0, 0.3)
 )
 
@@ -46,7 +46,7 @@ loc = matrix(c(
   3, 4, 5, 6
 ), nrow = 4, byrow = TRUE),
 dim_weights = dim4_weights,
-scale = c(3, 1, 6),
+scale = c(3, 6, 4),
 shape = c("gaussian", "bluntedcorn", "unifcube"),
 rotation = rotations_4d,
 is_bkg = FALSE)
