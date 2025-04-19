@@ -64,7 +64,7 @@ tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform
 Manifold Approximation and Projection) representations of
 `mobius_clust_data` are shown below.
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" alt="A brief description of the plot or figure shown in the image" />
 
 ## About the name
 
