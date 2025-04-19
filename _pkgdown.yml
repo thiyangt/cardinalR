@@ -17,11 +17,10 @@ reference:
 - title: "Branching"
   desc: Branching data structure.
   contents:
-  - gen_threebranches
-  - gen_fivebranches
-  - gen_sevenbranches
-  - gen_fourbranchesBkg
-  - gen_eightbranches
+  - gen_expbranches
+  - gen_orglinearbranches
+  - gen_orgcurvybranches
+  - gen_linearbranches
 - title: "Cone"
   desc: Cone data structure.
   contents:
@@ -31,6 +30,7 @@ reference:
   contents:
   - gen_gridcube
   - gen_unifcube
+  - gen_cubehole
 - title: "Gaussian"
   desc: Gaussian data structure.
   contents:
@@ -38,9 +38,7 @@ reference:
 - title: "Linear"
   desc: Linear data structure.
   contents:
-  - gen_hyperplane
-  - gen_hyperplaneHole
-  - gen_longLinear
+  - gen_longlinear
 - title: "Mobius"
   desc: Mobius data structure.
   contents:
@@ -49,31 +47,6 @@ reference:
   desc: Main function.
   contents:
   - gen_multicluster
-- title: "Odd shapes"
-  desc: Different clusters.
-  contents:
-  - gen_clusteredSpheres
-  - gen_mobiusGau
-  - gen_overlapConicSpirals
-  - gen_intersectConicSpirals
-  - gen_overlapDiniSurface
-  - gen_intersectDiniSurface
-  - gen_clustRomanSurface
-  - gen_overlapTorus
-  - gen_twoCurvy
-  - gen_twoCurvyGau
-  - gen_twoCurvyGauBkg
-  - gen_oneGridBkg
-  - gen_twoGrids
-  - gen_twoGridsBkg
-  - gen_longClust
-  - gen_overlappedCurvyCycle
-  - gen_shiftedCircleClusts
-  - gen_overlappedCircleClusts
-  - gen_twoLongClusts
-  - gen_threeAngledLongClusts
-  - gen_fourLongClusts
-  - gen_threeLongClusts
 - title: "Polynomial"
   desc: Polynomial data structures.
   contents:
@@ -86,32 +59,32 @@ reference:
   - gen_pyrrect
   - gen_pyrtri
   - gen_pyrstar
-  - gen_pyrHoles
+  - gen_pyrholes
 - title: "S-curve"
   desc: S-curve data structures.
   contents:
   - gen_scurve
-  - gen_scurveHole
+  - gen_scurvehole
 - title: "Sphere"
   desc: Sphere data structures.
   contents:
   - gen_circle
   - gen_curvycycle
-  - gen_unifSphere
-  - gen_gridedSphere
+  - gen_unifsphere
+  - gen_gridedsphere
 - title: "Swiss roll"
   desc: Swiss roll data structures.
   contents:
-  - gen_swissRoll
+  - gen_swissroll
 - title: "trigonometric"
   desc: Trigonometric data structures.
   contents:
   - gen_crescent
-  - gen_curvyCylinder
-  - gen_sphericalSpiral
-  - gen_helicalHyperspiral
-  - gen_conicSpiral
-  - gen_nonlinearHyperbola
+  - gen_curvycylinder
+  - gen_sphericalspiral
+  - gen_helicalspiral
+  - gen_conicspiral
+  - gen_nonlinear
 - title: "Additional functions"
   desc: These are additional functionalities.
   contents:
@@ -119,3 +92,11 @@ reference:
   - gen_bkgnoise
   - randomize_rows
   - relocate_clusters
+  - gen_nproduct
+  - gen_nsum
+  - gen_wavydims1
+  - gen_wavydims2
+  - gen_wavydims3
+  - gen_rotation
+  - gen_globalminmax
+  - scale_data

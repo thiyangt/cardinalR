@@ -1,8 +1,8 @@
 ---
-title: "Example datasets"
+title: "Example data structures"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Example datasets}
+  %\VignetteIndexEntry{Example data structures}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,7 +21,7 @@ library(langevitour)
 
 Examples of different data structures that can be generated are shown below.
 
-## Gaussian data
+## Gaussian
 
 ```{r}
 gau_data <- gen_gaussian(n = 500, p = 4, s = diag(4) * 0.01)
@@ -29,55 +29,47 @@ gau_data <- gen_gaussian(n = 500, p = 4, s = diag(4) * 0.01)
 langevitour(gau_data, pointSize = 2)
 ```
 
-## Grid data
+## Cube with a hole
 
 ```{r}
-two_grd_data <- gen_twoGridsBkg(n = c(20, 20), p = 4)
+cube_grd_data <- gen_cubehole(n = 5000, p = 6)
 
-langevitour(two_grd_data, pointSize = 2)
+langevitour(cube_grd_data, pointSize = 2)
 ```
 
-## Circular data
+## Circular
 
 ```{r}
-curvy_cyc_data <- gen_overlappedCurvyCycle(n = c(200, 500, 300, 250), p = 4, k = 4) |>
-  dplyr::select(-cluster)
+curvy_cyc_data <- gen_curvycycle(n = 500, p = 4) 
 
 langevitour(curvy_cyc_data, pointSize = 2)
 ```
 
-## Branching data
+## Branching
 
 ```{r}
-tree_data <- gen_threebranches(n = c(200, 500, 300), p = 4) |>
-  dplyr::select(-cluster)
+tree_data <- gen_orgcurvybranches(n = 600, p = 6, k = 6) 
 
 langevitour(tree_data, pointSize = 2)
 ```
 
-## Linear data
+## Cone
 
 ```{r}
-four_linear_data <- gen_fourLongClusts(n = c(200, 500, 300, 150), p = 4) #|>
-  #dplyr::select(-cluster)
+cone_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5) 
 
-langevitour(four_linear_data, pointSize = 2)
+langevitour(cone_data, pointSize = 2)
 ```
 
-## Nonlinear data
+## Nonlinear
 
-```{r, eval=FALSE}
-two_curvy_panckakes <- two_curvy_panckakes(
-  n = 300, num_noise = 2, min_n = -0.05,
-  max_n = 0.05
-)
+```{r}
+spiral_data <- gen_conicspiral(n = 500, p = 5, spins = 2)
 
-colnames(two_curvy_panckakes) <- paste0("x", seq_len(NCOL(two_curvy_panckakes)))
-
-langevitour(two_curvy_panckakes, pointSize = 2)
+langevitour(spiral_data, pointSize = 2)
 ```
 
-## Sphere data
+## Grided sphere
 
 ```{r}
 sphere_data <- gen_gridedsphere(n = 160000, p = 4)
@@ -85,19 +77,18 @@ sphere_data <- gen_gridedsphere(n = 160000, p = 4)
 langevitour(sphere_data, pointSize = 2)
 ```
 
-## Mobius with Gaussian cluster
+## Scurve with a hole
 
 ```{r}
-mobius_clust_data <- gen_mobiusGau(n = c(500, 100), p = 4) |>
-  dplyr::select(-cluster)
+scurve_data <- gen_scurvehole(n = 600, p = 8) 
 
-langevitour(mobius_clust_data, pointSize = 2)
+langevitour(scurve_data, pointSize = 2)
 ```
 
-## Pyramid data
+## Pyramid with a hole
 
 ```{r}
-pyr_data <- gen_pyrholes(n = 500, p = 4)
+pyr_data <- gen_pyrholes(n = 1000, p = 4)
 
 langevitour(pyr_data, pointSize = 2)
 ```

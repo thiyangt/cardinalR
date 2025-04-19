@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cardinalR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/main_function.html">Quick start</a></li>
-    <li><a class="dropdown-item" href="../articles/quollr1sample.html">Example datasets</a></li>
+    <li><a class="dropdown-item" href="../articles/quollr1sample.html">Example data structures</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -101,34 +101,28 @@
 
       <dl><dt>
 
-          <code><a href="gen_threebranches.html">gen_threebranches()</a></code>
+          <code><a href="gen_expbranches.html">gen_expbranches()</a></code>
 
         </dt>
-        <dd>Generate data with three branches</dd>
+        <dd>Generate data with exponential shaped branches</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_fivebranches.html">gen_fivebranches()</a></code>
+          <code><a href="gen_orglinearbranches.html">gen_orglinearbranches()</a></code>
 
         </dt>
-        <dd>Generate data with five branches</dd>
+        <dd>Generate data with linear shaped branches in a initial point</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_sevenbranches.html">gen_sevenbranches()</a></code>
+          <code><a href="gen_orgcurvybranches.html">gen_orgcurvybranches()</a></code>
 
         </dt>
-        <dd>Generate data with seven branches</dd>
+        <dd>Generate data with curvy shaped branches in a initial point</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_fourbranchesBkg.html">gen_fourbranchesBkg()</a></code>
+          <code><a href="gen_linearbranches.html">gen_linearbranches()</a></code>
 
         </dt>
-        <dd>Generate data with four branches</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_eightbranches.html">gen_eightbranches()</a></code>
-
-        </dt>
-        <dd>Generate data with eight branches</dd>
+        <dd>Generate data with linear shaped branches</dd>
       </dl></div><div class="section level2">
       <h2 id="cone">Cone<a class="anchor" aria-label="anchor" href="#cone"></a></h2>
 
@@ -169,6 +163,12 @@
 
         </dt>
         <dd>Generate Cube with uniform points</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_cubehole.html">gen_cubehole()</a></code>
+
+        </dt>
+        <dd>Generate Cube with Hole</dd>
       </dl></div><div class="section level2">
       <h2 id="gaussian">Gaussian<a class="anchor" aria-label="anchor" href="#gaussian"></a></h2>
 
@@ -199,19 +199,7 @@
 
       <dl><dt>
 
-          <code><a href="gen_hyperplane.html">gen_hyperplane()</a></code>
-
-        </dt>
-        <dd>Generate points on a plane in high-dimensions</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_hyperplaneHole.html">gen_hyperplaneHole()</a></code>
-
-        </dt>
-        <dd>Generate Hyper Plane with Hole</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_longLinear.html">gen_longLinear()</a></code>
+          <code><a href="gen_longlinear.html">gen_longlinear()</a></code>
 
         </dt>
         <dd>Generate Long Linear Data</dd>
@@ -249,149 +237,6 @@
 
         </dt>
         <dd>Generate Multiple Clusters</dd>
-      </dl></div><div class="section level2">
-      <h2 id="odd-shapes">Odd shapes<a class="anchor" aria-label="anchor" href="#odd-shapes"></a></h2>
-
-      <div class="section-desc"><p>Different clusters.</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="gen_clusteredSpheres.html">gen_clusteredSpheres()</a></code>
-
-        </dt>
-        <dd>Generate Small Spheres Within a Big Sphere</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_mobiusGau.html">gen_mobiusGau()</a></code>
-
-        </dt>
-        <dd>Generate Gaussian cluster with the Mobius Cluster</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_overlapConicSpirals.html">gen_overlapConicSpirals()</a></code>
-
-        </dt>
-        <dd>Generate overlapped two conic spiral shapes</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_intersectConicSpirals.html">gen_intersectConicSpirals()</a></code>
-
-        </dt>
-        <dd>Generate intersected two conic spiral shapes</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_overlapDiniSurface.html">gen_overlapDiniSurface()</a></code>
-
-        </dt>
-        <dd>Generate intersected two dini surface shapes</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_intersectDiniSurface.html">gen_intersectDiniSurface()</a></code>
-
-        </dt>
-        <dd>Generate overlapped two dini surface shapes</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_clustRomanSurface.html">gen_clustRomanSurface()</a></code>
-
-        </dt>
-        <dd>Generate two roman surface shaped clusters</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_overlapTorus.html">gen_overlapTorus()</a></code>
-
-        </dt>
-        <dd>Generate overlapped two torus shapes</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_twoCurvy.html">gen_twoCurvy()</a></code>
-
-        </dt>
-        <dd>Generate Curvy Branching Clusters with Noise</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_twoCurvyGau.html">gen_twoCurvyGau()</a></code>
-
-        </dt>
-        <dd>Generate Curvy Branching Cluster Data</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_twoCurvyGauBkg.html">gen_twoCurvyGauBkg()</a></code>
-
-        </dt>
-        <dd>Generate Curvy Branching Cluster Data with Background Noise</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_oneGridBkg.html">gen_oneGridBkg()</a></code>
-
-        </dt>
-        <dd>Generate One Grid with Background Noise</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_twoGrids.html">gen_twoGrids()</a></code>
-
-        </dt>
-        <dd>Generate Two Grids with Different Offset</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_twoGridsBkg.html">gen_twoGridsBkg()</a></code>
-
-        </dt>
-        <dd>Generate Two Grids with Background Noise</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_longClust.html">gen_longClust()</a></code>
-
-        </dt>
-        <dd>Generate Long Cluster Data</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_overlappedCurvyCycle.html">gen_overlappedCurvyCycle()</a></code>
-
-        </dt>
-        <dd>Generate Overlapped Any number of Curvy Circle Clusters</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_shiftedCircleClusts.html">gen_shiftedCircleClusts()</a></code>
-
-        </dt>
-        <dd>Generate Shited Any number of 2-D Circle Clusters</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_overlappedCircleClusts.html">gen_overlappedCircleClusts()</a></code>
-
-        </dt>
-        <dd>Generate Overlapped Any number of Circle Clusters</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_twoLongClusts.html">gen_twoLongClusts()</a></code>
-
-        </dt>
-        <dd>Generate Long Cluster Data</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_threeAngledLongClusts.html">gen_threeAngledLongClusts()</a></code>
-
-        </dt>
-        <dd>Generate Three Different Linear Data</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_fourLongClusts.html">gen_fourLongClusts()</a></code>
-
-        </dt>
-        <dd>Generate Four Different Long Clusters</dd>
-      </dl><dl><dt>
-
-          <code><a href="gen_threeLongClusts.html">gen_threeLongClusts()</a></code>
-
-        </dt>
-        <dd>Generate Three Linear Clusters</dd>
       </dl></div><div class="section level2">
       <h2 id="polynomial">Polynomial<a class="anchor" aria-label="anchor" href="#polynomial"></a></h2>
 
@@ -452,7 +297,7 @@
         <dd>Generate Star Based Pyramid</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_pyrHoles.html">gen_pyrHoles()</a></code>
+          <code><a href="gen_pyrholes.html">gen_pyrholes()</a></code>
 
         </dt>
         <dd>Generate p-D Triangular Pyramid With Triangular Pyramid shaped holes</dd>
@@ -475,7 +320,7 @@
         <dd>Generate S-curve Data</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_scurveHole.html">gen_scurveHole()</a></code>
+          <code><a href="gen_scurvehole.html">gen_scurvehole()</a></code>
 
         </dt>
         <dd>Generate S-curve Data with a Hole</dd>
@@ -504,13 +349,13 @@
         <dd>Generate Curvy Cell Cycle in p-d</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_unifSphere.html">gen_unifSphere()</a></code>
+          <code><a href="gen_unifsphere.html">gen_unifsphere()</a></code>
 
         </dt>
         <dd>Generate Uniform Sphere</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_gridedSphere.html">gen_gridedSphere()</a></code>
+          <code><a href="gen_gridedsphere.html">gen_gridedsphere()</a></code>
 
         </dt>
         <dd>Generate Grided Sphere</dd>
@@ -527,7 +372,7 @@
 
       <dl><dt>
 
-          <code><a href="gen_swissRoll.html">gen_swissRoll()</a></code>
+          <code><a href="gen_swissroll.html">gen_swissroll()</a></code>
 
         </dt>
         <dd>Generate Swiss Roll Data</dd>
@@ -550,31 +395,31 @@
         <dd>Generate Crescent</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_curvyCylinder.html">gen_curvyCylinder()</a></code>
+          <code><a href="gen_curvycylinder.html">gen_curvycylinder()</a></code>
 
         </dt>
         <dd>Generate Curvy Cylinder</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_sphericalSpiral.html">gen_sphericalSpiral()</a></code>
+          <code><a href="gen_sphericalspiral.html">gen_sphericalspiral()</a></code>
 
         </dt>
         <dd>Generate Spherical Spiral</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_helicalHyperspiral.html">gen_helicalHyperspiral()</a></code>
+          <code><a href="gen_helicalspiral.html">gen_helicalspiral()</a></code>
 
         </dt>
         <dd>Generate Helical Hyper Spiral</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_conicSpiral.html">gen_conicSpiral()</a></code>
+          <code><a href="gen_conicspiral.html">gen_conicspiral()</a></code>
 
         </dt>
         <dd>Generate Conical Spiral</dd>
       </dl><dl><dt>
 
-          <code><a href="gen_nonlinearHyperbola.html">gen_nonlinearHyperbola()</a></code>
+          <code><a href="gen_nonlinear.html">gen_nonlinear()</a></code>
 
         </dt>
         <dd>Generate Nonlinear Hyperbola</dd>
@@ -613,6 +458,54 @@
 
         </dt>
         <dd>Relocate Clusters in High-Dimensional Space</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_nproduct.html">gen_nproduct()</a></code>
+
+        </dt>
+        <dd>Generates a vector of positive integers whose product is approximately equal to a target value.</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_nsum.html">gen_nsum()</a></code>
+
+        </dt>
+        <dd>Generates a vector of positive integers whose summation is approximately equal to a target value.</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_wavydims1.html">gen_wavydims1()</a></code>
+
+        </dt>
+        <dd>Generate Random Noise Dimensions With Wavy Pattern</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_wavydims2.html">gen_wavydims2()</a></code>
+
+        </dt>
+        <dd>Generate Random Noise Dimensions With Wavy Pattern</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_wavydims3.html">gen_wavydims3()</a></code>
+
+        </dt>
+        <dd>Generate Random Noise Dimensions With Wavy Pattern</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_rotation.html">gen_rotation()</a></code>
+
+        </dt>
+        <dd>Generate Rotations</dd>
+      </dl><dl><dt>
+
+          <code><a href="gen_globalminmax.html">gen_globalminmax()</a></code>
+
+        </dt>
+        <dd>Generate Global Minimum and Maximum</dd>
+      </dl><dl><dt>
+
+          <code><a href="scale_data.html">scale_data()</a></code>
+
+        </dt>
+        <dd>Generate Scaled data</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
