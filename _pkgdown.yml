@@ -21,6 +21,7 @@ reference:
   - gen_orglinearbranches
   - gen_orgcurvybranches
   - gen_linearbranches
+  - gen_curvybranches
 - title: "Cone"
   desc: Cone data structure.
   contents:

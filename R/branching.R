@@ -462,14 +462,12 @@ gen_curvybranches <- function(n = 500, p = 4, k = 4) {
   }
 
   df <- rbind(df1, df2)
+  df_initial <- df # Initialize df with the connected initial branches
 
   if(k > 2) {
 
-    # Define the excluded x range for starting points
-    excluded_x_range <- c(-0.1, 0.1)
-
-    # Define the full sequence for scaling
-    full_sequence <- seq(-3, 3, by = 1)
+    allowed_x_range <- c(-0.2, 0.2)
+    full_sequence <- seq(-3, 3, by = 0.5)
     excluded_scale_values <- c(2, -1)
     filtered_sequence <- full_sequence[!(full_sequence %in% excluded_scale_values)]
     scale_vec <- sample(filtered_sequence, size = k - 2, replace = TRUE)
@@ -477,21 +475,14 @@ gen_curvybranches <- function(n = 500, p = 4, k = 4) {
     for (i in 3:k) {
       start_point <- NA
       while (TRUE) {
-        # Randomly select a starting point (a row) from the existing 'df'
-        start_point_index <- sample(1:NROW(df), 1)
-        potential_start_point <- df[start_point_index, ]
-
-        # Check if the starting point's x coordinate is within the excluded range
-        x_within_excluded <- potential_start_point[1] >= excluded_x_range[1] & potential_start_point[1] <= excluded_x_range[2]
-
-        # If the starting point's x coordinate is NOT within the excluded range, accept it
-        if (!x_within_excluded) {
+        start_point_index <- sample(1:NROW(df_initial), 1)
+        potential_start_point <- df_initial[start_point_index, ]
+        x_within_allowed <- potential_start_point[1] >= allowed_x_range[1] & potential_start_point[1] <= allowed_x_range[2]
+        if (x_within_allowed) {
           start_point <- potential_start_point
           break
         }
-        # Otherwise, continue sampling
       }
-
 
       # Define parameters for the new branch (you can customize these)
       branch_length <- n_vec[i] # Number of points in the new branch
