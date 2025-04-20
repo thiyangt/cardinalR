@@ -12,7 +12,7 @@ gen_multicluster(
   dim_weights,
   scale = c(3, 1, 2),
   shape = c("gaussian", "bluntedcorn", "unifcube"),
-  rotation,
+  rotation = NULL,
   is_bkg = FALSE
 )
 }
@@ -59,9 +59,9 @@ cluster3 = list(
   )
 )
 dim4_weights <- list(
-cluster1 = c(1.0, 1.0, 1,0, 1,0),
-cluster2 = c(1.0, 1.0, 1,0, 0.3),
-cluster3 = c(1.0, 1.0, 1,0, 0.3)
+cluster1 = c(1.0, 1.0, 1.0, 1.0),
+cluster2 = c(1.0, 1.0, 1.0, 0.3),
+cluster3 = c(1.0, 1.0, 1.0, 0.3)
 )
 clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
 loc = matrix(c(

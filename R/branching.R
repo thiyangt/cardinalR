@@ -147,7 +147,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
       filter_values <- c(index1, index2)
       colnames(noise_df) <- paste0("x", vector[!(vector %in% filter_values)])
 
-      df1 <- cbind(df1, noise_df)[,paste0("x", 1:p)]
+      df1 <- cbind(df1, noise_df)[, paste0("x", 1:p)]
 
     }
 
@@ -155,10 +155,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
 
   }
 
-
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
-
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 
@@ -272,7 +269,7 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_linearbranches(n = 400, p = 4, k = 4)
+#' data <- gen_linearbranches(n = 500, p = 4, k = 4)
 gen_linearbranches <- function(n = 500, p = 4, k = 4) {
 
   if (p < 2) {
@@ -373,6 +370,138 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
       x1 <- stats::runif(branch_length, x1_start, x1_end)
       poly_basis_branch <- stats::poly(x1, degree = 1, raw = TRUE)
       x2 <- scale_vec[i-2] * (poly_basis_branch[, 1] - start_point[1]) + start_point[2] + stats::runif(branch_length, 0, 0.2)
+
+      # Create the new branch data frame
+      df_branch <- matrix(c(x1, x2), ncol = 2)
+
+      if (p > 2) {
+
+        noise_df <- gen_noisedims(n = NROW(df_branch), p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+          as.matrix()
+        colnames(noise_df) <- paste0("x", 3:p)
+
+        df_branch <- cbind(df_branch, noise_df)
+
+      }
+
+      # Combine the new branch with the main data frame
+      df <- rbind(df, df_branch)
+    }
+
+  }
+
+
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
+
+#' Generate data with curvy shaped branches
+#'
+#' This function generates a dataset representing a structure with non-linear shaped branches.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 4) representing the number of branches.
+#' @return A data containing non-linear shaped branches.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' data <- gen_curvybranches(n = 500, p = 4, k = 4)
+gen_curvybranches <- function(n = 500, p = 4, k = 4) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (k <= 0) {
+    cli::cli_abort("k should be positive.")
+  }
+
+  n_vec <- gen_nsum(n = n, k = k)
+
+  ## Initialize main branch 1
+  x1 <- stats::runif(n_vec[1], 0, 1)
+  poly_basis_1 <- stats::poly(x1, degree = 2, raw = TRUE)
+  x2 <- 0.1 * poly_basis_1[, 1] + 1 * poly_basis_1[, 2] + stats::runif(n_vec[1], 0, 0.05)
+  df1 <- matrix(c(x1, x2), ncol = 2)
+
+  if (p > 2) {
+
+    noise_df <- gen_noisedims(n = NROW(df1), p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df1 <- cbind(df1, noise_df)
+
+  }
+
+  ## Initialize main branch 2
+  x1 <- stats::runif(n_vec[2], -1, 0)
+  poly_basis_1 <- stats::poly(x1, degree = 2, raw = TRUE)
+  x2 <- 0.1 * poly_basis_1[, 1] - 2 * poly_basis_1[, 2] + stats::runif(n_vec[2], 0, 0.05)
+  df2 <- matrix(c(x1, x2), ncol = 2)
+
+  if (p > 2) {
+
+    noise_df <- gen_noisedims(n = NROW(df2), p = (p-2), m = rep(0, p-2), s = rep(0.05, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df2 <- cbind(df2, noise_df)
+
+  }
+
+  df <- rbind(df1, df2)
+
+  if(k > 2) {
+
+    # Define the excluded x range for starting points
+    excluded_x_range <- c(-0.1, 0.1)
+
+    # Define the full sequence for scaling
+    full_sequence <- seq(-3, 3, by = 1)
+    excluded_scale_values <- c(2, -1)
+    filtered_sequence <- full_sequence[!(full_sequence %in% excluded_scale_values)]
+    scale_vec <- sample(filtered_sequence, size = k - 2, replace = TRUE)
+
+    for (i in 3:k) {
+      start_point <- NA
+      while (TRUE) {
+        # Randomly select a starting point (a row) from the existing 'df'
+        start_point_index <- sample(1:NROW(df), 1)
+        potential_start_point <- df[start_point_index, ]
+
+        # Check if the starting point's x coordinate is within the excluded range
+        x_within_excluded <- potential_start_point[1] >= excluded_x_range[1] & potential_start_point[1] <= excluded_x_range[2]
+
+        # If the starting point's x coordinate is NOT within the excluded range, accept it
+        if (!x_within_excluded) {
+          start_point <- potential_start_point
+          break
+        }
+        # Otherwise, continue sampling
+      }
+
+
+      # Define parameters for the new branch (you can customize these)
+      branch_length <- n_vec[i] # Number of points in the new branch
+      x1_start <- start_point[1] # Adjust starting x1
+      x1_end <- start_point[1] + 0.5   # Adjust ending x1
+
+      # Generate x1 values for the new branch
+      x1 <- stats::runif(branch_length, x1_start, x1_end)
+      poly_basis_branch <- stats::poly(x1, degree = 2, raw = TRUE)
+      x2 <-  0.1 * poly_basis_branch[, 1] - scale_vec[i-2] * (poly_basis_branch[, 2] - start_point[1]) + start_point[2] + stats::runif(branch_length, 0, 0.01)
 
       # Create the new branch data frame
       df_branch <- matrix(c(x1, x2), ncol = 2)

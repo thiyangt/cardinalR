@@ -51,7 +51,7 @@
 <span>  <span class="va">dim_weights</span>,</span>
 <span>  scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"bluntedcorn"</span>, <span class="st">"unifcube"</span><span class="op">)</span>,</span>
-<span>  <span class="va">rotation</span>,</span>
+<span>  rotation <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  is_bkg <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -120,9 +120,9 @@
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dim4_weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>cluster1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1</span>,<span class="fl">0</span>, <span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>cluster2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1</span>,<span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>cluster3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1</span>,<span class="fl">0</span>, <span class="fl">0.3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>cluster1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>cluster2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>cluster3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">clust_data</span> <span class="op">&lt;-</span> <span class="fu">gen_multicluster</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">500</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">4</span>, k <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>

@@ -32,9 +32,9 @@
 #'   )
 #' )
 #' dim4_weights <- list(
-#' cluster1 = c(1.0, 1.0, 1,0, 1,0),
-#' cluster2 = c(1.0, 1.0, 1,0, 0.3),
-#' cluster3 = c(1.0, 1.0, 1,0, 0.3)
+#' cluster1 = c(1.0, 1.0, 1.0, 1.0),
+#' cluster2 = c(1.0, 1.0, 1.0, 0.3),
+#' cluster3 = c(1.0, 1.0, 1.0, 0.3)
 #' )
 #' clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
 #' loc = matrix(c(
@@ -56,7 +56,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                              dim_weights,
                              scale = c(3, 1, 2),
                              shape = c("gaussian", "bluntedcorn", "unifcube"),
-                             rotation,
+                             rotation = NULL,
                              is_bkg = FALSE) {
 
   if (p < 2) {
@@ -119,8 +119,11 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cluster_df <- scale[i] * cluster_df
 
     ## To rotate the cluster
-    rotation_clust <- gen_rotation(p = p, planes_angles = rotation[[i]])
-    cluster_df <- t(rotation_clust %*% t(cluster_df))
+    if(!is.null(rotation)) {
+      rotation_clust <- gen_rotation(p = p, planes_angles = rotation[[i]])
+      cluster_df <- t(rotation_clust %*% t(cluster_df))
+
+    }
 
     ## To move to the center
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))

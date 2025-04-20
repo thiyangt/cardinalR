@@ -47,6 +47,10 @@ reference:
   desc: Main function.
   contents:
   - gen_multicluster
+- title: "Odd shapes"
+  desc: Odd shaped clusters.
+  contents:
+  - gen_mobiusgau
 - title: "Polynomial"
   desc: Polynomial data structures.
   contents:
@@ -72,6 +76,7 @@ reference:
   - gen_curvycycle
   - gen_unifsphere
   - gen_gridedsphere
+  - gen_clusteredspheres
 - title: "Swiss roll"
   desc: Swiss roll data structures.
   contents:
