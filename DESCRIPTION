@@ -3,7 +3,7 @@ Package: cardinalR
 Title: Collection of Data Structures
 Version: 0.1.8
 Authors@R: c(
-    person("Jayani", "P.G. Lakshika", , "jayanilakshika76@gmail.com", role = c("aut", "cre"),
+    person("Jayani", "P. Gamage", , "jayanilakshika76@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6265-6481")),
     person("Dianne", "Cook", , "dicook@monash.edu", role = "aut",
            comment = c(ORCID = "0000-0002-3813-7155")),
