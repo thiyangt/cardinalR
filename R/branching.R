@@ -466,8 +466,8 @@ gen_curvybranches <- function(n = 500, p = 4, k = 4) {
 
   if(k > 2) {
 
-    allowed_x_range <- c(-0.2, 0.2)
-    full_sequence <- seq(-3, 3, by = 0.5)
+    allowed_x_range <- c(-0.15, 0.15)
+    full_sequence <- seq(-2, 2, by = 0.5)
     excluded_scale_values <- c(2, -1)
     filtered_sequence <- full_sequence[!(full_sequence %in% excluded_scale_values)]
     scale_vec <- sample(filtered_sequence, size = k - 2, replace = TRUE)
@@ -487,12 +487,12 @@ gen_curvybranches <- function(n = 500, p = 4, k = 4) {
       # Define parameters for the new branch (you can customize these)
       branch_length <- n_vec[i] # Number of points in the new branch
       x1_start <- start_point[1] # Adjust starting x1
-      x1_end <- start_point[1] + 0.5   # Adjust ending x1
+      x1_end <- start_point[1] + 1   # Adjust ending x1
 
       # Generate x1 values for the new branch
       x1 <- stats::runif(branch_length, x1_start, x1_end)
       poly_basis_branch <- stats::poly(x1, degree = 2, raw = TRUE)
-      x2 <-  0.1 * poly_basis_branch[, 1] - scale_vec[i-2] * (poly_basis_branch[, 2] - start_point[1]) + start_point[2] + stats::runif(branch_length, 0, 0.01)
+      x2 <-  0.1 * poly_basis_branch[, 1] - scale_vec[i-2] * (poly_basis_branch[, 2] - start_point[1]) + start_point[2]
 
       # Create the new branch data frame
       df_branch <- matrix(c(x1, x2), ncol = 2)
