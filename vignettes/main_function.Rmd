@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  message = FALSE
 )
 ```
 
@@ -33,23 +34,17 @@ cluster3 = list(
   )
 )
 
-dim4_weights <- list(
-cluster1 = c(1.0, 1.0, 1.0, 1.0),
-cluster2 = c(1.0, 1.0, 1.0, 1.0),
-cluster3 = c(1.0, 1.0, 1.0, 0.3)
-)
-
 clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
-loc = matrix(c(
-  0, 0, 0, 0,
-  5, 9, 0, 0,
-  3, 4, 10, 7
-), nrow = 4, byrow = TRUE),
-dim_weights = dim4_weights,
-scale = c(3, 6, 4),
-shape = c("gaussian", "bluntedcorn", "unifcube"),
-rotation = rotations_4d,
-is_bkg = FALSE)
+  loc = matrix(c(
+    0, 0, 0, 0,
+    5, 9, 0, 0,
+    3, 4, 10, 7
+  ), nrow = 4, byrow = TRUE),
+  scale = c(2, 5, 1),
+  shape = c("gaussian", "bluntedcorn", "unifcube"),
+  rotation = rotations_4d,
+  is_bkg = FALSE
+)
 
 langevitour(clust_data |> dplyr::select(-cluster), 
             pointSize = 2, group = clust_data$cluster)

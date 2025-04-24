@@ -48,7 +48,6 @@
 <span>  p <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  k <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">10</span>, <span class="fl">7</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  <span class="va">dim_weights</span>,</span>
 <span>  scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"bluntedcorn"</span>, <span class="st">"unifcube"</span><span class="op">)</span>,</span>
 <span>  rotation <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -77,10 +76,6 @@
 5, 9, 0, 0,
 3, 4, 10, 7
 ), nrow = 4, byrow = TRUE)) representing the locations/centroids of clusters.</p></dd>
-
-
-<dt id="arg-dim-weights">dim_weights<a class="anchor" aria-label="anchor" href="#arg-dim-weights"></a></dt>
-<dd><p>A numeric list representing the weights of each dimensions of each clusters.</p></dd>
 
 
 <dt id="arg-scale">scale<a class="anchor" aria-label="anchor" href="#arg-scale"></a></dt>
@@ -119,18 +114,12 @@
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>plane <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span> <span class="co"># Rotation in the (2, 4) plane</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dim4_weights</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>cluster1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>cluster2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>cluster3 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">0.3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">clust_data</span> <span class="op">&lt;-</span> <span class="fu">gen_multicluster</span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">500</span><span class="op">)</span>, p <span class="op">=</span> <span class="fl">4</span>, k <span class="op">=</span> <span class="fl">3</span>,</span></span>
 <span class="r-in"><span>loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  <span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">0</span>, <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">10</span>, <span class="fl">7</span></span></span>
 <span class="r-in"><span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>dim_weights <span class="op">=</span> <span class="va">dim4_weights</span>,</span></span>
 <span class="r-in"><span>scale <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"gaussian"</span>, <span class="st">"bluntedcorn"</span>, <span class="st">"unifcube"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>rotation <span class="op">=</span> <span class="va">rotations_4d</span>,</span></span>
@@ -147,7 +136,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Jayani P.G. Lakshika, Dianne Cook, Paul Harrison, Michael Lydeamore, Thiyanga S. Talagala.</p>
+  <p>Developed by Jayani P. Gamage, Dianne Cook, Paul Harrison, Michael Lydeamore, Thiyanga S. Talagala.</p>
 </div>
 
 <div class="pkgdown-footer-right">
