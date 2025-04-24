@@ -8,13 +8,13 @@
 #' @export
 #'
 #' @examples
-#' data <- gen_mobiusgau(n = c(200, 100), p = 4)
-gen_mobiusgau <- function(n = c(200, 100), p = 4) {
+#' data <- make_mobiusgau(n = c(200, 100), p = 4)
+make_mobiusgau <- function(n = c(200, 100), p = 4) {
 
   ## Assign weights for the dimensions
   dim4_weights <- list(
   cluster1 = c(1.0, 1.0, 1.0, 1.0),
-  cluster2 = c(1.0, 1.0, 1.0, 0.5)
+  cluster2 = c(1.0, 1.0, 1.0, 1.0)
   )
 
   ## To generate data
