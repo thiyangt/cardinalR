@@ -18,5 +18,5 @@ A data containing the mobius cluster and Gaussian cluster.
 This function generates a dataset consisting of a mobius cluster and Gaussian cluster.
 }
 \examples{
-data <- make_mobiusgau(n = c(200, 100), p = 4)
+mobgau <- make_mobiusgau(n = c(200, 100), p = 4)
 }

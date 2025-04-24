@@ -26,7 +26,8 @@ Imports:
     purrr,
     stats,
     rlang,
-    cli
+    cli,
+    MASS
 Suggests: 
     knitr,
     langevitour,

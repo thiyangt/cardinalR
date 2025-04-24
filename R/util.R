@@ -402,9 +402,9 @@ gen_rotation <- function(p = 4, planes_angles) {
 
 #' Generate Normalized data
 #'
-#' This function to normalize data by absolute value
+#' This function normalize the data by absolute value
 #'
-#' @param data A matrix representing the data which needed to be normalized.
+#' @param data A tibble representing the data which needed to be normalized.
 #'
 #' @return A normalized data.
 #'
@@ -428,3 +428,30 @@ normalize_data <- function(data) {
   data[, num_cols] <- df_num / scale_value
   return(data)
 }
+
+
+#' Generate Cluster Locations
+#'
+#' This function generate locations for any number of clusters in any dimensions.
+#'
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param k A numeric value (default: 3) representing the number of clusters.
+#'
+#' @return A matrix of the locations.
+#'
+#' @examples
+#' set.seed(20240412)
+#' gen_clustloc(p = 4, k = 3)
+#'
+#' @export
+gen_clustloc <- function(p = 4, k = 3) {
+  # Generate k points in p-dimensional simplex
+  # Sample k points from a (p-1)-dimensional Dirichlet distribution
+  dirichlet_samples <- t(MASS::mvrnorm(n = k, mu = rep(0, p), Sigma = diag(p)))
+
+  # Center the points to form a proper p-simplex
+  simplex_points <- dirichlet_samples - rowMeans(dirichlet_samples)
+
+  return(simplex_points)
+}
+

@@ -7,13 +7,13 @@
 normalize_data(data)
 }
 \arguments{
-\item{data}{A matrix representing the data which needed to be normalized.}
+\item{data}{A tibble representing the data which needed to be normalized.}
 }
 \value{
 A normalized data.
 }
 \description{
-This function to normalize data by absolute value
+This function normalize the data by absolute value
 }
 \examples{
 set.seed(20240412)

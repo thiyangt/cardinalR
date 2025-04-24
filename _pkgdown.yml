@@ -52,6 +52,7 @@ reference:
   desc: Odd shaped clusters.
   contents:
   - make_mobiusgau
+  - make_multigau
 - title: "Polynomial"
   desc: Polynomial data structures.
   contents:
@@ -105,3 +106,4 @@ reference:
   - gen_wavydims3
   - gen_rotation
   - normalize_data
+  - gen_clustloc
