@@ -11,6 +11,18 @@
 #' mobgau <- make_mobiusgau(n = c(200, 100), p = 4)
 make_mobiusgau <- function(n = c(200, 100), p = 4) {
 
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly two values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
   ## To generate data
   df <- gen_multicluster(n = n, p = p, k = 2,
                                loc = matrix(c(
@@ -44,6 +56,46 @@ make_mobiusgau <- function(n = c(200, 100), p = 4) {
 #' ), nrow = 4, byrow = TRUE)
 #' multigau <- make_multigau(n = c(300, 200, 500), p = 4, k = 3, loc = loc_matrix, scale = c(0.2, 1.5, 0.5))
 make_multigau <- function(n = c(300, 200, 500), p = 4, k = 3, loc = NULL, scale = NULL) {
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (k < 1) {
+    cli::cli_abort("k should be greater than 1.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  if (length(scale) != k) {
+    cli::cli_abort("scale should contain exactly {.val {k}} values.")
+  }
+
+  if (any(scale < 0)) {
+    cli::cli_abort("Values in scale should be positive.")
+  }
+
+  if (length(shape) != k) {
+    cli::cli_abort("shape should contain exactly {.val {k}} values.")
+  }
+
+  if (!is.matrix(loc)) {
+    cli::cli_abort("loc should be a matrix.")
+  }
+
+  if (NROW(loc) != p) {
+    cli::cli_abort("Number of rows in loc should be {.val {p}}.")
+  }
+
+  if (NCOL(loc) != k) {
+    cli::cli_abort("Number of rows in loc should be {.val {k}}.")
+  }
 
   if (is.null(loc)) {
     loc <- gen_clustloc(p = p, k = k)

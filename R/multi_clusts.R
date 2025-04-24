@@ -55,6 +55,10 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cli::cli_abort("p should be greater than 2.")
   }
 
+  if (k < 1) {
+    cli::cli_abort("k should be greater than 1.")
+  }
+
   if (length(n) != k) {
     cli::cli_abort("n should contain exactly {.val {k}} values.")
   }
