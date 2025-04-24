@@ -9,7 +9,6 @@
 #' 5, 9, 0, 0,
 #' 3, 4, 10, 7
 #' ), nrow = 4, byrow = TRUE)) representing the locations/centroids of clusters.
-#' @param dim_weights A numeric list representing the weights of each dimensions of each clusters.
 #' @param scale A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.
 #' @param shape A character vector (default: c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube")) representing the shapes of clusters.
 #' @param rotation A numeric list which contains plane and the corresponding angle along that plane for each cluster.
@@ -31,18 +30,12 @@
 #'   list(plane = c(2, 4), angle = 45) # Rotation in the (2, 4) plane
 #'   )
 #' )
-#' dim4_weights <- list(
-#' cluster1 = c(1.0, 1.0, 1.0, 1.0),
-#' cluster2 = c(1.0, 1.0, 1.0, 0.3),
-#' cluster3 = c(1.0, 1.0, 1.0, 0.3)
-#' )
 #' clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
 #' loc = matrix(c(
 #'   0, 0, 0, 0,
 #'   5, 9, 0, 0,
 #'   3, 4, 10, 7
 #' ), nrow = 4, byrow = TRUE),
-#' dim_weights = dim4_weights,
 #' scale = c(3, 1, 2),
 #' shape = c("gaussian", "bluntedcorn", "unifcube"),
 #' rotation = rotations_4d,
@@ -53,7 +46,6 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                5, 9, 0, 0,
                                3, 4, 10, 7  # height of smaller equilateral triangle in 2D
                              ), nrow = 4, byrow = TRUE),
-                             dim_weights,
                              scale = c(3, 1, 2),
                              shape = c("gaussian", "bluntedcorn", "unifcube"),
                              rotation = NULL,
@@ -101,19 +93,10 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   for (i in 1:k) {
 
     ## To generate the cluster
-    dfs[[i]] <- get(paste0("gen_", shape[i]))(n = n[i], p = p)
+    cluster_df <- get(paste0("gen_", shape[i]))(n = n[i], p = p)
 
-  }
-
-  ## To generate global min and max
-  global_minmax <- gen_globalminmax(data_list = dfs, p = p)
-
-  for (i in 1:k) {
-    ## Weights for each dimension (lower weights for noise dimensions)
-    dimension_weights <- dim_weights[[i]]
-
-    ## To scale the data
-    cluster_df <- scale_data(data = dfs[[i]], weights = dimension_weights, global_val = global_minmax)
+    ## To normalize the data
+    cluster_df <- normalize_data(data = cluster_df)
 
     ## To multiply by the scale factor
     cluster_df <- scale[i] * cluster_df
@@ -140,8 +123,8 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     dfs[[i]] <- cluster_df |>
       dplyr::mutate(cluster = paste0("cluster", i))
 
-  }
 
+  }
 
   ## To combine the data
   df <- dplyr::bind_rows(dfs)
