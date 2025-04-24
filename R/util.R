@@ -30,7 +30,7 @@ gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) 
   df <- tibble::as_tibble(noise_dim, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Noise dimensions generation completed successfully! 🎉")
+  cli::cli_alert_success("{.val {p}} noise dimensions have been generated successfully! 🎉")
   return(df)
 }
 
