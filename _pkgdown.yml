@@ -25,7 +25,7 @@ reference:
 - title: "Cone"
   desc: Cone data structure.
   contents:
-  - gen_bluntedcorn
+  - gen_bluntedcone
 - title: "Cube"
   desc: Cube data structure.
   contents:

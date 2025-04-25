@@ -1,19 +1,19 @@
-#' Generate Blunted Corn
+#' Generate Blunted Cone
 #'
-#' This function generates a dataset representing a blunted corn.
+#' This function generates a dataset representing a blunted cone.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param h A numeric value (default: 5) representing the h of the corn.
-#' @param ratio A numeric value (default: 0.5) representing the radius tip to radius base ratio of the corn. Should be less than 1.
+#' @param h A numeric value (default: 5) representing the h of the cone.
+#' @param ratio A numeric value (default: 0.5) representing the radius tip to radius base ratio of the cone. Should be less than 1.
 #'
-#' @return A data containing the blunted corn.
+#' @return A data containing the blunted cone.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' blunted_corn_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5)
-gen_bluntedcorn <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
+#' blunted_cone_data <- gen_bluntedcone(n = 500, p = 4, h = 5, ratio = 0.5)
+gen_bluntedcone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
