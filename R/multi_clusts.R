@@ -116,7 +116,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
 
     ## To re-position the data to centroids given
-    cluster_df <- cluster_df + matrix(rep(loc[,i], n[i]), ncol=p, byrow=T)
+    cluster_df <- cluster_df + matrix(rep(loc[i,], n[i]), ncol=p, byrow=T)
 
     cluster_df <- cluster_df |>
       tibble::as_tibble(.name_repair = "minimal")
