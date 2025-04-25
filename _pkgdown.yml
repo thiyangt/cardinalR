@@ -79,6 +79,7 @@ reference:
   - gen_unifsphere
   - gen_gridedsphere
   - gen_clusteredspheres
+  - gen_hemisphere
 - title: "Swiss roll"
   desc: Swiss roll data structures.
   contents:

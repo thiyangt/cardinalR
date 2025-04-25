@@ -273,3 +273,56 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
 }
+
+
+#' Generate Hemisphere
+#'
+#' This function generates a dataset representing a structure with a hemisphere.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a hemisphere.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' hemisphere_data <- gen_hemisphere(n = 500, p = 4)
+#' head(hemisphere_data, 5)
+gen_hemisphere <- function(n = 500, p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  # Step 1: Random angles for spherical coordinates
+  theta1 <- stats::runif(n, 0, pi)        # Angle for (x1, x2) plane (azimuth)
+  theta2 <- stats::runif(n, 0, pi)        # Angle for (x2, x3) plane (elevation)
+  theta3 <- stats::runif(n, 0, pi / 2)    # Angle for (x3, x4), restricted for hemisphere
+
+  # Step 2: Convert spherical coordinates to Cartesian coordinates in 4D
+  x1 <- sin(theta1) * cos(theta2)  # x1 coordinate
+  x2 <- sin(theta1) * sin(theta2)  # x2 coordinate
+  x3 <- cos(theta1) * cos(theta3)  # x3 coordinate
+  x4 <- cos(theta1) * sin(theta3)  # x4 coordinate (restricted to hemisphere)
+
+  df <- matrix(c(x1, x2, x3), ncol = 3)
+
+  if (p > 4) {
+    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 5:p)
+
+    df <- cbind(df, noise_df)
+  }
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:p)
+
+  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  return(df)
+
+}
