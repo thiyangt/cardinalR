@@ -83,12 +83,12 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cli::cli_abort("loc should be a matrix.")
   }
 
-  if (NROW(loc) != p) {
-    cli::cli_abort("Number of rows in loc should be {.val {p}}.")
+  if (NROW(loc) != k) {
+    cli::cli_abort("Number of rows in loc should be {.val {k}}.")
   }
 
-  if (NCOL(loc) != k) {
-    cli::cli_abort("Number of rows in loc should be {.val {k}}.")
+  if (NCOL(loc) != p) {
+    cli::cli_abort("Number of rows in loc should be {.val {p}}.")
   }
 
   dfs <- list()
