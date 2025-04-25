@@ -14,7 +14,7 @@
 #' gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 #'
 #' @export
-gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) {
+gen_noisedims <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
 
   # Initialize an empty list to store the vectors
   noise_dim <- list()
@@ -53,7 +53,7 @@ gen_noisedims <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) 
 #' gen_bkgnoise(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
 #'
 #' @export
-gen_bkgnoise <- function(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2)) {
+gen_bkgnoise <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
 
   # Initialize an empty list to store the vectors
   noise_bkg <- list()
