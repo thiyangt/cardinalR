@@ -4,7 +4,7 @@
 \alias{gen_gaussian}
 \title{Generate Gaussian}
 \usage{
-gen_gaussian(n = 500, p = 4, s = diag(4) * 0.01)
+gen_gaussian(n = 500, p = 4, s = diag(p) * 0.01)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
