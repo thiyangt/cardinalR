@@ -183,7 +183,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   # For the fourth dimension and beyond, taper toward the tip
   if (p > 3) {
     for (i in 4:p) {
-      coords[, i - 1] <- runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
+      coords[, i - 1] <- stats::runif(n, -0.1, 0.1) * (h - height_values) / h # Tapering
     }
   }
 
