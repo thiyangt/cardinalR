@@ -309,7 +309,7 @@ gen_hemisphere <- function(n = 500, p = 4) {
   x3 <- cos(theta1) * cos(theta3)  # x3 coordinate
   x4 <- cos(theta1) * sin(theta3)  # x4 coordinate (restricted to hemisphere)
 
-  df <- matrix(c(x1, x2, x3), ncol = 3)
+  df <- matrix(c(x1, x2, x3, x4), ncol = 4)
 
   if (p > 4) {
     noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.05, p-4)) |>
