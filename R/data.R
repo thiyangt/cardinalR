@@ -1,210 +1,210 @@
-#' Mobius clust dataset with noise dimensions
+#' Mobius clust dataset with a noise dimension
 #'
-#' The `mobius_clust_data` dataset contains a 3-dimensional Mobius and Gaussian cluster
-#' with added noise dimensions.
-#' Each data point is represented by five dimensions (x1 to x5).
+#' The `mobiusgau` dataset contains a 3-dimensional Mobius and Gaussian cluster
+#' with added noise dimension.
+#' Each data point is represented by five dimensions (x1 to x4).
 #'
-#' @format A data frame with 500 rows and 5 columns:
+#' @format A data frame with 1000 rows and 4 columns:
 #' \describe{
-#'   \item{x1, x2, x3, x4, x5}{High-dimensional coordinates}
+#'   \item{x1, x2, x3, x4}{High-dimensional coordinates}
 #' }
 #'
 #' @examples
-#' # Load the mobius_clust_data dataset
-#' data(mobius_clust_data)
+#' # Load the mobiusgau dataset
+#' data(mobiusgau)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_data)
+#' head(mobiusgau)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_data
+#' @rdname mobiusgau
 #' @docType data
-#' @usage data(mobius_clust_data)
+#' @usage data(mobiusgau)
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_data"
+"mobiusgau"
 
-#' UMAP embedding for mobius_clust_data dataset which with noise dimensions
+#' UMAP embedding for mobiusgau dataset which with noise dimensions
 #' UMAP parameters set to n-neigbors: 15 and min-dist: 0.1.
 #'
-#' The `mobius_clust_umap_param1` dataset contains the UMAP (Uniform Manifold
-#' Approximation and Projection) embeddings of a five-dimensional mobius_clust_data.
+#' The `mobiusgau_umap1` dataset contains the UMAP (Uniform Manifold
+#' Approximation and Projection) embeddings of a five-dimensional mobiusgau.
 #' Each data point is represented by two UMAP coordinates (emb1
 #' and emb2).
 #'
-#' @format ## `mobius_clust_umap_param1`
-#' A data frame with 500 rows and 2 columns:
+#' @format ## `mobiusgau_umap1`
+#' A data frame with 1000 rows and 4 columns:
 #' \describe{
 #'   \item{emb1}{Numeric, first UMAP 2D embeddings.}
 #'   \item{emb2}{Numeric, second UMAP 2D embeddings.}
 #' }
 #' @examples
-#' # Load the mobius_clust_umap_param1 dataset
-#' data(mobius_clust_umap_param1)
+#' # Load the mobiusgau_umap1 dataset
+#' data(mobiusgau_umap1)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_umap_param1)
+#' head(mobiusgau_umap1)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_umap_param1
+#' @rdname mobiusgau_umap1
 #' @docType data
-#' @usage data(mobius_clust_umap_param1)
+#' @usage data(mobiusgau_umap1)
 #'
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_umap_param1"
+"mobiusgau_umap1"
 
 
-#' UMAP embedding for mobius_clust_data dataset which with noise dimensions
+#' UMAP embedding for mobiusgau dataset which with noise dimensions
 #' UMAP parameters set to n-neigbors: 30 and min-dist: 0.08.
 #'
-#' The `mobius_clust_umap_param2` dataset contains the UMAP (Uniform Manifold
-#' Approximation and Projection) embeddings of a five-dimensional mobius_clust_data.
+#' The `mobiusgau_umap2` dataset contains the UMAP (Uniform Manifold
+#' Approximation and Projection) embeddings of a five-dimensional mobiusgau.
 #' Each data point is represented by two UMAP coordinates (emb1
 #' and emb2).
 #'
-#' @format ## `mobius_clust_umap_param2`
-#' A data frame with 500 rows and 2 columns:
+#' @format ## `mobiusgau_umap2`
+#' A data frame with 1000 rows and 4 columns:
 #' \describe{
 #'   \item{emb1}{Numeric, first UMAP 2D embeddings.}
 #'   \item{emb2}{Numeric, second UMAP 2D embeddings.}
 #' }
 #' @examples
-#' # Load the mobius_clust_umap_param2 dataset
-#' data(mobius_clust_umap_param2)
+#' # Load the mobiusgau_umap2 dataset
+#' data(mobiusgau_umap2)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_umap_param2)
+#' head(mobiusgau_umap2)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_umap_param2
+#' @rdname mobiusgau_umap2
 #' @docType data
-#' @usage data(mobius_clust_umap_param2)
+#' @usage data(mobiusgau_umap2)
 #'
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_umap_param2"
+"mobiusgau_umap2"
 
 
-#' UMAP embedding for mobius_clust_data dataset which with noise dimensions
+#' UMAP embedding for mobiusgau dataset which with noise dimensions
 #' UMAP parameters set to n-neigbors: 5 and min-dist: 0.9.
 #'
-#' The `mobius_clust_umap_param3` dataset contains the UMAP (Uniform Manifold
-#' Approximation and Projection) embeddings of a five-dimensional mobius_clust_data.
+#' The `mobiusgau_umap3` dataset contains the UMAP (Uniform Manifold
+#' Approximation and Projection) embeddings of a five-dimensional mobiusgau.
 #' Each data point is represented by two UMAP coordinates (emb1
 #' and emb2).
 #'
-#' @format ## `mobius_clust_umap_param3`
-#' A data frame with 500 rows and 2 columns:
+#' @format ## `mobiusgau_umap3`
+#' A data frame with 1000 rows and 4 columns:
 #' \describe{
 #'   \item{emb1}{Numeric, first UMAP 2D embeddings.}
 #'   \item{emb2}{Numeric, second UMAP 2D embeddings.}
 #' }
 #' @examples
-#' # Load the mobius_clust_umap_param3 dataset
-#' data(mobius_clust_umap_param3)
+#' # Load the mobiusgau_umap3 dataset
+#' data(mobiusgau_umap3)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_umap_param3)
+#' head(mobiusgau_umap3)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_umap_param3
+#' @rdname mobiusgau_umap3
 #' @docType data
-#' @usage data(mobius_clust_umap_param3)
+#' @usage data(mobiusgau_umap3)
 #'
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_umap_param3"
+"mobiusgau_umap3"
 
 
-#' tSNE embedding for mobius_clust_data dataset which with noise dimensions
+#' tSNE embedding for mobiusgau dataset which with noise dimensions
 #' tSNE parameters set to perplexity: 15.
 #'
-#' The `mobius_clust_tsne_param1` dataset contains the tSNE (t-distributed Stochastic
-#' Neighbor Embedding) embeddings of a five-dimensional mobius_clust_data.
+#' The `mobiusgau_tsne1` dataset contains the tSNE (t-distributed Stochastic
+#' Neighbor Embedding) embeddings of a five-dimensional mobiusgau.
 #' Each data point is represented by two tSNE coordinates (emb1
 #' and emb2).
 #'
-#' @format ## `mobius_clust_tsne_param1`
-#' A data frame with 500 rows and 2 columns:
+#' @format ## `mobiusgau_tsne1`
+#' A data frame with 1000 rows and 4 columns:
 #' \describe{
 #'   \item{emb1}{Numeric, first tSNE 2D embeddings.}
 #'   \item{emb2}{Numeric, second tSNE 2D embeddings.}
 #' }
 #' @examples
-#' # Load the mobius_clust_tsne_param1 dataset
-#' data(mobius_clust_tsne_param1)
+#' # Load the mobiusgau_tsne1 dataset
+#' data(mobiusgau_tsne1)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_tsne_param1)
+#' head(mobiusgau_tsne1)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_tsne_param1
+#' @rdname mobiusgau_tsne1
 #' @docType data
-#' @usage data(mobius_clust_tsne_param1)
+#' @usage data(mobiusgau_tsne1)
 #'
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_tsne_param1"
+"mobiusgau_tsne1"
 
 
-#' tSNE embedding for mobius_clust_data dataset which with noise dimensions
+#' tSNE embedding for mobiusgau dataset which with noise dimensions
 #' tSNE parameters set to perplexity: 30.
 #'
-#' The `mobius_clust_tsne_param2` dataset contains the tSNE (t-distributed Stochastic
-#' Neighbor Embedding) embeddings of a five-dimensional mobius_clust_data.
+#' The `mobiusgau_tsne2` dataset contains the tSNE (t-distributed Stochastic
+#' Neighbor Embedding) embeddings of a five-dimensional mobiusgau.
 #' Each data point is represented by two tSNE coordinates (emb1
 #' and emb2).
 #'
-#' @format ## `mobius_clust_tsne_param2`
-#' A data frame with 500 rows and 2 columns:
+#' @format ## `mobiusgau_tsne2`
+#' A data frame with 1000 rows and 4 columns:
 #' \describe{
 #'   \item{emb1}{Numeric, first tSNE 2D embeddings.}
 #'   \item{emb2}{Numeric, second tSNE 2D embeddings.}
 #' }
 #' @examples
-#' # Load the mobius_clust_tsne_param2 dataset
-#' data(mobius_clust_tsne_param2)
+#' # Load the mobiusgau_tsne2 dataset
+#' data(mobiusgau_tsne2)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_tsne_param2)
+#' head(mobiusgau_tsne2)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_tsne_param2
+#' @rdname mobiusgau_tsne2
 #' @docType data
-#' @usage data(mobius_clust_tsne_param2)
+#' @usage data(mobiusgau_tsne2)
 #'
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_tsne_param2"
+"mobiusgau_tsne2"
 
 
-#' tSNE embedding for mobius_clust_data dataset which with noise dimensions
+#' tSNE embedding for mobiusgau dataset which with noise dimensions
 #' tSNE parameters set to perplexity: 5.
 #'
-#' The `mobius_clust_tsne_param3` dataset contains the tSNE (t-distributed Stochastic
-#' Neighbor Embedding) embeddings of a five-dimensional mobius_clust_data.
+#' The `mobiusgau_tsne3` dataset contains the tSNE (t-distributed Stochastic
+#' Neighbor Embedding) embeddings of a five-dimensional mobiusgau.
 #' Each data point is represented by two tSNE coordinates (emb1
 #' and emb2).
 #'
-#' @format ## `mobius_clust_tsne_param3`
-#' A data frame with 500 rows and 2 columns:
+#' @format ## `mobiusgau_tsne3`
+#' A data frame with 1000 rows and 4 columns:
 #' \describe{
 #'   \item{emb1}{Numeric, first tSNE 2D embeddings.}
 #'   \item{emb2}{Numeric, second tSNE 2D embeddings.}
 #' }
 #' @examples
-#' # Load the mobius_clust_tsne_param1 dataset
-#' data(mobius_clust_tsne_param3)
+#' # Load the mobiusgau_tsne1 dataset
+#' data(mobiusgau_tsne3)
 #'
 #' # Display the first few rows of the dataset
-#' head(mobius_clust_tsne_param3)
+#' head(mobiusgau_tsne3)
 #'
 #' @keywords datasets
 #'
-#' @rdname mobius_clust_tsne_param3
+#' @rdname mobiusgau_tsne3
 #' @docType data
-#' @usage data(mobius_clust_tsne_param3)
+#' @usage data(mobiusgau_tsne3)
 #'
 #' @source This dataset is generated for illustrative purposes.
-"mobius_clust_tsne_param3"
+"mobiusgau_tsne3"

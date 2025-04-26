@@ -4,7 +4,7 @@
 \alias{gen_noisedims}
 \title{Generate Random Noise Dimensions}
 \usage{
-gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
+gen_noisedims(n = 500, p = 4, m = rep(0, p), s = rep(2, p))
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
