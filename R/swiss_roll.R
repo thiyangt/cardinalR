@@ -19,8 +19,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_swissroll(n = 500, p = 4)
-#' head(data, 5)
+#' swissroll <- gen_swissroll(n = 500, p = 4)
 gen_swissroll <- function(n = 500, p = 4, w = c(-1, 1)) {
 
   if (p < 3) {
