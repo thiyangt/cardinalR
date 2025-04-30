@@ -19,6 +19,5 @@ This function generates a dataset representing a structure with a uniform sphere
 }
 \examples{
 set.seed(20240412)
-sphere_data <- gen_unifsphere(n = 500, p = 4)
-head(sphere_data, 5)
+unifsphere <- gen_unifsphere(n = 500, p = 4)
 }

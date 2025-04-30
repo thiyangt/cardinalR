@@ -31,6 +31,5 @@ This function generates a dataset representing a structure with a small and big 
 }
 \examples{
 set.seed(20240412)
-sphere_data <- gen_clusteredspheres(n = 500, p = 4, r = 1)
-head(sphere_data, 5)
+clusteredspheres <- gen_clusteredspheres(n = 500, p = 4, r = 1)
 }

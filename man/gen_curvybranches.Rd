@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with non-linear shape
 }
 \examples{
 set.seed(20240412)
-data <- gen_curvybranches(n = 500, p = 4, k = 4)
+curvybranches <- gen_curvybranches(n = 500, p = 4, k = 4)
 }

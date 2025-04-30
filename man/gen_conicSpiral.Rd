@@ -21,5 +21,5 @@ This function generates a dataset representing a conical spiral structure.
 }
 \examples{
 set.seed(20240412)
-data <- gen_conicspiral(n = 500, p = 4, spins = 1)
+conicspiral <- gen_conicspiral(n = 500, p = 4, spins = 1)
 }

@@ -25,5 +25,5 @@ This function generates a dataset representing a triangular based pyramid.
 }
 \examples{
 set.seed(20240412)
-triangular_corn_data <- gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
+pyrtri <- gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
 }

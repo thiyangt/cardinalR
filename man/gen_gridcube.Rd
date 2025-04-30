@@ -15,9 +15,9 @@ gen_gridcube(n = 500, p = 4)
 A data containing the cube with grid points.
 }
 \description{
-This function generates a grid dataset with specified grid points along each axes..
+This function generates a grid dataset with specified grid points along each axes.
 }
 \examples{
 set.seed(20240412)
-one_grid <- gen_gridcube(n = 500, p = 4)
+gridcube <- gen_gridcube(n = 500, p = 4)
 }

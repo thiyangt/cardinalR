@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with linear shaped br
 }
 \examples{
 set.seed(20240412)
-data <- gen_orglinearbranches(n = 400, p = 4, k = 4)
+orglinearbranches <- gen_orglinearbranches(n = 400, p = 4, k = 4)
 }

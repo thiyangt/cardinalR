@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a curvy cell cyc
 }
 \examples{
 set.seed(20240412)
-curvy_cycle_data <- gen_curvycycle(n = 500, p = 4)
+curvycycle <- gen_curvycycle(n = 500, p = 4)
 }

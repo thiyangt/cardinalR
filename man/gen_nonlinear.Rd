@@ -23,5 +23,5 @@ This function generates a dataset representing a nonlinear hyperbola structure.
 }
 \examples{
 set.seed(20240412)
-data <- gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
+nonlinear <- gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
 }

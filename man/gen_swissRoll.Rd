@@ -21,8 +21,7 @@ This function generates swiss roll data.
 }
 \examples{
 set.seed(20240412)
-data <- gen_swissroll(n = 500, p = 4)
-head(data, 5)
+swissroll <- gen_swissroll(n = 500, p = 4)
 }
 \references{
 Agrafiotis, D. K., & Xu, H. (2002).

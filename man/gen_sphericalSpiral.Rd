@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with a spherical spir
 }
 \examples{
 set.seed(20240412)
-data <- gen_sphericalspiral(n = 500, p = 4, spins = 1)
+sphericalspiral <- gen_sphericalspiral(n = 500, p = 4, spins = 1)
 }

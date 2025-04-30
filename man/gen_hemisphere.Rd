@@ -19,6 +19,5 @@ This function generates a dataset representing a structure with a hemisphere.
 }
 \examples{
 set.seed(20240412)
-hemisphere_data <- gen_hemisphere(n = 500, p = 4)
-head(hemisphere_data, 5)
+hemisphere <- gen_hemisphere(n = 500, p = 4)
 }

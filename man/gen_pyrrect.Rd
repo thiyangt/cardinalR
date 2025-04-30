@@ -25,5 +25,5 @@ This function generates a dataset representing a rectangular based pyramid.
 }
 \examples{
 set.seed(20240412)
-rectangular_corn_data <- gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
+pyrrect <- gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
 }

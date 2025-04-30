@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a Crescent patte
 }
 \examples{
 set.seed(20240412)
-data <- gen_crescent(n = 500, p = 4)
+crescent <- gen_crescent(n = 500, p = 4)
 }

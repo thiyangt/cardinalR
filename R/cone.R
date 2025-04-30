@@ -1,19 +1,19 @@
 #' Generate Blunted Cone
 #'
-#' This function generates a dataset representing a blunted cone.
+#' This function generates a dataset representing a cone with the option of a sharp or blunted apex.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param h A numeric value (default: 5) representing the h of the cone.
 #' @param ratio A numeric value (default: 0.5) representing the radius tip to radius base ratio of the cone. Should be less than 1.
 #'
-#' @return A data containing the blunted cone.
+#' @return A data containing the cone with the option of a sharp or blunted apex.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' bluntedcone <- gen_bluntedcone(n = 500, p = 4, h = 5, ratio = 0.5)
-gen_bluntedcone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
+#' cone <- gen_cone(n = 500, p = 4, h = 5, ratio = 0.5)
+gen_cone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")

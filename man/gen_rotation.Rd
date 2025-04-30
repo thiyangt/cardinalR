@@ -20,8 +20,8 @@ This function generates a rotation matrix.
 \examples{
 set.seed(20240412)
 rotations_4d <- list(
-list(plane = c(1, 2), angle = 60), # Rotation in the (1, 2) plane
-list(plane = c(3, 4), angle = 90)  # Rotation in the (3, 4) plane
+  list(plane = c(1, 2), angle = 60), # Rotation in the (1, 2) plane
+  list(plane = c(3, 4), angle = 90)  # Rotation in the (3, 4) plane
 )
 gen_rotation(planes_angles = rotations_4d)
 

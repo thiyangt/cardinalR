@@ -39,9 +39,9 @@ clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
     0, 0, 0, 0,
     5, 9, 0, 0,
     3, 4, 10, 7
-  ), nrow = 4, byrow = TRUE),
+  ), nrow = 3, byrow = TRUE),
   scale = c(2, 5, 1),
-  shape = c("gaussian", "bluntedcorn", "unifcube"),
+  shape = c("gaussian", "cone", "unifcube"),
   rotation = rotations_4d,
   is_bkg = FALSE
 )

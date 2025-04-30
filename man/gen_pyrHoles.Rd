@@ -19,5 +19,5 @@ This function generates p-D triangular pyramid with triangular pyramid shaped ho
 }
 \examples{
 set.seed(20240412)
-triangular_data <- gen_pyrholes(n = 500, p = 3)
+pyrholes <- gen_pyrholes(n = 500, p = 3)
 }

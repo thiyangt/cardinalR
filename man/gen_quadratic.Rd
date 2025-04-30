@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a quadratic patt
 }
 \examples{
 set.seed(20240412)
-curvy_data <- gen_quadratic(n = 500, p = 4)
+quadratic <- gen_quadratic(n = 500, p = 4)
 }

@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with a Gaussian.
 }
 \examples{
 set.seed(20240412)
-gaussian_data <- gen_gaussian(n = 500, p = 4, s = diag(4))
+gaussian <- gen_gaussian(n = 500, p = 4, s = diag(4))
 }

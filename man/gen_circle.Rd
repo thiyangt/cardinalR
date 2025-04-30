@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a circle.
 }
 \examples{
 set.seed(20240412)
-circle_data <- gen_circle(n = 500, p = 4)
+circle <- gen_circle(n = 500, p = 4)
 }

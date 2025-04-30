@@ -79,6 +79,7 @@
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_clustRomanSurface.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_clusteredSpheres.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_clustloc.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_cone.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_conicSpiral.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_crescent.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_cubehole.html</loc></url>
@@ -98,6 +99,7 @@
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_gridedSphere.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_helicalHyperspiral.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_helicalspiral.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hemisphere.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hyperplane.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hyperplaneHole.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_intersectConicSpirals.html</loc></url>
@@ -168,6 +170,13 @@
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobius_clust_umap_param2.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobius_clust_umap_param3.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobius_cluster_with_noise.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau_tsne1.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau_tsne2.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau_tsne3.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau_umap1.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau_umap2.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/mobiusgau_umap3.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/nonlinear_2d.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/nonlinear_connect.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/nonlinear_connect_with_noise.html</loc></url>

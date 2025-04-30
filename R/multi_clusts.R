@@ -8,7 +8,7 @@
 #' @param loc A numeric matrix (default: matrix(c(0, 0, 0, 0,
 #' 5, 9, 0, 0,
 #' 3, 4, 10, 7
-#' ), nrow = 4, byrow = TRUE)) representing the locations/centroids of clusters.
+#' ), nrow = 3, byrow = TRUE)) representing the locations/centroids of clusters.
 #' @param scale A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.
 #' @param shape A character vector (default: c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube")) representing the shapes of clusters.
 #' @param rotation A numeric list which contains plane and the corresponding angle along that plane for each cluster.
@@ -35,7 +35,7 @@
 #'   0, 0, 0, 0,
 #'   5, 9, 0, 0,
 #'   3, 4, 10, 7
-#' ), nrow = 4, byrow = TRUE),
+#' ), nrow = 3, byrow = TRUE),
 #' scale = c(3, 1, 2),
 #' shape = c("gaussian", "bluntedcorn", "unifcube"),
 #' rotation = rotations_4d,
@@ -45,7 +45,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
                                0, 0, 0, 0,
                                5, 9, 0, 0,
                                3, 4, 10, 7  # height of smaller equilateral triangle in 2D
-                             ), nrow = 4, byrow = TRUE),
+                             ), nrow = 3, byrow = TRUE),
                              scale = c(3, 1, 2),
                              shape = c("gaussian", "bluntedcorn", "unifcube"),
                              rotation = NULL,

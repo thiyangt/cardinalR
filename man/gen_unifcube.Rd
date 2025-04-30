@@ -19,5 +19,5 @@ This function generates a grid dataset with specified uniform points along each 
 }
 \examples{
 set.seed(20240412)
-unif_cube <- gen_unifcube(n = 500, p = 4)
+unifcube <- gen_unifcube(n = 500, p = 4)
 }

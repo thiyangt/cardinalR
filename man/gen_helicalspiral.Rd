@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a helical hyper 
 }
 \examples{
 set.seed(20240412)
-data <- gen_helicalspiral(n = 500, p = 4)
+helicalspiral <- gen_helicalspiral(n = 500, p = 4)
 }

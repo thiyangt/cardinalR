@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a mobius.
 }
 \examples{
 set.seed(20240412)
-curvy_data <- gen_mobius(n = 500, p = 4)
+mobius <- gen_mobius(n = 500, p = 4)
 }

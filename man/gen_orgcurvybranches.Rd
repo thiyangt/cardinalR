@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with curvy shaped bra
 }
 \examples{
 set.seed(20240412)
-data <- gen_orgcurvybranches(n = 400, p = 4, k = 4)
+orgcurvybranches <- gen_orgcurvybranches(n = 400, p = 4, k = 4)
 }

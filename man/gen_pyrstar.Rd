@@ -23,5 +23,5 @@ This function generates a dataset representing a star based pyramid.
 }
 \examples{
 set.seed(20240412)
-hexagonal_corn_data <- gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
+pyrstar <- gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
 }

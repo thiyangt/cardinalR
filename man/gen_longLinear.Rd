@@ -19,5 +19,5 @@ This function generates a dataset consisting of long linear data.
 }
 \examples{
 set.seed(20240412)
-long_cluster <- gen_longlinear(n = 500, p = 4)
+longlinear <- gen_longlinear(n = 500, p = 4)
 }

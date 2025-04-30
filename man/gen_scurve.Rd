@@ -19,8 +19,7 @@ This function generates S-curve data.
 }
 \examples{
 set.seed(20240412)
-data <- gen_scurve(n = 500, p = 4)
-head(data, 5)
+scurve <- gen_scurve(n = 500, p = 4)
 }
 \references{
 Buitinck, L., Louppe, G., Blondel, M., Pedregosa, F., Mueller, A.,

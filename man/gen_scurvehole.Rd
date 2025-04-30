@@ -20,8 +20,7 @@ are not close to a specified anchor point.
 }
 \examples{
 set.seed(20240412)
-data <- gen_scurvehole(n = 500, p = 4)
-head(data, 5)
+scurvehole <- gen_scurvehole(n = 500, p = 4)
 }
 \references{
 Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).

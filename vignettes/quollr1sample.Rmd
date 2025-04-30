@@ -57,7 +57,7 @@ langevitour(tree_data, pointSize = 2)
 ## Cone
 
 ```{r}
-cone_data <- gen_bluntedcorn(n = 500, p = 4, h = 5, ratio = 0.5) 
+cone_data <- gen_cone(n = 500, p = 4, h = 5, ratio = 0.5) 
 
 langevitour(cone_data, pointSize = 2)
 ```

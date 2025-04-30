@@ -19,5 +19,5 @@ This function generates a dataset representing a cube with a hole.
 }
 \examples{
 set.seed(20240412)
-cube_hole_data <- gen_cubehole(n = 1000, p = 4)
+cubehole <- gen_cubehole(n = 1000, p = 4)
 }

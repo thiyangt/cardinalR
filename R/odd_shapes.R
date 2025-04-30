@@ -28,7 +28,7 @@ make_mobiusgau <- function(n = c(200, 100), p = 4) {
                                loc = matrix(c(
                                  0, 0, 0, 0,
                                  0, 0, 0, 0
-                               ), nrow = 4, byrow = TRUE),
+                               ), nrow = 2, byrow = TRUE),
                                scale = c(1, 0.3),
                                shape = c("mobius", "gaussian"),
                                rotation = NULL,
@@ -114,5 +114,36 @@ make_multigau <- function(n = c(300, 200, 500), p = 4, k = 3, loc = NULL, scale 
                          is_bkg = FALSE)
 
   return(df)
+
+}
+
+
+make_curvygau <- function(n = c(200, 100), p = 4) {
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly two values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 2,
+                         loc = matrix(c(
+                           -1, 0, 0, 0,
+                           0, 0, 0, 0
+                         ), nrow = 2, byrow = TRUE),
+                         scale = c(1, 0.1),
+                         shape = c("quadratic", "gaussian"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
 
 }

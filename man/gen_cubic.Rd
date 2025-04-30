@@ -19,5 +19,5 @@ This function generates a dataset representing a structure with a cubic pattern.
 }
 \examples{
 set.seed(20240412)
-cubic_data <- gen_cubic(n = 500, p = 4)
+cubic <- gen_cubic(n = 500, p = 4)
 }

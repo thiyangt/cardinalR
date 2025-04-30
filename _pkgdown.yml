@@ -7,13 +7,13 @@ reference:
 - title: "Data"
   desc: The example data sets.
   contents:
-  - mobius_clust_data
-  - mobius_clust_tsne_param1
-  - mobius_clust_tsne_param2
-  - mobius_clust_tsne_param3
-  - mobius_clust_umap_param1
-  - mobius_clust_umap_param2
-  - mobius_clust_umap_param3
+  - mobiusgau
+  - mobiusgau_tsne1
+  - mobiusgau_tsne2
+  - mobiusgau_tsne3
+  - mobiusgau_umap1
+  - mobiusgau_umap2
+  - mobiusgau_umap3
 - title: "Branching"
   desc: Branching data structure.
   contents:
@@ -25,7 +25,7 @@ reference:
 - title: "Cone"
   desc: Cone data structure.
   contents:
-  - gen_bluntedcone
+  - gen_cone
 - title: "Cube"
   desc: Cube data structure.
   contents:

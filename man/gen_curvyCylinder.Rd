@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with a curvy cylinder
 }
 \examples{
 set.seed(20240412)
-data <- gen_curvycylinder(n = 500, p = 4, h = 10)
+curvycylinder <- gen_curvycylinder(n = 500, p = 4, h = 10)
 }

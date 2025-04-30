@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with exponential shap
 }
 \examples{
 set.seed(20240412)
-data <- gen_expbranches(n = 400, p = 4, k = 4)
+expbranches <- gen_expbranches(n = 400, p = 4, k = 4)
 }
