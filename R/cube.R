@@ -1,6 +1,6 @@
 #' Generate Cube with grid points
 #'
-#' This function generates a grid dataset with specified grid points along each axes..
+#' This function generates a grid dataset with specified grid points along each axes.
 #'
 #' @param n A numeric vector (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
