@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_data <- gen_mobius(n = 500, p = 4)
+#' mobius <- gen_mobius(n = 500, p = 4)
 gen_mobius <- function(n = 500, p = 4) {
 
   if (p < 3) {
