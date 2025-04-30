@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_data <- gen_pyr(n = 500, p = 4)
+#' pyr <- gen_pyr(n = 500, p = 4)
 gen_pyr <- function(n = 500, p = 4) {
 
   if (p < 2) {
@@ -57,7 +57,7 @@ gen_pyr <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' rectangular_corn_data <- gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
+#' pyrrect <- gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
 gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
 
   if (p < 2) {
@@ -133,7 +133,7 @@ gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_corn_data <- gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
+#' pyrtri <- gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
 gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 
   if (p < 2) {
@@ -212,7 +212,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' hexagonal_corn_data <- gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
+#' pyrstar <- gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
 gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
 
   if (p < 2) {
@@ -278,7 +278,7 @@ gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' triangular_data <- gen_pyrholes(n = 500, p = 3)
+#' pyrholes <- gen_pyrholes(n = 500, p = 3)
 gen_pyrholes <- function(n = 500, p = 4) {
 
   if (p < 2) {
