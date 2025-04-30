@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' one_grid <- gen_gridcube(n = 500, p = 4)
+#' gridcube <- gen_gridcube(n = 500, p = 4)
 gen_gridcube <- function(n = 500, p = 4) {
 
   if (n <= 0) {
@@ -41,7 +41,7 @@ gen_gridcube <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' unif_cube <- gen_unifcube(n = 500, p = 4)
+#' unifcube <- gen_unifcube(n = 500, p = 4)
 gen_unifcube <- function(n = 500, p = 4) {
 
   if (n <= 0) {
@@ -94,7 +94,7 @@ gen_unifcube <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' cube_hole_data <- gen_cubehole(n = 1000, p = 4)
+#' cubehole <- gen_cubehole(n = 1000, p = 4)
 gen_cubehole <- function(n = 500, p = 4) {
 
   if (p < 2) {
