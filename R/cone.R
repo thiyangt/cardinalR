@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' blunted_cone_data <- gen_bluntedcone(n = 500, p = 4, h = 5, ratio = 0.5)
+#' bluntedcone <- gen_bluntedcone(n = 500, p = 4, h = 5, ratio = 0.5)
 gen_bluntedcone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
 
   if (p < 3) {
