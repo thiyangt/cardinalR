@@ -10,7 +10,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_expbranches(n = 400, p = 4, k = 4)
+#' expbranches <- gen_expbranches(n = 400, p = 4, k = 4)
 gen_expbranches <- function(n = 400, p = 4, k = 4) {
 
   if (p < 2) {
@@ -82,7 +82,7 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_orgcurvybranches(n = 400, p = 4, k = 4)
+#' orgcurvybranches <- gen_orgcurvybranches(n = 400, p = 4, k = 4)
 gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
 
   if (p < 2) {
@@ -174,7 +174,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_orglinearbranches(n = 400, p = 4, k = 4)
+#' orglinearbranches <- gen_orglinearbranches(n = 400, p = 4, k = 4)
 gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
 
   if (p < 2) {
@@ -269,7 +269,7 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_linearbranches(n = 500, p = 4, k = 4)
+#' linearbranches <- gen_linearbranches(n = 500, p = 4, k = 4)
 gen_linearbranches <- function(n = 500, p = 4, k = 4) {
 
   if (p < 2) {
@@ -412,7 +412,7 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_curvybranches(n = 500, p = 4, k = 4)
+#' curvybranches <- gen_curvybranches(n = 500, p = 4, k = 4)
 gen_curvybranches <- function(n = 500, p = 4, k = 4) {
 
   if (p < 2) {
