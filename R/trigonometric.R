@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_crescent(n = 500, p = 4)
+#' crescent <- gen_crescent(n = 500, p = 4)
 gen_crescent <- function(n = 500, p = 4) {
 
   if (p < 2) {
@@ -58,7 +58,7 @@ gen_crescent <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_curvycylinder(n = 500, p = 4, h = 10)
+#' curvycylinder <- gen_curvycylinder(n = 500, p = 4, h = 10)
 gen_curvycylinder <- function(n = 500, p = 4, h = 10) {
 
   if (p < 4) {
@@ -109,7 +109,7 @@ gen_curvycylinder <- function(n = 500, p = 4, h = 10) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_sphericalspiral(n = 500, p = 4, spins = 1)
+#' sphericalspiral <- gen_sphericalspiral(n = 500, p = 4, spins = 1)
 gen_sphericalspiral <- function(n = 500, p = 4, spins = 1) {
 
   if (p < 3) {
@@ -162,7 +162,7 @@ gen_sphericalspiral <- function(n = 500, p = 4, spins = 1) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_helicalspiral(n = 500, p = 4)
+#' helicalspiral <- gen_helicalspiral(n = 500, p = 4)
 gen_helicalspiral <- function(n = 500, p = 4) {
 
   if (p < 3) {
@@ -215,7 +215,7 @@ gen_helicalspiral <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_conicspiral(n = 500, p = 4, spins = 1)
+#' conicspiral <- gen_conicspiral(n = 500, p = 4, spins = 1)
 gen_conicspiral <- function(n = 500, p = 4, spins = 1) {
 
   if (p < 3) {
@@ -271,7 +271,7 @@ gen_conicspiral <- function(n = 500, p = 4, spins = 1) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
+#' nonlinear <- gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
 gen_nonlinear <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
 
   if (p < 3) {
