@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' long_cluster <- gen_longlinear(n = 500, p = 4)
+#' longlinear <- gen_longlinear(n = 500, p = 4)
 gen_longlinear <- function(n = 500, p = 4) {
 
   if (p < 2) {
