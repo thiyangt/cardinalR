@@ -15,8 +15,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_scurve(n = 500, p = 4)
-#' head(data, 5)
+#' scurve <- gen_scurve(n = 500, p = 4)
 gen_scurve <- function(n = 500, p = 4) {
 
   if (p < 3) {
@@ -73,8 +72,7 @@ gen_scurve <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' data <- gen_scurvehole(n = 500, p = 4)
-#' head(data, 5)
+#' scurvehole <- gen_scurvehole(n = 500, p = 4)
 gen_scurvehole <- function(n = 500, p = 4) {
 
   if (p < 3) {
