@@ -1,47 +1,3 @@
-#' Generate p-D Triangular Pyramid
-#'
-#' This function generates p-D triangular pyramid datasets.
-#'
-#' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @return A data containing a triangular pyramid in p-D.
-#' @export
-#'
-#' @examples
-#' set.seed(20240412)
-#' pyr <- gen_pyr(n = 500, p = 4)
-gen_pyr <- function(n = 500, p = 4) {
-
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
-
-  if (length(n) != 1) {
-    cli::cli_abort("n should be a single integer specifying the number of points.")
-  }
-
-  if (n < 0) {
-    cli::cli_abort("n should be positive.")
-  }
-
-  corner_points <- geozoo::simplex(p=p)$points
-  k <- nrow(corner_points)
-  # Dirichlet: Normalize exponential draws to sum to 1
-  bary_coords <- matrix(rexp(n * k), nrow = n)
-  bary_coords <- bary_coords / rowSums(bary_coords)
-
-  # Matrix multiplication: weighted sum of vertices
-  df <- bary_coords %*% corner_points
-
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
-
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
-  return(df)
-}
-
-
-
 #' Generate Rectangular Based Pyramid
 #'
 #' This function generates a dataset representing a rectangular based pyramid.
@@ -76,7 +32,7 @@ gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
     cli::cli_abort("Values in the base length vector should be positive.")
   }
 
-  if (rt <= 0) {
+  if (rt < 0) {
     cli::cli_abort("rt should be positive.")
   }
 
@@ -152,7 +108,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
     cli::cli_abort("The base length should be positive.")
   }
 
-  if (rt <= 0) {
+  if (rt < 0) {
     cli::cli_abort("rt should be positive.")
   }
 
