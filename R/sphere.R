@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' circle_data <- gen_circle(n = 500, p = 4)
+#' circle <- gen_circle(n = 500, p = 4)
 gen_circle <- function(n = 500, p = 4){
 
   if (p < 3) {
@@ -59,7 +59,7 @@ gen_circle <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_cycle_data <- gen_curvycycle(n = 500, p = 4)
+#' curvycycle <- gen_curvycycle(n = 500, p = 4)
 gen_curvycycle <- function(n = 500, p = 4){
 
   if (p < 3) {
@@ -110,8 +110,7 @@ gen_curvycycle <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_unifsphere(n = 500, p = 4)
-#' head(sphere_data, 5)
+#' unifsphere <- gen_unifsphere(n = 500, p = 4)
 gen_unifsphere <- function(n = 500, p = 4){
 
   if (p < 3) {
@@ -158,8 +157,7 @@ gen_unifsphere <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_gridedsphere(n = 500, p = 4)
-#' head(sphere_data, 5)
+#' gridedsphere <- gen_gridedsphere(n = 500, p = 4)
 gen_gridedsphere <- function(n = 500, p = 4){
 
   if (p < 3) {
@@ -222,8 +220,7 @@ gen_gridedsphere <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphere_data <- gen_clusteredspheres(n = 500, p = 4, r = 1)
-#' head(sphere_data, 5)
+#' clusteredspheres <- gen_clusteredspheres(n = 500, p = 4, r = 1)
 gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
                                  loc = 10 / sqrt(3)) {
 
@@ -286,8 +283,7 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
 #'
 #' @examples
 #' set.seed(20240412)
-#' hemisphere_data <- gen_hemisphere(n = 500, p = 4)
-#' head(hemisphere_data, 5)
+#' hemisphere <- gen_hemisphere(n = 500, p = 4)
 gen_hemisphere <- function(n = 500, p = 4) {
 
   if (p < 3) {
