@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvy_data <- gen_quadratic(n = 500, p = 4)
+#' quadratic <- gen_quadratic(n = 500, p = 4)
 gen_quadratic <- function(n = 500, p = 4) {
 
   if (p < 2) {
@@ -56,7 +56,7 @@ gen_quadratic <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' cubic_data <- gen_cubic(n = 500, p = 4)
+#' cubic <- gen_cubic(n = 500, p = 4)
 gen_cubic <- function(n = 500, p = 4) {
 
   if (p < 2) {
