@@ -111,7 +111,7 @@ gen_curvycycle <- function(n = 500, p = 4){
 #' @examples
 #' set.seed(20240412)
 #' unifsphere <- gen_unifsphere(n = 500, p = 4)
-gen_unifsphere <- function(n = 500, p = 4){
+gen_unifsphere <- function(n = 500, p = 4, r = 1){
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -124,9 +124,9 @@ gen_unifsphere <- function(n = 500, p = 4){
   u <- stats::runif(n, -1, 1)                 # cos(phi)
   theta <- stats::runif(n, 0, 2 * pi)        # azimuth
 
-  x1 <- sqrt(1 - u^2) * cos(theta)
-  x2 <- sqrt(1 - u^2) * sin(theta)
-  x3 <- u
+  x1 <- r * sqrt(1 - u^2) * cos(theta)
+  x2 <- r * sqrt(1 - u^2) * sin(theta)
+  x3 <- r * u
 
   df <- matrix(c(x1, x2, x3), ncol = 3)
 
