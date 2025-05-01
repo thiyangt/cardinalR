@@ -220,7 +220,8 @@ gen_gridedsphere <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' clusteredspheres <- gen_clusteredspheres(n = 500, p = 4, r = 1)
+#' clusteredspheres <- gen_clusteredspheres(n = c(1000, 100), k = 3, p = 4,
+#' r = c(15, 3), loc = 10 / sqrt(3))
 gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
                                  loc = 10 / sqrt(3)) {
 
@@ -246,13 +247,13 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
   r_big <- r[1]
   r_small <- r[2]
 
-  d_dim_sphere <- gen_unifSphere(n_small, p, r_small)
+  d_dim_sphere <- gen_unifsphere(n_small, p, r_small)
   small_spheres <- lapply(seq_len(k), function(i) {
     center <- stats::rnorm(p, sd = loc)
     sweep(d_dim_sphere, 2, center, "+")
   })
 
-  big_sphere <- gen_unifSphere(n_big, p, r_big)
+  big_sphere <- gen_unifsphere(n_big, p, r_big)
 
   small_labeled <- lapply(seq_along(small_spheres), function(i) {
     cbind(small_spheres[[i]], cluster = paste0("small_", i))
