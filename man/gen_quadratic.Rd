@@ -4,12 +4,14 @@
 \alias{gen_quadratic}
 \title{Generate Quadratic}
 \usage{
-gen_quadratic(n = 500, p = 4)
+gen_quadratic(n = 500, p = 4, range = c(-1, 1))
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
+
+\item{range}{A numeric vector (default: c(-1, 1)) representing the range along x1 axis.}
 }
 \value{
 A data containing a quadratic structure.
