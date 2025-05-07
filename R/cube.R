@@ -58,9 +58,9 @@ gen_unifcube <- function(n = 500, p = 4) {
   z_max <-  half_length
 
   for (i in 1:n) {
-    x1 <- runif(1, x_min, x_max)
-    x2 <- runif(1, y_min, y_max)
-    x3 <- runif(1, z_min, z_max)
+    x1 <- stats::runif(1, x_min, x_max)
+    x2 <- stats::runif(1, y_min, y_max)
+    x3 <- stats::runif(1, z_min, z_max)
     df[i, ] <- c(x1, x2, x3)
   }
 

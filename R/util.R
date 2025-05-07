@@ -114,7 +114,7 @@ relocate_clusters <- function(data, vert_mat) {
     cluster_data <- apply(cluster_data, 2, function(col) col - mean(col))
 
     # Relocate the cluster
-    cluster_data <- as_tibble(cluster_data + matrix(rep(vert[i,], NROW(cluster_data)),
+    cluster_data <- tibble::as_tibble(cluster_data + matrix(rep(vert[i,], NROW(cluster_data)),
                                                     ncol = 4, byrow = TRUE))
 
     cluster_data

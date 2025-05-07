@@ -25,7 +25,6 @@ Imports:
     tibble,
     purrr,
     stats,
-    rlang,
     cli,
     MASS
 Suggests: 

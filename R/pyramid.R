@@ -44,7 +44,7 @@ gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
   base_width_y <- l_vec[2]
 
   # gen points with a higher density near the tip
-  height_values <- rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
+  height_values <- stats::rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
   height_values <- pmin(height_values, h)  # Cap heights to the maximum h
 
   # Base dimensions decrease linearly as h increases
@@ -117,7 +117,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   }
 
   # gen points with a higher density near the tip
-  height_values <- rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
+  height_values <- stats::rexp(n, rate = 1 / (h / 2))  # Exponentially distributed heights
   height_values <- pmin(height_values, h)  # Cap heights to the maximum h
 
   # Base size decreases linearly as h increases
@@ -125,8 +125,8 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
 
   # gen points within a triangular cross-section at each h level
   # Using barycentric coordinates to gen points inside a triangle
-  u <- runif(n)
-  v <- runif(n)
+  u <- stats::runif(n)
+  v <- stats::runif(n)
   is_outside <- (u + v) > 1
   u[is_outside] <- 1 - u[is_outside]
   v[is_outside] <- 1 - v[is_outside]
@@ -188,7 +188,7 @@ gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
   }
 
   # Gen h values with more points near the base
-  height_values <- runif(n, 0, h) # Uniformly distributed heights
+  height_values <- stats::runif(n, 0, h) # Uniformly distributed heights
 
   # The base radius decreases linearly as the h increases
   radii <- (rb * (h - height_values)) / h
