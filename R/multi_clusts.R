@@ -91,8 +91,8 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cli::cli_abort("Number of rows in loc should be {.val {p}}.")
   }
 
-  if (!is.list(rotation)) {
-    cli::cli_abort("rotation should be a list.")
+  if (!is.null(rotation) && !is.list(rotation)) {
+    cli::cli_abort("rotation should be a list or NULL.")
   }
 
   if (length(rotation) != k) {
