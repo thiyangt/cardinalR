@@ -2,7 +2,7 @@
 #'
 #' This function generates a dataset representing a structure with exponential shaped branches.
 #'
-#' @param n A numeric value (default: 500) representing the sample size.
+#' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @return A data containing exponential shaped branches.
@@ -74,7 +74,7 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' This function generates a dataset representing a structure with curvy shaped branches.
 #'
-#' @param n A numeric value (default: 500) representing the sample size.
+#' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @return A data containing curvy shaped branches originated in one point.
@@ -166,7 +166,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' This function generates a dataset representing a structure with linear shaped branches.
 #'
-#' @param n A numeric value (default: 500) representing the sample size.
+#' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @return A data containing linear shaped branches originated in one point.
@@ -261,7 +261,7 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' This function generates a dataset representing a structure with linear shaped branches.
 #'
-#' @param n A numeric value (default: 500) representing the sample size.
+#' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @return A data containing linear shaped branches.
@@ -269,8 +269,8 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' linearbranches <- gen_linearbranches(n = 500, p = 4, k = 4)
-gen_linearbranches <- function(n = 500, p = 4, k = 4) {
+#' linearbranches <- gen_linearbranches(n = 400, p = 4, k = 4)
+gen_linearbranches <- function(n = 400, p = 4, k = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -404,7 +404,7 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
 #'
 #' This function generates a dataset representing a structure with non-linear shaped branches.
 #'
-#' @param n A numeric value (default: 500) representing the sample size.
+#' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @return A data containing non-linear shaped branches.
@@ -412,8 +412,8 @@ gen_linearbranches <- function(n = 500, p = 4, k = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvybranches <- gen_curvybranches(n = 500, p = 4, k = 4)
-gen_curvybranches <- function(n = 500, p = 4, k = 4) {
+#' curvybranches <- gen_curvybranches(n = 400, p = 4, k = 4)
+gen_curvybranches <- function(n = 400, p = 4, k = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")

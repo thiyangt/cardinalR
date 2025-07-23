@@ -26,7 +26,7 @@ gen_gaussian <- function(n = 500, p = 4, s = diag(p) * 0.01) {
   }
 
   if (NROW(s) != NCOL(s)) {
-    cli::cli_abort("s should be a suqare matrix.")
+    cli::cli_abort("s should be a square matrix.")
   }
 
   if ((NROW(s) != p) | (NCOL(s) != p)) {

@@ -1,57 +1,59 @@
-test_that("sphere() works", {
+test_that("gen_circle() works", {
   set.seed(20240412)
-  testthat::expect_snapshot(sphere(
-    radius = 1, resolution = 20, num_noise = 3,
-    min_n = -0.05, max_n = 0.05
-  ))
+  testthat::expect_snapshot(gen_circle(n = 500, p = 4))
+  testthat::expect_error(gen_circle(n = -500, p = 4))
+  testthat::expect_error(gen_circle(n = 500, p = 2))
+  testthat::expect_error(gen_circle(n = c(500, 100), p = 2))
 
-  testthat::expect_error(sphere(
-    radius = -1, resolution = 20, num_noise = 3,
-    min_n = -0.05, max_n = 0.05
-  ))
-  testthat::expect_error(sphere(
-    radius = 1, resolution = -20, num_noise = 3,
-    min_n = -0.05, max_n = 0.05
-  ))
-  testthat::expect_error(sphere(
-    radius = 1, resolution = 20, num_noise = -3,
-    min_n = -0.05, max_n = 0.05
-  ))
-  testthat::expect_error(sphere(
-    resolution = 20, num_noise = 3,
-    min_n = -0.05, max_n = 0.05
-  ))
-  testthat::expect_error(sphere(
-    radius = 1, num_noise = 3,
-    min_n = -0.05, max_n = 0.05
-  ))
-  testthat::expect_snapshot(sphere(radius = 1, resolution = 20, num_noise = 0))
-  testthat::expect_error(sphere(
-    radius = 1, resolution = 20, num_noise = 3,
-    max_n = 0.05
-  ))
-  testthat::expect_error(sphere(
-    radius = -1, resolution = 20, num_noise = 3,
-    min_n = -0.05
-  ))
 })
 
-test_that("diff_sphere() works", {
+test_that("gen_curvycycle() works", {
   set.seed(20240412)
-  testthat::expect_snapshot(diff_sphere(
-    n = 390, num_noise = 4, min_n = -0.05,
-    max_n = 0.05
-  ))
+  testthat::expect_snapshot(gen_curvycycle(n = 500, p = 4))
+  testthat::expect_error(gen_curvycycle(n = -500, p = 4))
+  testthat::expect_error(gen_curvycycle(n = 500, p = 2))
+  testthat::expect_error(gen_curvycycle(n = c(500, 100), p = 2))
 
-  testthat::expect_error(diff_sphere(
-    n = -390, num_noise = 4, min_n = -0.05,
-    max_n = 0.05
-  ))
-  testthat::expect_error(diff_sphere(
-    n = 390, num_noise = -4, min_n = -0.05,
-    max_n = 0.05
-  ))
-  testthat::expect_snapshot(diff_sphere(n = 390, num_noise = 0))
-  testthat::expect_error(diff_sphere(n = 390, num_noise = 4, min_n = -0.05))
-  testthat::expect_error(diff_sphere(n = 390, num_noise = 4, max_n = 0.05))
+})
+
+test_that("gen_unifsphere() works", {
+  set.seed(20240412)
+  testthat::expect_snapshot(gen_unifsphere(n = 500, p = 4))
+  testthat::expect_error(gen_unifsphere(n = 500, p = 2))
+  testthat::expect_error(gen_unifsphere(n = -500, p = 4))
+
+})
+
+test_that("gen_gridedsphere() works", {
+  set.seed(20240412)
+  testthat::expect_snapshot(gen_gridedsphere(n = 500, p = 4))
+  testthat::expect_error(gen_gridedsphere(n = 500, p = 2))
+  testthat::expect_error(gen_gridedsphere(n = -500, p = 4))
+
+})
+
+test_that("gen_clusteredspheres() works", {
+  set.seed(20240412)
+
+  clusteredspheres <- gen_clusteredspheres(n = c(1000, 100), k = 3, p = 4,
+  r = c(15, 3), loc = 10 / sqrt(3))
+
+  testthat::expect_snapshot(clusteredspheres)
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100), k = 3, p = 2,
+                                              r = c(15, 3), loc = 10 / sqrt(3)))
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100, 300), k = 3, p = 4,
+                                              r = c(15, 3), loc = 10 / sqrt(3)))
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, -100), k = 3, p = 4,
+                                              r = c(15, 3), loc = 10 / sqrt(3)))
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100), k = 3, p = 4,
+                                              r = c(-15, 3), loc = 10 / sqrt(3)))
+
+})
+
+test_that("gen_hemisphere() works", {
+  set.seed(20240412)
+  testthat::expect_snapshot(gen_hemisphere(n = 500, p = 4))
+  testthat::expect_error(gen_hemisphere(n = 500, p = 2))
+  testthat::expect_error(gen_hemisphere(n = -500, p = 4))
+
 })

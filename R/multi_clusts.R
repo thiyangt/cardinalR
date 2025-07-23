@@ -10,7 +10,7 @@
 #' 3, 4, 10, 7
 #' ), nrow = 3, byrow = TRUE)) representing the locations/centroids of clusters.
 #' @param scale A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.
-#' @param shape A character vector (default: c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube")) representing the shapes of clusters.
+#' @param shape A character vector (default: c("gen_gaussian", "gen_cone", "gen_unifcube")) representing the shapes of clusters.
 #' @param rotation A numeric list which contains plane and the corresponding angle along that plane for each cluster.
 #' @param is_bkg A Boolean value (default: FALSE) representing the background noise should exist or not.
 #' @return A data containing same/different shaped clusters.
@@ -37,7 +37,7 @@
 #'   3, 4, 10, 7
 #' ), nrow = 3, byrow = TRUE),
 #' scale = c(3, 1, 2),
-#' shape = c("gaussian", "bluntedcorn", "unifcube"),
+#' shape = c("gaussian", "cone", "unifcube"),
 #' rotation = rotations_4d,
 #' is_bkg = FALSE)
 gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
@@ -89,6 +89,14 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
 
   if (NCOL(loc) != p) {
     cli::cli_abort("Number of rows in loc should be {.val {p}}.")
+  }
+
+  if (!is.list(rotation)) {
+    cli::cli_abort("rotation should be a list.")
+  }
+
+  if (length(rotation) != k) {
+    cli::cli_abort("Number of elements in rotation should be {.val {k}}.")
   }
 
   dfs <- list()

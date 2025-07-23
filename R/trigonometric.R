@@ -69,6 +69,10 @@ gen_curvycylinder <- function(n = 500, p = 4, h = 10) {
     cli::cli_abort("n should be positive.")
   }
 
+  if (h <= 0) {
+    cli::cli_abort("h should be positive.")
+  }
+
   # Step 1: gen cylindrical coordinates in 2D (x1, x2)
   theta <- stats::runif(n, 0, 3 * pi)  # Random angle for the circular base
   df <- matrix(0, nrow = n, ncol = 4)
@@ -118,6 +122,10 @@ gen_sphericalspiral <- function(n = 500, p = 4, spins = 1) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
+  }
+
+  if (spins <= 0) {
+    cli::cli_abort("spins should be positive.")
   }
 
   # gen angles (theta, phi) for the spherical coordinates
@@ -226,6 +234,10 @@ gen_conicspiral <- function(n = 500, p = 4, spins = 1) {
     cli::cli_abort("n should be positive.")
   }
 
+  if (spins <= 0) {
+    cli::cli_abort("spins should be positive.")
+  }
+
   # gen theta values to represent the angle of the spiral in the xy-plane
   theta <- seq(0, 2 * pi * spins, length.out = n)
   df <- matrix(0, nrow = n, ncol = 4)
@@ -280,6 +292,14 @@ gen_nonlinear <- function(n = 500, p = 4, hc = 1, non_fac = 0.5) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
+  }
+
+  if (hc <= 0) {
+    cli::cli_abort("hc should be positive.")
+  }
+
+  if (non_fac <= 0) {
+    cli::cli_abort("non_fac should be positive.")
   }
 
   df <- matrix(0, nrow = n, ncol = 4)

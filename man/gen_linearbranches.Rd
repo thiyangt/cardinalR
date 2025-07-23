@@ -4,10 +4,10 @@
 \alias{gen_linearbranches}
 \title{Generate data with linear shaped branches}
 \usage{
-gen_linearbranches(n = 500, p = 4, k = 4)
+gen_linearbranches(n = 400, p = 4, k = 4)
 }
 \arguments{
-\item{n}{A numeric value (default: 500) representing the sample size.}
+\item{n}{A numeric value (default: 400) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with linear shaped br
 }
 \examples{
 set.seed(20240412)
-linearbranches <- gen_linearbranches(n = 500, p = 4, k = 4)
+linearbranches <- gen_linearbranches(n = 400, p = 4, k = 4)
 }

@@ -21,8 +21,8 @@ This function generates random noise dimensions by adding wavy patterns.
 }
 \examples{
 set.seed(20240412)
-theta <- seq(0, spins * 2 * pi, length.out = n)
-x1 <- sin(phi) * cos(theta)
+theta <- seq(0, 2 * pi, length.out = 500)
+x1 <- sin(pi) * cos(theta)
 gen_wavydims2(n = 500, p = 4, x1_vec = x1)
 
 }

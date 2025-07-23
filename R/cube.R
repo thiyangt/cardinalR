@@ -16,6 +16,10 @@ gen_gridcube <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
   n_vec <- gen_nproduct(n = n, p = p)
 
   dims <- as.list(n_vec)
@@ -46,6 +50,10 @@ gen_unifcube <- function(n = 500, p = 4) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
+  }
+
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
   }
 
   df <- matrix(NA, nrow = n, ncol = 3)

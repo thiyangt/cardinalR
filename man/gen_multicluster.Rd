@@ -29,7 +29,7 @@ gen_multicluster(
 
 \item{scale}{A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.}
 
-\item{shape}{A character vector (default: c("gen_gaussian", "gen_bluntedcorn", "gen_unifcube")) representing the shapes of clusters.}
+\item{shape}{A character vector (default: c("gen_gaussian", "gen_cone", "gen_unifcube")) representing the shapes of clusters.}
 
 \item{rotation}{A numeric list which contains plane and the corresponding angle along that plane for each cluster.}
 
@@ -62,7 +62,7 @@ loc = matrix(c(
   3, 4, 10, 7
 ), nrow = 3, byrow = TRUE),
 scale = c(3, 1, 2),
-shape = c("gaussian", "bluntedcorn", "unifcube"),
+shape = c("gaussian", "cone", "unifcube"),
 rotation = rotations_4d,
 is_bkg = FALSE)
 }

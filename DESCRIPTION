@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://jayanilakshika.github.io/cardinalR
 BugReports: https://github.com/JayaniLakshika/cardinalR/issues
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports:
     dplyr,
     tibble,
@@ -39,4 +39,3 @@ Encoding: UTF-8
 Language: en-GB
 LazyData: true
 RoxygenNote: 7.3.2
-Year: 2024

@@ -16,5 +16,5 @@ A data frame with rows randomly shuffled.
 This function randomly shuffles the rows of a given data frame.
 }
 \examples{
-randomize_rows(mobius_clust_data)
+randomize_rows(mobiusgau)
 }

@@ -16,6 +16,30 @@
 #' @export
 gen_noisedims <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
 
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (!is.vector(m)) {
+    cli::cli_abort("m should be vector.")
+  }
+
+  if (length(m) != p) {
+    cli::cli_abort("Length of m should be {.val {p}}.")
+  }
+
+  if (!is.vector(s)) {
+    cli::cli_abort("s should be vector.")
+  }
+
+  if (length(s) != p) {
+    cli::cli_abort("Length of s should be {.val {p}}.")
+  }
+
   # Initialize an empty list to store the vectors
   noise_dim <- list()
 
@@ -55,6 +79,31 @@ gen_noisedims <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
 #' @export
 gen_bkgnoise <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
 
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (!is.vector(m)) {
+    cli::cli_abort("m should be vector.")
+  }
+
+  if (length(m) != p) {
+    cli::cli_abort("Length of m should be {.val {p}}.")
+  }
+
+  if (!is.vector(s)) {
+    cli::cli_abort("s should be vector.")
+  }
+
+  if (length(s) != p) {
+    cli::cli_abort("Length of s should be {.val {p}}.")
+  }
+
+
   # Initialize an empty list to store the vectors
   noise_bkg <- list()
 
@@ -80,7 +129,7 @@ gen_bkgnoise <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
 #' @export
 #'
 #' @examples
-#' randomize_rows(mobius_clust_data)
+#' randomize_rows(mobiusgau)
 randomize_rows <- function(data) {
   data |> dplyr::slice_sample(n = NROW(data))
 }
@@ -97,32 +146,65 @@ randomize_rows <- function(data) {
 #'        The number of rows must match the number of clusters.
 #'
 #' @return A tibble containing the relocated clusters with randomized row order.
+#'
 #' @import dplyr purrr tibble
+#'
+#' @examples
+#' set.seed(20240412)
+#' df <- tibble::tibble(
+#' x1 = rnorm(12),
+#' x2 = rnorm(12),
+#' x3 = rnorm(12),
+#' x4 = rnorm(12),
+#' cluster = rep(1:3, each = 4)
+#' )
+#'
+#' # Create a 3x4 matrix to define new cluster centers
+#' vert_mat <- matrix(c(
+#'   5, 0, 0, 0,   # Shift cluster 1
+#'   0, 5, 0, 0,   # Shift cluster 2
+#'   0, 0, 5, 0    # Shift cluster 3
+#' ), nrow = 3, byrow = TRUE)
+#' # Apply relocation
+#' relocated_df <- relocate_clusters(df, vert_mat)
 #' @export
 relocate_clusters <- function(data, vert_mat) {
+
+  if(isFALSE("cluster" %in% names(data))){
+    cli::cli_abort("There should a column with clusters.")
+  }
+
+  if (!is.matrix(vert_mat)) {
+    cli::cli_abort("vert_mat should be a matrix.")
+  }
+
+  k <- length(unique(data$cluster))
+
+  if(NROW(vert_mat) != k){
+    cli::cli_abort("Number of rows in vert_mat should be {.val {k}}.")
+  }
+
+  if(NCOL(vert_mat) != (NCOL(data) - 1)){
+    cli::cli_abort("Number of columns in vert_mat should be {.val {(NCOL(data) - 1)}}.")
+  }
 
   data_by_clust <- data |>
     dplyr::group_split(cluster)
 
-  relocated_data <- tibble::tibble()
-
   relocated_data <- purrr::map_dfr(seq_along(data_by_clust), function(i) {
-
     cluster_data <- data_by_clust[[i]]
+    cluster_features <- dplyr::select(cluster_data, -cluster)
 
-    # Subtract column means
-    cluster_data <- apply(cluster_data, 2, function(col) col - mean(col))
+    centered_data <- sweep(cluster_features, 2, colMeans(cluster_features))
 
-    # Relocate the cluster
-    cluster_data <- tibble::as_tibble(cluster_data + matrix(rep(vert[i,], NROW(cluster_data)),
-                                                    ncol = 4, byrow = TRUE))
+    shifted_data <- centered_data + matrix(rep(vert_mat[i, ], nrow(centered_data)),
+                                           ncol = ncol(centered_data), byrow = TRUE)
 
-    cluster_data
+    dplyr::as_tibble(shifted_data) |>
+      dplyr::mutate(cluster = unique(cluster_data$cluster))
   })
 
-  relocated_data <- randomize_rows(relocated_data)
-
-  relocated_data
+  relocated_data[sample(nrow(relocated_data)), ]  # randomize rows
 
 }
 
@@ -229,6 +311,14 @@ gen_nsum <- function(n = 500, k = 4) {
 #' @export
 gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, length.out = 500)) {
 
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
   if (length(theta) != n) {
     cli::cli_abort("The length of theta should be {.val {n}}.")
   }
@@ -261,12 +351,20 @@ gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, lengt
 #'
 #' @examples
 #' set.seed(20240412)
-#' theta <- seq(0, spins * 2 * pi, length.out = n)
-#' x1 <- sin(phi) * cos(theta)
+#' theta <- seq(0, 2 * pi, length.out = 500)
+#' x1 <- sin(pi) * cos(theta)
 #' gen_wavydims2(n = 500, p = 4, x1_vec = x1)
 #'
 #' @export
 gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
+
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
 
   if (length(x1_vec) != n) {
     cli::cli_abort("The length of x1_vec should be {.val {n}}.")
@@ -313,6 +411,19 @@ gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
 #' @export
 gen_wavydims3 <- function(n = 500, p = 4, data) {
 
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+
+  if (!is.matrix(data)) {
+    cli::cli_abort("data should be a matrix.")
+  }
+
+
   noise_level <- 0.05
   scaling_factor <- 0.2
 
@@ -358,10 +469,15 @@ gen_wavydims3 <- function(n = 500, p = 4, data) {
 #'   list(plane = c(1, 2), angle = 60), # Rotation in the (1, 2) plane
 #'   list(plane = c(3, 4), angle = 90)  # Rotation in the (3, 4) plane
 #' )
-#' gen_rotation(planes_angles = rotations_4d)
+#' gen_rotation(p = 4, planes_angles = rotations_4d)
 #'
 #' @export
 gen_rotation <- function(p = 4, planes_angles) {
+
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
   if (!is.list(planes_angles) || length(planes_angles) == 0) {
     cli::cli_abort("The 'planes_angles' argument must be a non-empty list.")
   }
@@ -411,7 +527,7 @@ gen_rotation <- function(p = 4, planes_angles) {
 #' @examples
 #' set.seed(20240412)
 #' data1 <- gen_gaussian(n= 500, p = 4)
-#' scale_data(data = data1)
+#' normalize_data(data = data1)
 #'
 #' @export
 normalize_data <- function(data) {
@@ -445,6 +561,15 @@ normalize_data <- function(data) {
 #'
 #' @export
 gen_clustloc <- function(p = 4, k = 3) {
+
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
+  }
+
+  if (k <= 0) {
+    cli::cli_abort("k should be positive.")
+  }
+
   # Generate k points in p-dimensional simplex
   # Sample k points from a (p-1)-dimensional Dirichlet distribution
   dirichlet_samples <- t(MASS::mvrnorm(n = k, mu = rep(0, p), Sigma = diag(p)))

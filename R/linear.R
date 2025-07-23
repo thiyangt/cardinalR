@@ -16,7 +16,7 @@ gen_longlinear <- function(n = 500, p = 4) {
     cli::cli_abort("p should be greater than 2.")
   }
 
-  if (n < 0){
+  if (n <= 0){
     cli::cli_abort("n should be positive.")
   }
 

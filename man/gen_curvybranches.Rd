@@ -4,10 +4,10 @@
 \alias{gen_curvybranches}
 \title{Generate data with curvy shaped branches}
 \usage{
-gen_curvybranches(n = 500, p = 4, k = 4)
+gen_curvybranches(n = 400, p = 4, k = 4)
 }
 \arguments{
-\item{n}{A numeric value (default: 500) representing the sample size.}
+\item{n}{A numeric value (default: 400) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
@@ -21,5 +21,5 @@ This function generates a dataset representing a structure with non-linear shape
 }
 \examples{
 set.seed(20240412)
-curvybranches <- gen_curvybranches(n = 500, p = 4, k = 4)
+curvybranches <- gen_curvybranches(n = 400, p = 4, k = 4)
 }

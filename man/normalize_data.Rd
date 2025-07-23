@@ -18,6 +18,6 @@ This function normalize the data by absolute value
 \examples{
 set.seed(20240412)
 data1 <- gen_gaussian(n= 500, p = 4)
-scale_data(data = data1)
+normalize_data(data = data1)
 
 }

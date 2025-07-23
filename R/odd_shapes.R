@@ -141,7 +141,7 @@ make_curvygau <- function(n = c(200, 100), p = 4) {
                          scale = c(1, 0.1),
                          shape = c("quadratic", "gaussian"),
                          rotation = NULL,
-                         is_bkg = FALSE)
+                         is_bkg = TRUE)
 
   return(df)
 
