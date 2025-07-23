@@ -15,10 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
+This quick-start guide demonstrates how to generate multi-cluster high-dimensional data. We simulate three distinct $4\text{-}D$ clusters with different shapes, scales, and rotations.
+
 ```{r setup}
 library(cardinalR)
 library(langevitour)
 ```
+
+Each cluster can be rotated in a different way across specified $2\text{-}D$ planes.
 
 ```{r}
 rotations_4d <- list(
@@ -33,7 +37,11 @@ cluster3 = list(
   list(plane = c(2, 4), angle = 45) # Rotation in the (2, 4) plane
   )
 )
+```
 
+We use `gen_multicluster()` to generate 3 clusters with varying shapes and positions in $4\text{-}D$ space.
+
+```{r}
 clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
   loc = matrix(c(
     0, 0, 0, 0,
