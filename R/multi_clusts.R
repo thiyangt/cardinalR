@@ -95,10 +95,11 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cli::cli_abort("rotation should be a list or NULL.")
   }
 
-  if (length(rotation) != k) {
-    cli::cli_abort("Number of elements in rotation should be {.val {k}}.")
+  if (is.list(rotation)) {
+    if (length(rotation) != k) {
+      cli::cli_abort("Number of elements in rotation should be {.val {k}}.")
+    }
   }
-
   dfs <- list()
 
   ## To generate different shaped clusters
