@@ -21,8 +21,8 @@ install.packages("cardinalR")
 The development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("JayaniLakshika/cardinalR")
+# install.packages("pak")
+pak::pak("JayaniLakshika/cardinalR")
 ```
 
 ## Example
@@ -32,29 +32,38 @@ library(cardinalR)
 ```
 
 ``` r
-head(mobius_clust_data, 5)
+head(mobiusgau, 5)
 #> # A tibble: 5 × 4
-#>       x1     x2      x3       x4
-#>    <dbl>  <dbl>   <dbl>    <dbl>
-#> 1  0.304  0.706 -0.152   0.0362 
-#> 2  0.916  0.588  0.0260 -0.0436 
-#> 3  0.178  1.20   0.185   0.00820
-#> 4  0.740 -1.05  -0.148  -0.0462 
-#> 5 -0.899  0.304 -0.307  -0.0387
+#>        x1       x2       x3      x4
+#>     <dbl>    <dbl>    <dbl>   <dbl>
+#> 1  0.517  -0.579   -0.00951 -0.0401
+#> 2  0.0142 -0.00841  0.0147   0.0579
+#> 3 -0.402   0.506   -0.196   -0.0325
+#> 4 -0.218  -0.684    0.0347   0.0497
+#> 5  0.225   0.699    0.00575  0.0251
 ```
 
 <table style="width:100%">
+
 <tr>
+
 <td align="center">
+
 <img src="man/figures/mobius_1.png" height="200" alt="" />
 </td>
+
 <td align="center">
+
 <img src="man/figures/mobius_2.png" height="200" alt="" />
 </td>
+
 <td align="center">
+
 <img src="man/figures/mobius_3.png" height="200" alt="" />
 </td>
+
 </tr>
+
 </table>
 
 You can find the high-dimensional view in
@@ -64,7 +73,7 @@ tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform
 Manifold Approximation and Projection) representations of
 `mobius_clust_data` are shown below.
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" alt="A brief description of the plot or figure shown in the image" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
 
 ## About the name
 

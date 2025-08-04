@@ -32,8 +32,8 @@ install.packages("cardinalR")
 The development version from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("JayaniLakshika/cardinalR")
+# install.packages("pak")
+pak::pak("JayaniLakshika/cardinalR")
 ```
 
 ## Example
@@ -84,7 +84,7 @@ interior_annotation <- function(label, position = c(0.92, 0.92)) {
 ```
 
 ```{r}
-head(mobius_clust_data, 5)
+head(mobiusgau, 5)
 ```
 
 <table style="width:100%">
@@ -101,42 +101,42 @@ You can find the high-dimensional view in [here](https://youtu.be/731aZxDifCs).
 tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform Manifold Approximation and Projection) representations of `mobius_clust_data` are shown below.
 
 ```{r, echo=FALSE}
-nldr_tsne1 <- mobius_clust_tsne_param1 |>
+nldr_tsne1 <- mobiusgau_tsne1 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
   geom_point(alpha = 0.1, size = 1)
 
-nldr_tsne2 <- mobius_clust_tsne_param2 |>
+nldr_tsne2 <- mobiusgau_tsne2 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
   geom_point(alpha = 0.1, size = 1)
 
-nldr_tsne3 <- mobius_clust_tsne_param3 |>
+nldr_tsne3 <- mobiusgau_tsne3 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
   geom_point(alpha = 0.1, size = 1)
 
-nldr_umap1 <- mobius_clust_umap_param1 |>
+nldr_umap1 <- mobiusgau_umap1 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
   geom_point(alpha = 0.1, size = 1)
 
-nldr_umap2 <- mobius_clust_umap_param2 |>
+nldr_umap2 <- mobiusgau_umap2 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
   geom_point(alpha = 0.1, size = 1)
 
-nldr_umap3 <- mobius_clust_umap_param3 |>
+nldr_umap3 <- mobiusgau_umap3 |>
   ggplot(aes(
     x = emb1,
     y = emb2
