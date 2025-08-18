@@ -257,3 +257,484 @@ make_three_clust_07 <- function(n = c(700, 300, 500), p = 4) {
   return(df)
 
 }
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_08 <- make_three_clust_08()
+#'
+#' @export
+make_three_clust_08 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("crescent", "cone", "hemisphere"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_09 <- make_three_clust_09()
+#'
+#' @export
+make_three_clust_09 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("curvycylinder", "pyrstar", "hemisphere"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_10 <- make_three_clust_10()
+#'
+#' @export
+make_three_clust_10 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("sphericalspiral", "pyrstar", "gaussian"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_11 <- make_three_clust_11()
+#'
+#' @export
+make_three_clust_11 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("helicalspiral", "pyrtri", "unifsphere"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_12 <- make_three_clust_12()
+#'
+#' @export
+make_three_clust_12 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("conicspiral", "pyrstar", "unifcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_13 <- make_three_clust_13()
+#'
+#' @export
+make_three_clust_13 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("conicspiral", "pyrtri", "unifcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_14 <- make_three_clust_14()
+#'
+#' @export
+make_three_clust_14 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("conicspiral", "cone", "unifcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_15 <- make_three_clust_15()
+#'
+#' @export
+make_three_clust_15 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("nonlinear", "pyrrect", "unifcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_16 <- make_three_clust_16()
+#'
+#' @export
+make_three_clust_16 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("crescent", "pyrtri", "unifsphere"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_17 <- make_three_clust_17()
+#'
+#' @export
+make_three_clust_17 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("curvycylinder", "cone", "unifcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_18 <- make_three_clust_18()
+#'
+#' @export
+make_three_clust_18 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("sphericalspiral", "cone", "unifcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_19 <- make_three_clust_19()
+#'
+#' @export
+make_three_clust_19 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("helicalspiral", "pyrrect", "hemisphere"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
+
+#' Generate a Three-Cluster Dataset in High Dimensions
+#'
+#' This function generates a dataset consisting of three distinct clusters
+#' in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+#' shape and location using the underlying `gen_multicluster()` function.
+#'
+#' @param n An integer vector of length 3 specifying the number of points in
+#'   each cluster. Default is \code{c(700, 300, 500)}.
+#' @param p Integer, the dimensionality of the space. Default is \code{4}.
+#'
+#'
+#' @return A data frame (or tibble, depending on `gen_multicluster()`)
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Generate default three clusters in 4-D
+#' three_clust_20 <- make_three_clust_20()
+#'
+#' @export
+make_three_clust_20 <- function(n = c(700, 300, 500), p = 4) {
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = 3,
+                         loc = matrix(c(
+                           0, 0, 0, 0,
+                           5, 0, 0, 0,
+                           3, 4, 10, 7
+                         ), nrow = 3, byrow = TRUE) * 0.25,
+                         scale = c(1, 1, 1),
+                         shape = c("conicspiral", "pyrrect", "gaussian"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+
+}
