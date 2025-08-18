@@ -26,8 +26,8 @@ make_mobiusgau <- function(n = c(200, 100), p = 4) {
   ## To generate data
   df <- gen_multicluster(n = n, p = p, k = 2,
                                loc = matrix(c(
-                                 0, 0, 0, 0,
-                                 0, 0, 0, 0
+                                 rep(0, p),
+                                 rep(0, p)
                                ), nrow = 2, byrow = TRUE),
                                scale = c(1, 0.3),
                                shape = c("mobius", "gaussian"),
@@ -472,7 +472,7 @@ make_gaucircles <- function(n = c(200, 100, 100), p = 4, num_circles = 2, scale_
 
   ## To generate data
   df <- gen_multicluster(n = n, p = p, k = k,
-                         loc = matrix(rep(c(0, 0, 0, 0), k),
+                         loc = matrix(rep(rep(0, p), k),
                                       nrow = k, byrow = TRUE),
                          scale = c(scale_circles, 0.1),
                          shape = c(rep( "circle", num_circles), "gaussian"),
@@ -531,7 +531,7 @@ make_gaucurvycycle <- function(n = c(200, 100, 100), p = 4, num_curvycycle = 2, 
 
   ## To generate data
   df <- gen_multicluster(n = n, p = p, k = k,
-                         loc = matrix(rep(c(0, 0, 0, 0), k),
+                         loc = matrix(rep(rep(0, p), k),
                                       nrow = k, byrow = TRUE),
                          scale = c(scale_curvycycle, 0.1),
                          shape = c(rep( "curvycycle", num_curvycycle), "gaussian"),
