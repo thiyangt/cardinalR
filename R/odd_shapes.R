@@ -423,3 +423,123 @@ make_chain_curvycycle <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5, a
 
   return(df)
 }
+
+#' Generate Concentric Circles with a Gaussian Cluster in High Dimensions
+#'
+#' This function generates a dataset consisting of multiple circular clusters
+#' together with a single Gaussian cluster in a \eqn{p}-dimensional space.
+#' The circles are placed concentrically at the origin with varying scales,
+#' while the Gaussian cluster serves as an additional background or center cluster.
+#'
+#' @param n An integer vector of length \code{num_circles + 1}, giving the
+#'   number of points in each cluster (circles first, followed by the Gaussian).
+#'   Default is \code{c(200, 100, 100)}.
+#' @param p Integer, the dimensionality of the embedding space. Must be at least 3.
+#'   Default is \code{4}.
+#' @param num_circles Integer, the number of circular clusters to generate.
+#'   Default is \code{2}.
+#' @param scale_circles Numeric vector of length \code{num_circles}, giving
+#'   the scale (radius) of each circular cluster. Default is \code{c(1, 2)}.
+#'
+#' @return A data frame (or tibble, depending on \code{gen_multicluster()})
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Two circles (radii 1 and 2) plus one Gaussian cluster in 4-D
+#' gaucircles <- make_gaucircles()
+#'
+#'
+#' @export
+make_gaucircles <- function(n = c(200, 100, 100), p = 4, num_circles = 2, scale_circles = c(1, 2)) {
+
+  k <- num_circles + 1
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (length(scale_circles) != num_circles) {
+    cli::cli_abort("scale_circles should contain exactly {.val {num_circles}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = k,
+                         loc = matrix(rep(c(0, 0, 0, 0), k),
+                                      nrow = k, byrow = TRUE),
+                         scale = c(scale_circles, 0.1),
+                         shape = c(rep( "circle", num_circles), "gaussian"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+}
+
+
+#' Generate Concentric Curvycycles with a Gaussian Cluster in High Dimensions
+#'
+#' This function generates a dataset consisting of multiple circular clusters
+#' together with a single Gaussian cluster in a \eqn{p}-dimensional space.
+#' The curvycycle are placed concentrically at the origin with varying scales,
+#' while the Gaussian cluster serves as an additional background or center cluster.
+#'
+#' @param n An integer vector of length \code{num_curvycycle + 1}, giving the
+#'   number of points in each cluster (curvycycle first, followed by the Gaussian).
+#'   Default is \code{c(200, 100, 100)}.
+#' @param p Integer, the dimensionality of the embedding space. Must be at least 3.
+#'   Default is \code{4}.
+#' @param num_curvycycle Integer, the number of circular clusters to generate.
+#'   Default is \code{2}.
+#' @param scale_curvycycle Numeric vector of length \code{num_curvycycle}, giving
+#'   the scale (radius) of each circular cluster. Default is \code{c(1, 2)}.
+#'
+#' @return A data frame (or tibble, depending on \code{gen_multicluster()})
+#'   containing the generated dataset with cluster assignments.
+#'
+#' @examples
+#' # Two curvycycle (radii 1 and 2) plus one Gaussian cluster in 4-D
+#' gaucurvycycle <- make_gaucurvycycle()
+#'
+#'
+#' @export
+make_gaucurvycycle <- function(n = c(200, 100, 100), p = 4, num_curvycycle = 2, scale_curvycycle = c(1, 2)) {
+
+  k <- num_curvycycle + 1
+
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
+  }
+
+  if (length(scale_curvycycle) != num_curvycycle) {
+    cli::cli_abort("scale_curvycycle should contain exactly {.val {num_curvycycle}} values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = p, k = k,
+                         loc = matrix(rep(c(0, 0, 0, 0), k),
+                                      nrow = k, byrow = TRUE),
+                         scale = c(scale_curvycycle, 0.1),
+                         shape = c(rep( "curvycycle", num_curvycycle), "gaussian"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  return(df)
+}
+
+
+
