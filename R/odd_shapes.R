@@ -143,3 +143,283 @@ make_curvygau <- function(n = c(200, 100), p = 4) {
 
 
 }
+
+
+#' Generate Multiple Interlocked Circles in High-Dimensional Space
+#'
+#' This function generates \eqn{k} interlocked circular clusters in a
+#' \eqn{p}-dimensional space. The circles are constructed using
+#' \code{gen_multicluster()}, with each circle positioned in a different
+#' coordinate plane and slightly offset so that they interlock with a
+#' central circle (hub-like structure).
+#'
+#' @param n An integer vector of length \eqn{k} giving the number of points
+#'   in each circle. Default is \code{c(200, 100)}.
+#' @param p Integer, the dimensionality of the embedding space. Must be
+#'   at least 3. Default is \code{4}.
+#' @param k Integer, the number of circles to generate. Default is \code{2}.
+#' @param offset Numeric, the amount of positional shift applied to each
+#'   circle along the second coordinate axis to prevent complete overlap.
+#'   Default is \code{0.5}.
+#'
+#'
+#' @return A data frame (or tibble, depending on \code{gen_multicluster()})
+#'   containing the generated points and cluster assignments.
+#'
+#'
+#' @examples
+#' # Generate two interlocked circles in 4-D
+#' twolink_circles <- make_klink_circles()
+make_klink_circles <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5) {
+  if (length(n) != k) {
+    stop("Length of n must equal k (number of circles).")
+  }
+
+  # Locations: each circle gets a small offset along axis 2
+  loc <- matrix(0, nrow = k, ncol = p)
+  loc[, 2] <- seq(0, by = offset, length.out = k)
+
+  # Build rotations:
+  # Circle 1 stays in (1,2) plane; subsequent ones rotated into (2,3), (3,4), etc.
+  rotations <- vector("list", k)
+  for (i in seq_len(k)) {
+    if (i == 1) {
+      rotations[[i]] <- list(
+        list(plane = c(1, 2), angle = 0)  # no rotation
+      )
+    } else {
+      # Rotate each new circle into a different orthogonal plane
+      rotations[[i]] <- list(
+        list(plane = c(i, i + 1), angle = 90 %% 360)
+      )
+    }
+  }
+  names(rotations) <- paste0("cluster", seq_len(k))
+
+  # Generate with gen_multicluster
+  df <- gen_multicluster(
+    n = n, p = p, k = k,
+    loc = loc,
+    scale = rep(1, k),
+    shape = rep("circle", k),
+    rotation = rotations,
+    is_bkg = FALSE
+  )
+
+  return(df)
+}
+
+
+#' Generate a Chain of Interlocked Circles in High-Dimensional Space
+#'
+#' This function generates \eqn{k} interlocked circular clusters in a
+#' \eqn{p}-dimensional space. Unlike \code{make_klink_circles()}, the circles
+#' are arranged in a **chain-like structure**, where each circle interlocks
+#' only with its immediate neighbor, resembling links in a chain.
+#'
+#' @param n An integer vector of length \eqn{k} giving the number of points
+#'   in each circle. Default is \code{c(200, 100)}.
+#' @param p Integer, the dimensionality of the embedding space. Must be
+#'   at least 3. Default is \code{4}.
+#' @param k Integer, the number of circles to generate. Default is \code{2}.
+#' @param offset Numeric, the positional shift applied to each circle along
+#'   its linking axis to ensure interlocking instead of overlap. Default is
+#'   \code{0.5}.
+#' @param angle Numeric, the rotation angle (in degrees) used when placing
+#'   each subsequent circle into its respective plane. Default is \code{90}.
+#'
+#'
+#' @return A data frame (or tibble, depending on \code{gen_multicluster()})
+#'   containing the generated points and cluster assignments.
+#'
+#'
+#' @examples
+#' # Generate two chain-linked circles in 4-D
+#' twochain_circles <- make_chain_circles()
+make_chain_circles <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5, angle = 90) {
+  if (length(n) != k) {
+    stop("Length of n must equal k (number of circles).")
+  }
+  if (p < 3) {
+    stop("Need at least 3 dimensions to interlock circles.")
+  }
+
+  # Initialize locations: each circle offset on its linking axis
+  loc <- matrix(0, nrow = k, ncol = p)
+
+  # Example: cluster i is shifted along axis (i+1)
+  for (i in seq_len(k)) {
+    shift_axis <- (i %% (p - 1)) + 2   # use axes 2..p cyclically
+    loc[i, shift_axis] <- offset
+  }
+
+  # Build rotations
+  rotations <- vector("list", k)
+  for (i in seq_len(k)) {
+    if (i == 1) {
+      rotations[[i]] <- list(
+        list(plane = c(1, 2), angle = 0)  # Circle 1 in x1-x2 plane
+      )
+    } else {
+      # Circle i in (i, i+1) plane, wrapping if needed
+      plane <- c(i, i + 1)
+      plane[plane > p] <- plane[plane > p] - (p - 1)
+      rotations[[i]] <- list(
+        list(plane = plane, angle = angle)
+      )
+    }
+  }
+  names(rotations) <- paste0("cluster", seq_len(k))
+
+  # Generate circles
+  df <- gen_multicluster(
+    n = n, p = p, k = k,
+    loc = loc,
+    scale = rep(1, k),
+    shape = rep("circle", k),
+    rotation = rotations,
+    is_bkg = FALSE
+  )
+
+  return(df)
+}
+
+
+#' Generate Multiple Interlocked curvycycle in High-Dimensional Space
+#'
+#' This function generates \eqn{k} interlocked circular clusters in a
+#' \eqn{p}-dimensional space. The curvycycle are constructed using
+#' \code{gen_multicluster()}, with each curvycycle positioned in a different
+#' coordinate plane and slightly offset so that they interlock with a
+#' central curvycycle (hub-like structure).
+#'
+#' @param n An integer vector of length \eqn{k} giving the number of points
+#'   in each curvycycle. Default is \code{c(200, 100)}.
+#' @param p Integer, the dimensionality of the embedding space. Must be
+#'   at least 3. Default is \code{4}.
+#' @param k Integer, the number of curvycycle to generate. Default is \code{2}.
+#' @param offset Numeric, the amount of positional shift applied to each
+#'   curvycycle along the second coordinate axis to prevent complete overlap.
+#'   Default is \code{0.5}.
+#'
+#'
+#' @return A data frame (or tibble, depending on \code{gen_multicluster()})
+#'   containing the generated points and cluster assignments.
+#'
+#'
+#' @examples
+#' # Generate two interlocked curvycycle in 4-D
+#' twolink_curvycycle <- make_klink_curvycycle()
+make_klink_curvycycle <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5) {
+  if (length(n) != k) {
+    stop("Length of n must equal k (number of curvycycle).")
+  }
+
+  # Locations: each curvycycle gets a small offset along axis 2
+  loc <- matrix(0, nrow = k, ncol = p)
+  loc[, 2] <- seq(0, by = offset, length.out = k)
+
+  # Build rotations:
+  # curvycycle 1 stays in (1,2) plane; subsequent ones rotated into (2,3), (3,4), etc.
+  rotations <- vector("list", k)
+  for (i in seq_len(k)) {
+    if (i == 1) {
+      rotations[[i]] <- list(
+        list(plane = c(1, 2), angle = 0)  # no rotation
+      )
+    } else {
+      # Rotate each new curvycycle into a different orthogonal plane
+      rotations[[i]] <- list(
+        list(plane = c(i, i + 1), angle = 90 %% 360)
+      )
+    }
+  }
+  names(rotations) <- paste0("cluster", seq_len(k))
+
+  # Generate with gen_multicluster
+  df <- gen_multicluster(
+    n = n, p = p, k = k,
+    loc = loc,
+    scale = rep(1, k),
+    shape = rep("curvycycle", k),
+    rotation = rotations,
+    is_bkg = FALSE
+  )
+
+  return(df)
+}
+
+
+#' Generate a Chain of Interlocked curvycycle in High-Dimensional Space
+#'
+#' This function generates \eqn{k} interlocked circular clusters in a
+#' \eqn{p}-dimensional space. Unlike \code{make_klink_curvycycle()}, the curvycycle
+#' are arranged in a **chain-like structure**, where each curvycycle interlocks
+#' only with its immediate neighbor, resembling links in a chain.
+#'
+#' @param n An integer vector of length \eqn{k} giving the number of points
+#'   in each curvycycle. Default is \code{c(200, 100)}.
+#' @param p Integer, the dimensionality of the embedding space. Must be
+#'   at least 3. Default is \code{4}.
+#' @param k Integer, the number of curvycycle to generate. Default is \code{2}.
+#' @param offset Numeric, the positional shift applied to each curvycycle along
+#'   its linking axis to ensure interlocking instead of overlap. Default is
+#'   \code{0.5}.
+#' @param angle Numeric, the rotation angle (in degrees) used when placing
+#'   each subsequent curvycycle into its respective plane. Default is \code{90}.
+#'
+#'
+#' @return A data frame (or tibble, depending on \code{gen_multicluster()})
+#'   containing the generated points and cluster assignments.
+#'
+#'
+#' @examples
+#' # Generate two chain-linked curvycycle in 4-D
+#' twochain_curvycycle <- make_chain_curvycycle()
+make_chain_curvycycle <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5, angle = 90) {
+  if (length(n) != k) {
+    stop("Length of n must equal k (number of curvycycle).")
+  }
+  if (p < 3) {
+    stop("Need at least 3 dimensions to interlock curvycycle.")
+  }
+
+  # Initialize locations: each curvycycle offset on its linking axis
+  loc <- matrix(0, nrow = k, ncol = p)
+
+  # Example: cluster i is shifted along axis (i+1)
+  for (i in seq_len(k)) {
+    shift_axis <- (i %% (p - 1)) + 2   # use axes 2..p cyclically
+    loc[i, shift_axis] <- offset
+  }
+
+  # Build rotations
+  rotations <- vector("list", k)
+  for (i in seq_len(k)) {
+    if (i == 1) {
+      rotations[[i]] <- list(
+        list(plane = c(1, 2), angle = 0)  # curvycycle 1 in x1-x2 plane
+      )
+    } else {
+      # curvycycle i in (i, i+1) plane, wrapping if needed
+      plane <- c(i, i + 1)
+      plane[plane > p] <- plane[plane > p] - (p - 1)
+      rotations[[i]] <- list(
+        list(plane = plane, angle = angle)
+      )
+    }
+  }
+  names(rotations) <- paste0("cluster", seq_len(k))
+
+  # Generate curvycycle
+  df <- gen_multicluster(
+    n = n, p = p, k = k,
+    loc = loc,
+    scale = rep(1, k),
+    shape = rep("curvycycle", k),
+    rotation = rotations,
+    is_bkg = FALSE
+  )
+
+  return(df)
+}
