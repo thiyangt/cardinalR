@@ -79,15 +79,15 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     cli::cli_abort("shape should contain exactly {.val {k}} values.")
   }
 
-  if (!is.matrix(loc)) {
+  if (!is.null(loc) && !is.matrix(loc)) {
     cli::cli_abort("loc should be a matrix.")
   }
 
-  if (NROW(loc) != k) {
+  if (!is.null(loc) && NROW(loc) != k) {
     cli::cli_abort("Number of rows in loc should be {.val {k}}.")
   }
 
-  if (NCOL(loc) != p) {
+  if (!is.null(loc) && NCOL(loc) != p) {
     cli::cli_abort("Number of rows in loc should be {.val {p}}.")
   }
 
@@ -124,8 +124,12 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
     ## To move to the center
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
 
-    ## To re-position the data to centroids given
-    cluster_df <- cluster_df + matrix(rep(loc[i,], n[i]), ncol=p, byrow=T)
+    if(!is.null(loc)) {
+
+      ## To re-position the data to centroids given
+      cluster_df <- cluster_df + matrix(rep(loc[i,], n[i]), ncol=p, byrow=T)
+
+    }
 
     cluster_df <- cluster_df |>
       tibble::as_tibble(.name_repair = "minimal")

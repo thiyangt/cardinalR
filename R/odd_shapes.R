@@ -541,5 +541,69 @@ make_gaucurvycycle <- function(n = c(200, 100, 100), p = 4, num_curvycycle = 2, 
   return(df)
 }
 
+#' Generate a Single Grid Cluster in High Dimensions
+#'
+#' This function generates a dataset consisting of one grid-like cluster
+#' (a structured cube grid) in 2D, with optional Gaussian noise dimensions
+#' added to extend the dataset into higher dimensions.
+#'
+#' @param n Integer, the number of points in the grid cluster. Must be positive.
+#'   Default is \code{500}.
+#' @param p Integer, the dimensionality of the embedding space. Must be at least 2.
+#'   Default is \code{4}.
+#'
+#'
+#' @return A tibble containing the generated dataset with columns:
+#'   \itemize{
+#'     \item \code{x1, x2, ..., xp} — coordinates of the data points.
+#'     \item \code{cluster} — cluster assignment (always 1 for the grid).
+#'   }
+#'
+#'
+#' @examples
+#' # Default: 500 points, 4D space (grid in 2D + 2 noise dimensions)
+#' onegrid <- make_onegrid()
+#'
+#'
+#' @export
+make_onegrid <- function(n = 500, p = 4){
 
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != 1) {
+    cli::cli_abort("n should contain exactly one values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = 2, k = 1,
+                         loc = NULL,
+                         scale = c(1),
+                         shape = c("gridcube"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  if (p > 2) {
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-2), m = rep(0, p-2), s = rep(0.01, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df <- cbind(df, noise_df)
+  }
+
+  # Create the tibble
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df[-3]) <- paste0("x", 1:p)
+
+  df <- df |>
+    dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  return(df)
+
+}
 
