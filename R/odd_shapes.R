@@ -607,3 +607,135 @@ make_onegrid <- function(n = 500, p = 4){
 
 }
 
+#' Generate Two Overlapping Grid Clusters in High Dimensions
+#'
+#' This function generates a dataset consisting of two overlapping
+#' grid-like clusters in a 2D space, with optional noise dimensions
+#' added to reach higher-dimensional spaces. The overlap is controlled
+#' by scaling factors for the grids.
+#'
+#' @param n A numeric vector of length 2 specifying the number of points
+#'   in each grid cluster.
+#' @param p An integer specifying the total number of dimensions.
+#'   Must be greater than or equal to 2. If \code{p > 2}, additional
+#'   noise dimensions are appended.
+#'
+#' @return A tibble with \code{n[1] + n[2]} rows and \code{p + 1} columns:
+#'   \itemize{
+#'     \item \code{x1, ..., xp} — coordinates of the generated points.
+#'     \item \code{cluster} — cluster membership label.
+#'   }
+#'
+#'
+#' @examples
+#' # Generate two overlapping grid clusters in 4-D
+#' df <- make_twogrid_overlap()
+#'
+#' @export
+make_twogrid_overlap <- function(n = c(500, 500), p = 4){
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly one values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = 2, k = 2,
+                         loc = NULL,
+                         scale = c(1, 3),
+                         shape = rep("gridcube", 2),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  if (p > 2) {
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-2), m = rep(0, p-2), s = rep(0.01, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df <- cbind(df, noise_df)
+  }
+
+  # Create the tibble
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df[-3]) <- paste0("x", 1:p)
+
+  df <- df |>
+    dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  return(df)
+
+}
+
+#' Generate Two Shifted Grid Clusters in High Dimensions
+#'
+#' This function generates two grid-shaped clusters in a 2D space, where one grid
+#' is shifted relative to the other. Optionally, additional noise dimensions
+#' can be added to embed the structure in a higher-dimensional space.
+#'
+#' @param n A numeric vector of length 2 specifying the number of points in each cluster.
+#'   Default is \code{c(500, 500)}.
+#' @param p An integer specifying the total number of dimensions for the output dataset.
+#'   Must be at least 2. If \code{p > 2}, additional noise dimensions will be added.
+#'   Default is 4.
+#'
+#'
+#' @return A tibble with \code{n[1] + n[2]} rows and \code{p + 1} columns:
+#' \itemize{
+#'   \item \code{x1, x2, ..., xp}: Numeric coordinates of the points.
+#'   \item \code{cluster}: Cluster membership label (factor with 2 levels).
+#' }
+#'
+#' @examples
+#' # Generate 2 shifted grid clusters in 4-D
+#' make_twogrid_shift <- make_twogrid_shift()
+#'
+#'
+#' @export
+make_twogrid_shift <- function(n = c(500, 500), p = 4){
+
+  if (p < 2) {
+    cli::cli_abort("p should be greater than 2.")
+  }
+
+  if (length(n) != 2) {
+    cli::cli_abort("n should contain exactly one values.")
+  }
+
+  if (any(n < 0)) {
+    cli::cli_abort("Values in n should be positive.")
+  }
+
+  ## To generate data
+  df <- gen_multicluster(n = n, p = 2, k = 2,
+                         loc = matrix(c(0, 0, 0.5, 0.5), nrow = 2, byrow = TRUE),
+                         scale = rep(1, 2),
+                         shape = rep("gridcube", 2),
+                         rotation = NULL,
+                         is_bkg = FALSE)
+
+  if (p > 2) {
+    noise_df <- gen_noisedims(n = NROW(df), p = (p-2), m = rep(0, p-2), s = rep(0.01, p-2)) |>
+      as.matrix()
+    colnames(noise_df) <- paste0("x", 3:p)
+
+    df <- cbind(df, noise_df)
+  }
+
+  # Create the tibble
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df[-3]) <- paste0("x", 1:p)
+
+  df <- df |>
+    dplyr::select(dplyr::starts_with("x"), "cluster")
+
+  return(df)
+
+}
+
