@@ -740,50 +740,70 @@ make_twogrid_shift <- function(n = c(500, 500), p = 4){
 }
 
 
-#' Generate Two-Crescent Shaped Clusters
+#' Generate Parallel Multi-Shape Clusters
 #'
-#' This function generates two interlocking crescent-shaped clusters
-#' in a \eqn{p}-dimensional space. The first two dimensions form
-#' the crescent shapes, while additional dimensions (if \eqn{p > 2})
-#' remain as noise-free coordinates (set to zero).
+#' This function generates synthetic high-dimensional data consisting of
+#' \eqn{k} clusters of a specified shape (e.g., crescents), arranged in
+#' parallel along alternating dimensions. The first cluster is shifted
+#' along the first dimension, the second along the third dimension,
+#' the third along the first dimension again, and so on.
 #'
-#' @param n A numeric vector of length 2 specifying the number of
-#'   points in each crescent cluster (e.g., `c(500, 300)`).
-#' @param p An integer greater than 2 specifying the total number of
-#'   dimensions. The crescent structure is formed in the first two
-#'   dimensions, while higher dimensions remain fixed at zero.
+#' @param n A numeric vector of length \eqn{k}, specifying the number of
+#'   observations in each cluster. All values must be positive.
+#' @param k Integer. Number of clusters to generate. Must be greater than 1.
+#' @param p Integer. Number of dimensions. Must be at least 3.
+#' @param shift Numeric. The distance between cluster centers along the
+#'   alternating dimensions (default is `0.4`).
+#' @param shape Character string. Shape of the clusters to generate (e.g.,
+#'   `"crescent"`, `"gridcube"`, etc.). Must be a single value.
 #'
-#' @return A tibble with \eqn{n[1] + n[2]} rows and \eqn{p + 1} columns,
-#'   where the first \eqn{p} columns represent coordinates (`x1, ..., xp`)
-#'   and the last column (`cluster`) indicates the cluster label.
 #'
+#' @return A tibble containing \eqn{\sum n} rows and \eqn{p} columns, with
+#'   the generated features (`x1, x2, ..., xp`) and a `cluster` label.
 #'
 #' @examples
-#' twocrescent <- make_twocrescent()
+#' # Generate 2 crescent-shaped clusters in 4D
+#' twocrescent <- make_shape_para(n = c(500, 300), k = 2, p = 4, shape = "crescent")
+#'
 #'
 #' @export
-make_twocrescent <- function(n = c(500, 300), p = 4) {
+make_shape_para <- function(n = c(500, 300), k = 2, p = 4, shift = 0.4, shape = "crescent") {
 
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
+  if (p < 3) {
+    cli::cli_abort("p should be greater than 3.")
   }
 
-  if (length(n) != 2) {
-    cli::cli_abort("n should contain exactly two values.")
+  if (k < 1) {
+    cli::cli_abort("k should be greater than 1.")
+  }
+
+  if (length(shape) != 1) {
+    cli::cli_abort("shape should contain exactly one value.")
+  }
+
+  if (length(n) != k) {
+    cli::cli_abort("n should contain exactly {.val {k}} values.")
   }
 
   if (any(n < 0)) {
     cli::cli_abort("Values in n should be positive.")
   }
 
+  ## Construct location matrix
+  loc <- matrix(0, nrow = k, ncol = p)
+  for (i in seq_len(k)) {
+    if (i %% 2 == 1) {
+      loc[i, 1] <- shift * ((i - 1) %/% 2 + 1)  # shift along x1
+    } else {
+      loc[i, 3] <- shift * (i %/% 2)            # shift along x3
+    }
+  }
+
   ## To generate data
-  df <- gen_multicluster(n = n, p = p, k = 2,
-                         loc = matrix(c(
-                           0.4, 0, 0, 0,
-                           0, 0, 0.4, 0
-                         ), nrow = 2, byrow = TRUE),
-                         scale = c(1, 1),
-                         shape = rep("crescent", 2),
+  df <- gen_multicluster(n = n, p = p, k = k,
+                         loc = loc,
+                         scale = rep(1, k),
+                         shape = rep(shape, k),
                          rotation = NULL,
                          is_bkg = FALSE)
 
