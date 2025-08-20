@@ -113,7 +113,27 @@ make_multigau <- function(n = c(300, 200, 500), p = 4, k = 3, loc = NULL, scale 
 
 }
 
-
+#' Generate Curvy Quadratic and Gaussian Clusters
+#'
+#' This function generates synthetic high-dimensional data containing
+#' two clusters: one quadratic-shaped cluster and one Gaussian-shaped
+#' cluster. The clusters are positioned apart in feature space with
+#' different scaling factors.
+#'
+#' @param n A numeric vector of length 2, specifying the number of
+#'   observations in each cluster. All values must be positive.
+#' @param p Integer. Number of dimensions. Must be at least 3.
+#'
+#'
+#' @return A tibble containing \eqn{n[1] + n[2]} rows and \eqn{p} columns,
+#'   with generated features (\code{x1, x2, ..., xp}) and a
+#'   \code{cluster} label.
+#'
+#' @examples
+#' # Generate 2 clusters in 4D: one quadratic, one Gaussian
+#' curvygau <- make_curvygau()
+#'
+#' @export
 make_curvygau <- function(n = c(200, 100), p = 4) {
 
   if (p < 3) {
@@ -131,13 +151,13 @@ make_curvygau <- function(n = c(200, 100), p = 4) {
   ## To generate data
   df <- gen_multicluster(n = n, p = p, k = 2,
                          loc = matrix(c(
-                           -1, 0, 0, 0,
-                           0, 0, 0, 0
+                           -0.7, -0.7, 0, 0,
+                           0, 0, 0.7, 0.7
                          ), nrow = 2, byrow = TRUE),
                          scale = c(1, 0.1),
                          shape = c("quadratic", "gaussian"),
                          rotation = NULL,
-                         is_bkg = TRUE)
+                         is_bkg = FALSE)
 
   return(df)
 
