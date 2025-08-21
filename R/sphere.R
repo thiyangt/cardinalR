@@ -168,38 +168,37 @@ gen_gridedsphere <- function(n = 500, p = 4){
     cli::cli_abort("n should be positive.")
   }
 
-  n_vec <- gen_nproduct(n = n, p = p)
+  n_vec <- gen_nproduct(n = n, p = (p-1))
 
-  df <- matrix(nrow = 0, ncol = 3)
+  # define angle ranges
+  angle_ranges <- lapply(seq_len(p - 1), function(j) {
+    if (j == (p - 1)) {
+      seq(0, 2 * pi, length.out = n_vec[j])
+    } else {
+      seq(0, pi, length.out = n_vec[j])
+    }
+  })
 
-  for (i in n_vec) {
+  # full grid
+  coords <- expand.grid(angle_ranges)
 
-    # Generate the coordinates for the sphere
-    theta <- seq(0, 2 * pi, length.out = i)
-    phi <- seq(0, pi, length.out = i)
-    coords <- expand.grid(theta = theta, phi = phi)
+  # spherical -> Cartesian
+  df <- matrix(NA, nrow = nrow(coords), ncol = p)
 
-    # Convert spherical coordinates to Cartesian coordinates
-    x1 <- sin(coords$phi) * cos(coords$theta)
-    x2 <- sin(coords$phi) * sin(coords$theta)
-    x3 <- cos(coords$phi)
-
-    df1 <- matrix(c(x1, x2, x3), ncol = 3)
-
-    df <- rbind(df, df1)
-
+  for (i in seq_len(p)) {
+    val <- rep(1, nrow(coords))
+    if (i > 1) {
+      for (j in seq_len(i - 1)) {
+        val <- val * sin(coords[[j]])
+      }
+    }
+    if (i < p) {
+      val <- val * cos(coords[[i]])
+    }
+    df[, i] <- val
   }
 
-  if (p > 3) {
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 4:p)
-
-    df <- cbind(df, noise_df)
-  }
-
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  colnames(df) <- paste0("x", seq_len(p))
 
   cli::cli_alert_success("Data generation completed successfully! 🎉")
   return(df)
