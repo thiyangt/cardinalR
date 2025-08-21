@@ -25,14 +25,14 @@ make_mobiusgau <- function(n = c(200, 100), p = 4) {
 
   ## To generate data
   df <- gen_multicluster(n = n, p = p, k = 2,
-                               loc = matrix(c(
-                                 rep(0, p),
-                                 rep(0, p)
-                               ), nrow = 2, byrow = TRUE),
-                               scale = c(1, 0.3),
-                               shape = c("mobius", "gaussian"),
-                               rotation = NULL,
-                               is_bkg = FALSE)
+                         loc = matrix(c(
+                           rep(0, p),
+                           rep(0, p)
+                         ), nrow = 2, byrow = TRUE),
+                         scale = c(1, 0.3),
+                         shape = c("mobius", "gaussian"),
+                         rotation = NULL,
+                         is_bkg = FALSE)
 
   return(df)
 }

@@ -40,7 +40,7 @@ gen_quadratic <- function(n = 500, p = 4, range = c(-1, 1)) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -88,7 +88,7 @@ gen_cubic <- function(n = 500, p = 4, range = c(-1, 2)) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }

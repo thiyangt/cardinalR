@@ -54,7 +54,7 @@ gen_noisedims <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
   df <- tibble::as_tibble(noise_dim, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("{.val {p}} noise dimensions have been generated successfully! 🎉")
+  cli::cli_alert_success("{.val {p}} noise dimensions have been generated successfully!!!")
   return(df)
 }
 
@@ -114,7 +114,7 @@ gen_bkgnoise <- function(n = 500, p = 4, m = rep(0, p), s = rep(2, p)) {
   df <- tibble::as_tibble(noise_bkg, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Background noise generation completed successfully! 🎉")
+  cli::cli_alert_success("Background noise generation completed successfully!!!")
   return(df)
 
 }
@@ -334,7 +334,7 @@ gen_wavydims1 <- function(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, lengt
   df <- tibble::as_tibble(wavy_df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully! 🎉")
+  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully!!!")
   return(df)
 
 }
@@ -388,7 +388,7 @@ gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
   df <- tibble::as_tibble(wavy_df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully! 🎉")
+  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully!!!")
   return(df)
 
 }
@@ -449,7 +449,7 @@ gen_wavydims3 <- function(n = 500, p = 4, data) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully! 🎉")
+  cli::cli_alert_success("Wavy shaped noise dimensions generation completed successfully!!!")
   return(df)
 
 }

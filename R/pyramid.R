@@ -70,7 +70,7 @@ gen_pyrrect <- function(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5) {
   df <- tibble::as_tibble(coords, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }
 
@@ -150,7 +150,7 @@ gen_pyrtri <- function(n = 500, p = 4, h = 5, l = 3, rt = 0.5) {
   df <- tibble::as_tibble(coords, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }
 
@@ -219,7 +219,7 @@ gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
   df <- tibble::as_tibble(coords, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }
 
@@ -262,6 +262,6 @@ gen_pyrholes <- function(n = 500, p = 4) {
     df[i, ] <- as.list(trace_point)
   }
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }

@@ -69,6 +69,6 @@ gen_cone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
   df <- tibble::as_tibble(coords, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }

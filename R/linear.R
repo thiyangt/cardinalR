@@ -36,6 +36,6 @@ gen_longlinear <- function(n = 500, p = 4) {
 
   }
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }

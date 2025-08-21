@@ -162,7 +162,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   ## Swap rows
   df <- randomize_rows(df)
 
-  cli::cli_alert_success("Multiple clusters generation completed successfully! 🎉")
+  cli::cli_alert_success("Multiple clusters generation completed successfully!!!")
   return(df)
 
 }

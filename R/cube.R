@@ -29,7 +29,7 @@ gen_gridcube <- function(n = 500, p = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -84,7 +84,7 @@ gen_unifcube <- function(n = 500, p = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 
@@ -123,7 +123,7 @@ gen_cubehole <- function(n = 500, p = 4) {
   plane_points <- plane_points |>
     dplyr::filter(distances > hole_radius)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(plane_points)
 
 }

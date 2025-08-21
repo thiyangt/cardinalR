@@ -44,7 +44,7 @@ gen_circle <- function(n = 500, p = 4){
   df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }
 
@@ -95,7 +95,7 @@ gen_curvycycle <- function(n = 500, p = 4){
   df <- suppressMessages(tibble::as_tibble(coords, .name_repair = "unique"))
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }
 
@@ -141,7 +141,7 @@ gen_unifsphere <- function(n = 500, p = 4, r = 1){
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -200,7 +200,7 @@ gen_gridedsphere <- function(n = 500, p = 4){
 
   colnames(df) <- paste0("x", seq_len(p))
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -267,7 +267,7 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
   ## Swap rows
   df <- randomize_rows(df)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 }
 
@@ -318,7 +318,7 @@ gen_hemisphere <- function(n = 500, p = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }

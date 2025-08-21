@@ -64,7 +64,7 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -156,7 +156,7 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4) {
   }
 
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -251,7 +251,7 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -395,7 +395,7 @@ gen_linearbranches <- function(n = 400, p = 4, k = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }
@@ -518,7 +518,7 @@ gen_curvybranches <- function(n = 400, p = 4, k = 4) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
 
 }

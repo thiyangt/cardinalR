@@ -63,7 +63,7 @@ gen_trefoil4d <- function(n = 500, p = 4, steps = 5) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
 
   return(df)
 }
@@ -122,7 +122,7 @@ gen_trefoil3d <- function(n = 500, p = 4, steps = 5) {
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
-  cli::cli_alert_success("Data generation completed successfully! 🎉")
+  cli::cli_alert_success("Data generation completed successfully!!!")
 
   return(df)
 }
