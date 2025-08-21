@@ -73,7 +73,7 @@ tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform
 Manifold Approximation and Projection) representations of `mobiusgau`
 are shown below.
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" alt="NLDR layouts generated in R"/>
 
 ## About the name
 
