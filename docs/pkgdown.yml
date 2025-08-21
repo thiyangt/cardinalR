@@ -1,10 +1,10 @@
-pandoc: '3.2'
+pandoc: '3.4'
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   main_function: main_function.html
   quollr1sample: quollr1sample.html
-last_built: 2025-04-30T08:23Z
+last_built: 2025-08-21T00:52Z
 urls:
   reference: https://jayanilakshika.github.io/cardinalR/reference
   article: https://jayanilakshika.github.io/cardinalR/articles
