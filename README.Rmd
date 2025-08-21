@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/cardinalR)](https://CRAN.R-project.org/package=cardinalR)
 [![Downloads](http://cranlogs.r-pkg.org/badges/cardinalR)](https://cran.r-project.org/package=cardinalR)
 
-The `cardinalR` package provides acollection of functions to generate a large variety of structures in high dimensions.
+The `cardinalR` package provides a collection of functions to generate a large variety of structures in high dimensions.
 
 ## Installation
 
@@ -95,10 +95,9 @@ head(mobiusgau, 5)
   </tr>
 </table>
 
+You can find the high-dimensional view in [here](https://youtu.be/D2drIAnz4pM).
 
-You can find the high-dimensional view in [here](https://youtu.be/731aZxDifCs).
-
-tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform Manifold Approximation and Projection) representations of `mobius_clust_data` are shown below.
+tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform Manifold Approximation and Projection) representations of `mobiusgau` are shown below.
 
 ```{r, echo=FALSE}
 nldr_tsne1 <- mobiusgau_tsne1 |>
@@ -106,42 +105,53 @@ nldr_tsne1 <- mobiusgau_tsne1 |>
     x = emb1,
     y = emb2
   )) +
-  geom_point(alpha = 0.1, size = 1)
+  geom_point(alpha = 0.1, size = 1) +
+  interior_annotation("a")
 
 nldr_tsne2 <- mobiusgau_tsne2 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
-  geom_point(alpha = 0.1, size = 1)
+  geom_point(alpha = 0.1, size = 1) +
+  interior_annotation("b")
+
 
 nldr_tsne3 <- mobiusgau_tsne3 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
-  geom_point(alpha = 0.1, size = 1)
+  geom_point(alpha = 0.1, size = 1) +
+  interior_annotation("c")
+
 
 nldr_umap1 <- mobiusgau_umap1 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
-  geom_point(alpha = 0.1, size = 1)
+  geom_point(alpha = 0.1, size = 1) +
+  interior_annotation("d")
+
 
 nldr_umap2 <- mobiusgau_umap2 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
-  geom_point(alpha = 0.1, size = 1)
+  geom_point(alpha = 0.1, size = 1) +
+  interior_annotation("e")
+
 
 nldr_umap3 <- mobiusgau_umap3 |>
   ggplot(aes(
     x = emb1,
     y = emb2
   )) +
-  geom_point(alpha = 0.1, size = 1)
+  geom_point(alpha = 0.1, size = 1) +
+  interior_annotation("f")
+
 ```
 
 ```{r, echo=FALSE}
@@ -152,7 +162,7 @@ nldr_tsne1 + nldr_tsne2 + nldr_tsne3 +
 
 ## About the name
 
-**C**ollection of v**ar**ious high-**d**imens**i**o**nal** data structures in **R**
+**c**ollection of v**ar**ious high-**d**imens**i**o**nal** data structures in **R**
 
 ## Copyright
 

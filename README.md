@@ -6,7 +6,7 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cardinalR)](https://CRAN.R-project.org/package=cardinalR)
 [![Downloads](http://cranlogs.r-pkg.org/badges/cardinalR)](https://cran.r-project.org/package=cardinalR)
 
-The `cardinalR` package provides acollection of functions to generate a
+The `cardinalR` package provides a collection of functions to generate a
 large variety of structures in high dimensions.
 
 ## Installation
@@ -67,17 +67,17 @@ head(mobiusgau, 5)
 </table>
 
 You can find the high-dimensional view in
-[here](https://youtu.be/731aZxDifCs).
+[here](https://youtu.be/D2drIAnz4pM).
 
 tSNE (t-distributed Stochastic Neighbor Embedding) and UMAP (Uniform
-Manifold Approximation and Projection) representations of
-`mobius_clust_data` are shown below.
+Manifold Approximation and Projection) representations of `mobiusgau`
+are shown below.
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
 
 ## About the name
 
-**C**ollection of v**ar**ious high-**d**imens**i**o**nal** data
+**c**ollection of v**ar**ious high-**d**imens**i**o**nal** data
 structures in **R**
 
 ## Copyright
