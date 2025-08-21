@@ -3,8 +3,8 @@
     Code
       gen_quadratic(n = 500, p = 4)
     Message
-      v 2 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 2 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1      x2      x3       x4
@@ -26,8 +26,8 @@
     Code
       gen_cubic(n = 500, p = 4)
     Message
-      v 2 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 2 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1      x2      x3       x4

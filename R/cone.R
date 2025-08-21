@@ -40,7 +40,7 @@ gen_cone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
   radii <- ratio + (1 - ratio) * (height_values / h)
 
   # Generate generalized "angles" for the (p-1)-dimensional hypersphere
-  angles <- matrix(runif(n * (p - 2), 0, 2 * pi), nrow = n)
+  angles <- matrix(stats::runif(n * (p - 2), 0, 2 * pi), nrow = n)
   phi <- stats::runif(n, 0, pi) # One angle with range 0 to pi
 
   coords <- matrix(0, nrow = n, ncol = p)

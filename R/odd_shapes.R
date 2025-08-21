@@ -54,7 +54,9 @@ make_mobiusgau <- function(n = c(200, 100), p = 4) {
 #' 5, 9, 0, 0,
 #' 3, 4, 10, 7
 #' ), nrow = 3, byrow = TRUE)
-#' multigau <- make_multigau(n = c(300, 200, 500), p = 4, k = 3, loc = loc_matrix, scale = c(0.2, 1.5, 0.5))
+#' multigau <- make_multigau(n = c(300, 200, 500),
+#' p = 4, k = 3,
+#' loc = loc_matrix, scale = c(0.2, 1.5, 0.5))
 make_multigau <- function(n = c(300, 200, 500), p = 4, k = 3, loc = NULL, scale = NULL) {
 
   if (p < 2) {
@@ -185,7 +187,7 @@ make_curvygau <- function(n = c(200, 100), p = 4) {
 #'
 #' @return A data frame (or tibble, depending on \code{gen_multicluster()})
 #'   containing the generated points and cluster assignments.
-#'
+#' @export
 #'
 #' @examples
 #' # Generate two interlocked circles in 4-D
@@ -251,7 +253,7 @@ make_klink_circles <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5) {
 #'
 #' @return A data frame (or tibble, depending on \code{gen_multicluster()})
 #'   containing the generated points and cluster assignments.
-#'
+#' @export
 #'
 #' @examples
 #' # Generate two chain-linked circles in 4-D
@@ -325,7 +327,7 @@ make_chain_circles <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5, angl
 #'
 #' @return A data frame (or tibble, depending on \code{gen_multicluster()})
 #'   containing the generated points and cluster assignments.
-#'
+#' @export
 #'
 #' @examples
 #' # Generate two interlocked curvycycle in 4-D
@@ -391,7 +393,7 @@ make_klink_curvycycle <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5) {
 #'
 #' @return A data frame (or tibble, depending on \code{gen_multicluster()})
 #'   containing the generated points and cluster assignments.
-#'
+#' @export
 #'
 #' @examples
 #' # Generate two chain-linked curvycycle in 4-D

@@ -200,7 +200,7 @@ gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
   selected_angles <- sample(hexagon_angles, n, replace = TRUE)
 
   # Gen points inside the hexagon (filling the base)
-  radial_factors <- sqrt(runif(n, 0, 1)) # Ensures uniform distribution inside the hexagon
+  radial_factors <- sqrt(stats::runif(n, 0, 1)) # Ensures uniform distribution inside the hexagon
   coords <- matrix(0, nrow = n, ncol = p)
   coords[, 1] <- radii * cos(selected_angles) * radial_factors
   coords[, 2] <- radii * sin(selected_angles) * radial_factors

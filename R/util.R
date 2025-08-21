@@ -200,11 +200,11 @@ relocate_clusters <- function(data, vert_mat) {
     shifted_data <- centered_data + matrix(rep(vert_mat[i, ], nrow(centered_data)),
                                            ncol = ncol(centered_data), byrow = TRUE)
 
-    dplyr::as_tibble(shifted_data) |>
+    tibble::as_tibble(shifted_data) |>
       dplyr::mutate(cluster = unique(cluster_data$cluster))
   })
 
-  relocated_data[sample(nrow(relocated_data)), ]  # randomize rows
+  suppressWarnings(relocated_data[sample(nrow(relocated_data)), ])  # randomize rows
 
 }
 
@@ -266,7 +266,7 @@ gen_nproduct <- function(n = 500, p = 4) {
 #' possible to `n`, especially when `n` is not a perfect multiplier of `k`.
 #'
 #' @param n The target positive integer value for the summation of the output vector.
-#' @param p The number of dimensions (the length of the output vector). Must be a positive integer.
+#' @param k The number of dimensions (the length of the output vector). Must be a positive integer.
 #' @return A sorted vector of positive integers of length `k`. The summation of the elements
 #'         in this vector will be approximately equal to `n`. If `n` is a perfectly
 #'         divisible by `k`, the elements will be equal.
@@ -580,3 +580,4 @@ gen_clustloc <- function(p = 4, k = 3) {
   return(simplex_points)
 }
 
+utils::globalVariables(c("cluster"))

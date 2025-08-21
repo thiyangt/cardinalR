@@ -3,8 +3,8 @@
     Code
       gen_swissroll(n = 500, p = 4)
     Message
-      v 1 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 1 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1     x2     x3      x4

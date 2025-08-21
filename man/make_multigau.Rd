@@ -28,5 +28,7 @@ loc_matrix <- matrix(c(0, 0, 0, 0,
 5, 9, 0, 0,
 3, 4, 10, 7
 ), nrow = 3, byrow = TRUE)
-multigau <- make_multigau(n = c(300, 200, 500), p = 4, k = 3, loc = loc_matrix, scale = c(0.2, 1.5, 0.5))
+multigau <- make_multigau(n = c(300, 200, 500),
+p = 4, k = 3,
+loc = loc_matrix, scale = c(0.2, 1.5, 0.5))
 }

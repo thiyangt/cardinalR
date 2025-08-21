@@ -3,7 +3,7 @@
     Code
       gen_longlinear(n = 500, p = 4)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1    x2     x3    x4

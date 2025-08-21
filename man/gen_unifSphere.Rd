@@ -10,6 +10,8 @@ gen_unifsphere(n = 500, p = 4, r = 1)
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
+
+\item{r}{A numeric vector (default: 1) representing the radius of the sphere.}
 }
 \value{
 A data containing a uniform sphere.

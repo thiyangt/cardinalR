@@ -14,19 +14,26 @@ Authors@R: c(
     person("Thiyanga S.", "Talagala", , "ttalagala@sjp.ac.lk", role = "aut",
            comment = c(ORCID = "0000-0002-0656-9789"))
   )
-Description: A collection of functions to generate a large variety of structures in high dimensions. These data structures are useful for testing, validating, and improving algorithms used in dimensionality reduction, clustering, machine learning, and visualization.
+Description: A collection of functions to generate a large variety of
+    structures in high dimensions. These data structures are useful for
+    testing, validating, and improving algorithms used in dimensionality
+    reduction, clustering, machine learning, and visualization.
 License: MIT + file LICENSE
-URL: https://jayanilakshika.github.io/cardinalR
+URL: https://jayanilakshika.github.io/cardinalR/
 BugReports: https://github.com/JayaniLakshika/cardinalR/issues
 Depends: 
     R (>= 4.1.0)
 Imports:
+    cli,
     dplyr,
-    tibble,
+    geozoo,
+    gtools,
+    MASS,
+    mvtnorm,
     purrr,
     stats,
-    cli,
-    MASS
+    tibble,
+    tidyr
 Suggests: 
     knitr,
     langevitour,

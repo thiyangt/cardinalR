@@ -3,7 +3,7 @@
     Code
       gen_gridcube(n = 500, p = 4)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
             x1    x2    x3    x4
@@ -25,7 +25,7 @@
     Code
       gen_gridcube(n = 500, p = 10)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 504 x 10
             x1    x2    x3    x4    x5    x6    x7    x8    x9   x10
@@ -47,8 +47,8 @@
     Code
       gen_unifcube(n = 500, p = 4)
     Message
-      v 1 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 1 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1       x2      x3      x4
@@ -70,8 +70,8 @@
     Code
       gen_unifcube(n = 500, p = 10)
     Message
-      v 7 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 7 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 10
               x1     x2      x3       x4        x5       x6       x7       x8       x9
@@ -94,9 +94,9 @@
     Code
       gen_cubehole(n = 1000, p = 4)
     Message
-      v 1 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 1 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 494 x 4
               x1       x2     x3       x4
@@ -118,9 +118,9 @@
     Code
       gen_cubehole(n = 1000, p = 10)
     Message
-      v 7 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v 7 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 538 x 10
                x1      x2     x3       x4       x5       x6       x7       x8       x9

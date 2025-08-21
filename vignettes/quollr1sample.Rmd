@@ -87,7 +87,7 @@ langevitour(spiral_data, pointSize = 2)
 A regularly spaced sphere with high point density, useful for manifold learning.
 
 ```{r}
-sphere_data <- gen_gridedsphere(n = 160000, p = 4)
+sphere_data <- gen_gridedsphere(n = 500, p = 4)
 
 langevitour(sphere_data, pointSize = 2)
 ```

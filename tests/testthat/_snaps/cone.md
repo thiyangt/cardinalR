@@ -3,7 +3,7 @@
     Code
       gen_cone(n = 500, p = 4, h = 5, ratio = 0.5)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1      x2     x3    x4

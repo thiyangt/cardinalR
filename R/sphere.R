@@ -105,6 +105,7 @@ gen_curvycycle <- function(n = 500, p = 4){
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r A numeric vector (default: 1) representing the radius of the sphere.
 #' @return A data containing a uniform sphere.
 #' @export
 #'

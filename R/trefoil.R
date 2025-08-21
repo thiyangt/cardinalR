@@ -126,3 +126,5 @@ gen_trefoil3d <- function(n = 500, p = 4, steps = 5) {
 
   return(df)
 }
+
+utils::globalVariables(c("x1", "x2", "x3", "x4"))

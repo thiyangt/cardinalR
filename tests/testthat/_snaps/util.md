@@ -3,7 +3,7 @@
     Code
       gen_noisedims(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
     Message
-      v 4 noise dimensions have been generated successfully! 🎉
+      v 4 noise dimensions have been generated successfully!!!
     Output
       # A tibble: 500 x 4
              x1     x2     x3     x4
@@ -25,7 +25,7 @@
     Code
       gen_bkgnoise(n = 500, p = 4, m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
     Message
-      v Background noise generation completed successfully! 🎉
+      v Background noise generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1     x2     x3     x4
@@ -102,7 +102,7 @@
     Code
       gen_wavydims1(n = 500, p = 4, theta = seq(pi / 6, 12 * pi / 6, length.out = 500))
     Message
-      v Wavy shaped noise dimensions generation completed successfully! 🎉
+      v Wavy shaped noise dimensions generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1    x2      x3    x4
@@ -124,7 +124,7 @@
     Code
       gen_wavydims2(n = 500, p = 4, x1_vec = x1)
     Message
-      v Wavy shaped noise dimensions generation completed successfully! 🎉
+      v Wavy shaped noise dimensions generation completed successfully!!!
     Output
       # A tibble: 500 x 4
                 x1        x2       x3       x4
@@ -146,7 +146,7 @@
     Code
       gen_wavydims3(n = 500, p = 4, data = df)
     Message
-      v Wavy shaped noise dimensions generation completed successfully! 🎉
+      v Wavy shaped noise dimensions generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1    x2      x3    x4

@@ -9,7 +9,7 @@ gen_nsum(n = 500, k = 4)
 \arguments{
 \item{n}{The target positive integer value for the summation of the output vector.}
 
-\item{p}{The number of dimensions (the length of the output vector). Must be a positive integer.}
+\item{k}{The number of dimensions (the length of the output vector). Must be a positive integer.}
 }
 \value{
 A sorted vector of positive integers of length `k`. The summation of the elements

@@ -3,7 +3,7 @@
     Code
       gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1      x2       x3    x4
@@ -25,7 +25,7 @@
     Code
       gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1     x2       x3    x4
@@ -47,7 +47,7 @@
     Code
       gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1        x2       x3    x4
@@ -69,7 +69,7 @@
     Code
       gen_pyrholes(n = 500, p = 3)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 3
                x1      x2      x3

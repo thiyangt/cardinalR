@@ -150,7 +150,7 @@ gen_multicluster <- function(n = c(200, 300, 500), p = 4, k = 3,
   if(isTRUE(is_bkg)) {
 
     mean <- colMeans(df[sapply(df, is.numeric)])
-    std <- sapply(df[sapply(df, is.numeric)], sd)
+    std <- sapply(df[sapply(df, is.numeric)], stats::sd)
 
     noise_df <- gen_bkgnoise(n = max(n) * 0.1, p = p,
                              m = mean, s = std) |>

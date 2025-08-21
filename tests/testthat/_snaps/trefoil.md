@@ -3,7 +3,7 @@
     Code
       gen_trefoil4d(n = 500, p = 4, steps = 5)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
             x1    x2    x3    x4
@@ -25,9 +25,9 @@
     Code
       gen_trefoil3d(n = 500, p = 4, steps = 5)
     Message
-      v Data generation completed successfully! 🎉
-      v 1 noise dimensions have been generated successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
+      v 1 noise dimensions have been generated successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
             x1    x2    x3      x4

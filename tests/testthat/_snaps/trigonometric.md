@@ -3,8 +3,8 @@
     Code
       gen_crescent(n = 500, p = 4)
     Message
-      v Wavy shaped noise dimensions generation completed successfully! 🎉
-      v Data generation completed successfully! 🎉
+      v Wavy shaped noise dimensions generation completed successfully!!!
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
             x1    x2    x3    x4
@@ -26,7 +26,7 @@
     Code
       gen_curvycylinder(n = 500, p = 4, h = 10)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1     x2    x3     x4
@@ -48,7 +48,7 @@
     Code
       gen_sphericalspiral(n = 500, p = 4, spins = 1)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
               x1        x2    x3      x4
@@ -70,16 +70,16 @@
     Code
       gen_helicalspiral(n = 500, p = 4)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
             x1      x2      x3       x4
          <dbl>   <dbl>   <dbl>    <dbl>
        1 1     0        0.406  0       
-       2 1.00  0.00787  0.0700 0.000787
-       3 1.00  0.0157  -0.239  0.00157 
-       4 1.00  0.0236  -0.142  0.00236 
-       5 1.00  0.0315  -0.400  0.00315 
+       2 1.000 0.00787  0.0700 0.000787
+       3 1.000 0.0157  -0.239  0.00157 
+       4 1.000 0.0236  -0.142  0.00236 
+       5 1.000 0.0315  -0.400  0.00315 
        6 0.999 0.0393   0.310  0.00393 
        7 0.999 0.0472   0.403  0.00472 
        8 0.998 0.0551  -0.0317 0.00551 
@@ -92,7 +92,7 @@
     Code
       gen_conicspiral(n = 500, p = 4, spins = 1)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
              x1       x2      x3     x4
@@ -114,7 +114,7 @@
     Code
       gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
     Message
-      v Data generation completed successfully! 🎉
+      v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
             x1    x2    x3     x4
