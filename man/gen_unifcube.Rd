@@ -15,7 +15,7 @@ gen_unifcube(n = 500, p = 4)
 A data containing the cube with uniform points.
 }
 \description{
-This function generates a grid dataset with specified uniform points along each axes..
+This function generates a grid dataset with specified uniform points along each axes.
 }
 \examples{
 set.seed(20240412)

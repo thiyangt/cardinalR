@@ -36,7 +36,7 @@ gen_gridcube <- function(n = 500, p = 4) {
 
 #' Generate Cube with uniform points
 #'
-#' This function generates a grid dataset with specified uniform points along each axes..
+#' This function generates a grid dataset with specified uniform points along each axes.
 #'
 #' @param n A numeric vector (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
@@ -58,27 +58,12 @@ gen_unifcube <- function(n = 500, p = 4) {
 
   df <- matrix(NA, nrow = n, ncol = 3)
   half_length <- 1 / 2
+
   x_min <- -half_length
   x_max <- half_length
-  y_min <- -half_length
-  y_max <- half_length
-  z_min <- - half_length
-  z_max <-  half_length
 
-  for (i in 1:n) {
-    x1 <- stats::runif(1, x_min, x_max)
-    x2 <- stats::runif(1, y_min, y_max)
-    x3 <- stats::runif(1, z_min, z_max)
-    df[i, ] <- c(x1, x2, x3)
-  }
-
-  if (p > 3) {
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 4:p)
-
-    df <- cbind(df, noise_df)
-  }
+  # Generate n x d matrix of uniform points
+  df <- matrix(stats::runif(n * p, min = x_min, max = x_max), nrow = n, ncol = p)
 
   # Create the tibble
   df <- tibble::as_tibble(df, .name_repair = "minimal")
