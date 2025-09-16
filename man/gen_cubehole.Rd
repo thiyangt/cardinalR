@@ -4,12 +4,14 @@
 \alias{gen_cubehole}
 \title{Generate Cube with Hole}
 \usage{
-gen_cubehole(n = 500, p = 4)
+gen_cubehole(n = 500, p = 4, r_hole = 0.5)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
+
+\item{r_hole}{A numeric value (default: 0.5) representing the radius of the hole.}
 }
 \value{
 A data containing the cube data with a hole.

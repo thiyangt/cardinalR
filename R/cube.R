@@ -81,6 +81,7 @@ gen_unifcube <- function(n = 500, p = 4) {
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @param r_hole A numeric value (default: 0.5) representing the radius of the hole.
 #'
 #' @return A data containing the cube data with a hole.
 #' @export
@@ -88,7 +89,7 @@ gen_unifcube <- function(n = 500, p = 4) {
 #' @examples
 #' set.seed(20240412)
 #' cubehole <- gen_cubehole(n = 1000, p = 4)
-gen_cubehole <- function(n = 500, p = 4) {
+gen_cubehole <- function(n = 500, p = 4, r_hole = 0.5) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
@@ -104,9 +105,8 @@ gen_cubehole <- function(n = 500, p = 4) {
   distances <- sqrt(rowSums(plane_points^2))
 
   # Remove points inside the hole
-  hole_radius <- 0.5
   plane_points <- plane_points |>
-    dplyr::filter(distances > hole_radius)
+    dplyr::filter(distances > r_hole)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(plane_points)
