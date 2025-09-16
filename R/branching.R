@@ -29,7 +29,7 @@ gen_expbranches <- function(n = 400, p = 4, k = 4) {
 
   scale_vec <- sample(seq(0.5, 2, by = 0.1), size = k)
 
-  df <- matrix(0, nrow = n, ncol = p)
+  df <- NULL
 
   for (i in 1:k) {
 
