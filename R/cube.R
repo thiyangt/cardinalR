@@ -25,6 +25,10 @@ gen_gridcube <- function(n = 500, p = 4) {
   dims <- as.list(n_vec)
   df <- tidyr::expand_grid(!!!purrr::map(dims, seq_len))
 
+  # Normalize each dimension to [0, 1] to form a proper cube
+  df <- df |> dplyr::mutate(dplyr::across(dplyr::everything(),
+                                          ~ (. - 1) / (n_vec[cur_column()] - 1)))
+
   # Create the tibble
   df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
