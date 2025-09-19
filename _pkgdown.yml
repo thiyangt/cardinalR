@@ -98,7 +98,7 @@ reference:
   - gen_pyrrect
   - gen_pyrtri
   - gen_pyrstar
-  - gen_pyrholes
+  - gen_pyrfrac
 - title: "S-curve"
   desc: S-curve data structures.
   contents:

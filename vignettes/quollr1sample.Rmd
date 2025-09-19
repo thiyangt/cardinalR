@@ -107,7 +107,7 @@ langevitour(scurve_data, pointSize = 2)
 A $4\text{-}D$ pyramid-shaped structure with a void at the center.
 
 ```{r}
-pyr_data <- gen_pyrholes(n = 1000, p = 4)
+pyr_data <- gen_pyrfrac(n = 1000, p = 4)
 
 langevitour(pyr_data, pointSize = 2)
 ```

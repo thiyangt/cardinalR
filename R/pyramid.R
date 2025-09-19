@@ -234,8 +234,8 @@ gen_pyrstar <- function(n = 500, p = 4, h = 5, rb = 3) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' pyrholes <- gen_pyrholes(n = 500, p = 3)
-gen_pyrholes <- function(n = 500, p = 4) {
+#' pyrfrac <- gen_pyrfrac(n = 500, p = 3)
+gen_pyrfrac <- function(n = 500, p = 4) {
 
   if (p < 2) {
     cli::cli_abort("p should be greater than 2.")
