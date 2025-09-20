@@ -57,7 +57,7 @@ langevitour(curvy_cyc_data, pointSize = 2)
 A tree-like curvilinear structure with six branches in $6\text{-}D$, ideal for studying bifurcation patterns.
 
 ```{r}
-tree_data <- gen_orgcurvybranches(n = 600, p = 6, k = 6) 
+tree_data <- gen_orgcurvybranches(n = 600, p = 6, k = 6, noise_fun = gen_noisedims, m = rep(0, 4), s = rep(0.1, 4)) 
 
 langevitour(tree_data, pointSize = 2)
 ```
