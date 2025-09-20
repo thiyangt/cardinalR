@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cardinalR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,14 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_nonlinear</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, p <span class="op">=</span> <span class="fl">4</span>, hc <span class="op">=</span> <span class="fl">1</span>, non_fac <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_nonlinear</span><span class="op">(</span></span>
+<span>  n <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>  p <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  hc <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  non_fac <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  noise_fun <span class="op">=</span> <span class="va">gen_noisedims</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -64,6 +71,14 @@
 
 <dt id="arg-non-fac">non_fac<a class="anchor" aria-label="anchor" href="#arg-non-fac"></a></dt>
 <dd><p>A numeric value (default: 1) representing the nonlinear factor which describes the strength of this sinusoidal effect. When this is 0, the curve is purely hyperbolic; as it increases, the wave-like fluctuations become more prominent.</p></dd>
+
+
+<dt id="arg-noise-fun">noise_fun<a class="anchor" aria-label="anchor" href="#arg-noise-fun"></a></dt>
+<dd><p>A function specifying which noise generation function to use for the additional dimensions. Default is <code>gen_noisedims</code>. Other options include <code>gen_wavydims1</code>, <code>gen_wavydims2</code>, and <code>gen_wavydims3</code>.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional arguments passed to the selected <code>noise_fun</code> (e.g., <code>m</code>, <code>s</code>, <code>theta</code>, <code>x1_vec</code>, <code>data</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
