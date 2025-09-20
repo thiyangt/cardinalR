@@ -5,6 +5,8 @@
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param w A numeric vector (default: c(-1, 1)) representing the vertical variation.
+#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing the generated swiss roll data.
 #' @references
 #' Agrafiotis, D. K., & Xu, H. (2002).
@@ -20,7 +22,7 @@
 #' @examples
 #' set.seed(20240412)
 #' swissroll <- gen_swissroll(n = 500, p = 4)
-gen_swissroll <- function(n = 500, p = 4, w = c(-1, 1)) {
+gen_swissroll <- function(n = 500, p = 4, w = c(-1, 1), noise_fun = gen_noisedims, ...) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -41,8 +43,30 @@ gen_swissroll <- function(n = 500, p = 4, w = c(-1, 1)) {
   df[,3] <- x3
 
   if (p > 3) {
-    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.05, p-3)) |>
-      as.matrix()
+
+    # If set defaults
+    if (identical(noise_fun, gen_noisedims)) {
+      dots <- list(...)
+      if (is.null(dots$m)) dots$m <- rep(0, p - 3)
+      if (is.null(dots$s)) dots$s <- rep(0.05, p - 3)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else if (identical(noise_fun, gen_wavydims1)) {
+      dots <- list(...)
+      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else if (identical(noise_fun, gen_wavydims2)) {
+      dots <- list(...)
+      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else if (identical(noise_fun, gen_wavydims3)) {
+      dots <- list(...)
+      if (is.null(dots$df)) dots$data <- df
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else {
+      noise_df <- noise_fun(n = n, p = p - 3, ...)
+    }
+    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
+
     colnames(noise_df) <- paste0("x", 4:p)
 
     df <- cbind(df, noise_df)

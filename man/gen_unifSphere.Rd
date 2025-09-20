@@ -4,7 +4,7 @@
 \alias{gen_unifsphere}
 \title{Generate Uniform Sphere}
 \usage{
-gen_unifsphere(n = 500, p = 4, r = 1)
+gen_unifsphere(n = 500, p = 4, r = 1, noise_fun = gen_noisedims, ...)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
@@ -12,6 +12,10 @@ gen_unifsphere(n = 500, p = 4, r = 1)
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
 \item{r}{A numeric vector (default: 1) representing the radius of the sphere.}
+
+\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
+
+\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing a uniform sphere.

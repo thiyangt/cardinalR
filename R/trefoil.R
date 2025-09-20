@@ -54,12 +54,23 @@ gen_trefoil4d <- function(n = 500, p = 4, steps = 5, noise_fun = gen_noisedims, 
 
   if (p > 4){
 
-    # Use the selected noise function
-    # If noise_fun is gen_noisedims and user didn't provide m or s, set defaults
+    # If set defaults
     if (identical(noise_fun, gen_noisedims)) {
       dots <- list(...)
       if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.1, p - 4)
+      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
+    } else if (identical(noise_fun, gen_wavydims1)) {
+      dots <- list(...)
+      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
+    } else if (identical(noise_fun, gen_wavydims2)) {
+      dots <- list(...)
+      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
+    } else if (identical(noise_fun, gen_wavydims3)) {
+      dots <- list(...)
+      if (is.null(dots$df)) dots$data <- df
       noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
     } else {
       noise_df <- noise_fun(n = n, p = p - 4, ...)
@@ -125,17 +136,29 @@ gen_trefoil3d <- function(n = 500, p = 4, steps = 5, noise_fun = gen_noisedims, 
 
   if (p > 3){
 
-    # Use the selected noise function
-    # If noise_fun is gen_noisedims and user didn't provide m or s, set defaults
+    # If set defaults
     if (identical(noise_fun, gen_noisedims)) {
       dots <- list(...)
       if (is.null(dots$m)) dots$m <- rep(0, p - 3)
-      if (is.null(dots$s)) dots$s <- rep(0.1, p - 3)
+      if (is.null(dots$s)) dots$s <- rep(0.05, p - 3)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else if (identical(noise_fun, gen_wavydims1)) {
+      dots <- list(...)
+      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else if (identical(noise_fun, gen_wavydims2)) {
+      dots <- list(...)
+      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else if (identical(noise_fun, gen_wavydims3)) {
+      dots <- list(...)
+      if (is.null(dots$df)) dots$data <- df
       noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
     } else {
       noise_df <- noise_fun(n = n, p = p - 3, ...)
     }
     if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
+
 
     colnames(noise_df) <- paste0("x", 4:p)
 

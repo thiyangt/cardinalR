@@ -4,12 +4,16 @@
 \alias{gen_crescent}
 \title{Generate Crescent}
 \usage{
-gen_crescent(n = 500, p = 4)
+gen_crescent(n = 500, p = 4, noise_fun = gen_wavydims1, ...)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
+
+\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_wavydims1}. Other options include \code{gen_noisedims}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
+
+\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing a Crescent structure.
