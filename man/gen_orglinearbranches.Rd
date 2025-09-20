@@ -4,7 +4,14 @@
 \alias{gen_orglinearbranches}
 \title{Generate data with linear shaped branches in a initial point}
 \usage{
-gen_orglinearbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...)
+gen_orglinearbranches(
+  n = 400,
+  p = 4,
+  k = 4,
+  allow_share = TRUE,
+  noise_fun = gen_noisedims,
+  ...
+)
 }
 \arguments{
 \item{n}{A numeric value (default: 400) representing the sample size.}
@@ -12,6 +19,8 @@ gen_orglinearbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...)
 \item{p}{A numeric value (default: 4) representing the number of dimensions.}
 
 \item{k}{A numeric value (default: 4) representing the number of branches.}
+
+\item{allow_share}{A logical value (default: TRUE). If TRUE, multiple branches may share the same 2D subspace. If FALSE, branches are sampled without replacement from all possible 2D subspaces until exhausted.}
 
 \item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
 
