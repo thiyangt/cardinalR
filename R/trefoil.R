@@ -6,12 +6,14 @@
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param steps A numeric value (default: 5) representing the number of steps for the theta parameter.
+#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing 4-D trefoil knot.
 #' @export
 #' @examples
 #' set.seed(20240412)
 #' trefoil4d <- gen_trefoil4d(n = 500, p = 4, steps = 5)
-gen_trefoil4d <- function(n = 500, p = 4, steps = 5) {
+gen_trefoil4d <- function(n = 500, p = 4, steps = 5, noise_fun = gen_noisedims, ...) {
 
   if (p < 4) {
     cli::cli_abort("p should be greater than 4.")
@@ -52,8 +54,18 @@ gen_trefoil4d <- function(n = 500, p = 4, steps = 5) {
 
   if (p > 4){
 
-    noise_df <- gen_noisedims(n = n, p = (p-4), m = rep(0, p-4), s = rep(0.1, p-4)) |>
-      as.matrix()
+    # Use the selected noise function
+    # If noise_fun is gen_noisedims and user didn't provide m or s, set defaults
+    if (identical(noise_fun, gen_noisedims)) {
+      dots <- list(...)
+      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
+      if (is.null(dots$s)) dots$s <- rep(0.1, p - 4)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
+    } else {
+      noise_df <- noise_fun(n = n, p = p - 4, ...)
+    }
+    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
+
     colnames(noise_df) <- paste0("x", 5:p)
 
     df <- cbind(df, noise_df)
@@ -77,12 +89,14 @@ gen_trefoil4d <- function(n = 500, p = 4, steps = 5) {
 #' @param n A numeric value (default: 500) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param steps A numeric value (default: 5) representing the number of steps for the theta parameter.
+#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing 3-D trefoil knot.
 #' @export
 #' @examples
 #' set.seed(20240412)
 #' trefoil3d <- gen_trefoil3d(n = 500, p = 4, steps = 5)
-gen_trefoil3d <- function(n = 500, p = 4, steps = 5) {
+gen_trefoil3d <- function(n = 500, p = 4, steps = 5, noise_fun = gen_noisedims, ...) {
 
   if (p < 3) {
     cli::cli_abort("p should be greater than 3.")
@@ -111,8 +125,18 @@ gen_trefoil3d <- function(n = 500, p = 4, steps = 5) {
 
   if (p > 3){
 
-    noise_df <- gen_noisedims(n = n, p = (p-3), m = rep(0, p-3), s = rep(0.1, p-3)) |>
-      as.matrix()
+    # Use the selected noise function
+    # If noise_fun is gen_noisedims and user didn't provide m or s, set defaults
+    if (identical(noise_fun, gen_noisedims)) {
+      dots <- list(...)
+      if (is.null(dots$m)) dots$m <- rep(0, p - 3)
+      if (is.null(dots$s)) dots$s <- rep(0.1, p - 3)
+      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
+    } else {
+      noise_df <- noise_fun(n = n, p = p - 3, ...)
+    }
+    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
+
     colnames(noise_df) <- paste0("x", 4:p)
 
     df <- cbind(df, noise_df)
