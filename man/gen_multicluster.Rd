@@ -8,11 +8,14 @@ gen_multicluster(
   n = c(200, 300, 500),
   p = 4,
   k = 3,
-  loc = matrix(c(0, 0, 0, 0, 5, 9, 0, 0, 3, 4, 10, 7), nrow = 3, byrow = TRUE),
-  scale = c(3, 1, 2),
-  shape = c("gaussian", "bluntedcorn", "unifcube"),
+  loc = NULL,
+  scale = rep(1, k),
+  shape = NULL,
+  generators = NULL,
+  clusters = NULL,
   rotation = NULL,
-  is_bkg = FALSE
+  is_bkg = FALSE,
+  ...
 )
 }
 \arguments{
@@ -62,7 +65,7 @@ loc = matrix(c(
   3, 4, 10, 7
 ), nrow = 3, byrow = TRUE),
 scale = c(3, 1, 2),
-shape = c("gaussian", "cone", "unifcube"),
+shape = c("gen_gaussian", "gen_cone", "gen_unifcube"),
 rotation = rotations_4d,
 is_bkg = FALSE)
 }
