@@ -33,7 +33,8 @@ Imports:
     purrr,
     stats,
     tibble,
-    tidyr
+    tidyr,
+    utils
 Suggests: 
     knitr,
     langevitour,
