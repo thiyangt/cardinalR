@@ -20,11 +20,16 @@ gen_orglinearbranches(
 
 \item{k}{A numeric value (default: 4) representing the number of branches.}
 
-\item{allow_share}{A logical value (default: TRUE). If TRUE, multiple branches may share the same 2D subspace. If FALSE, branches are sampled without replacement from all possible 2D subspaces until exhausted.}
+\item{allow_share}{A logical value (default: TRUE).
+If TRUE, multiple branches may share the same 2D subspace.
+If FALSE, branches are sampled without replacement from all possible 2D
+subspaces until exhausted.}
 
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
+\item{noise_fun}{A function specifying which noise generation function to
+use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
 
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
+\item{...}{Additional arguments passed to the selected \code{noise_fun}
+(e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing linear shaped branches originated in one point.
@@ -34,5 +39,6 @@ This function generates a dataset representing a structure with linear shaped br
 }
 \examples{
 set.seed(20240412)
-orglinearbranches <- gen_orglinearbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
+orglinearbranches <- gen_orglinearbranches(n = 400, p = 4, k = 4,
+noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
 }

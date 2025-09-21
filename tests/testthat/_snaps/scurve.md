@@ -28,6 +28,9 @@
     Message
       v Data generation completed successfully!!!
       v 1 noise dimensions have been generated successfully!!!
+      New names:
+      * `x1` -> `x1...1`
+      * `x1` -> `x1...4`
       v Data generation completed successfully!!!
     Output
       # A tibble: 480 x 4

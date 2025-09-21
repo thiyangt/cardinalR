@@ -13,9 +13,11 @@ gen_expbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...)
 
 \item{k}{A numeric value (default: 4) representing the number of branches.}
 
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
+\item{noise_fun}{A function specifying which noise generation function to
+use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
 
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
+\item{...}{Additional arguments passed to the selected \code{noise_fun}
+(e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing exponential shaped branches.
@@ -25,5 +27,6 @@ This function generates a dataset representing a structure with exponential shap
 }
 \examples{
 set.seed(20240412)
-expbranches <- gen_expbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
+expbranches <- gen_expbranches(n = 400, p = 4, k = 4,
+noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
 }

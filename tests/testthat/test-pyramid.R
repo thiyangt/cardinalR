@@ -32,11 +32,11 @@ test_that("gen_pyrstar() works", {
 
 })
 
-test_that("gen_pyrholes() works", {
+test_that("gen_pyrfrac() works", {
   set.seed(20240412)
-  testthat::expect_snapshot(gen_pyrholes(n = 500, p = 3))
-  testthat::expect_error(gen_pyrholes(n = 500, p = 1))
-  testthat::expect_error(gen_pyrholes(n = c(500, 200), p = 3))
-  testthat::expect_error(gen_pyrholes(n = -500, p = 3))
+  testthat::expect_snapshot(gen_pyrfrac(n = 500, p = 3))
+  testthat::expect_error(gen_pyrfrac(n = 500, p = 1))
+  testthat::expect_error(gen_pyrfrac(n = c(500, 200), p = 3))
+  testthat::expect_error(gen_pyrfrac(n = -500, p = 3))
 
 })

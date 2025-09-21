@@ -4,17 +4,17 @@
       clust_data
     Output
       # A tibble: 1,000 x 5
-            x1     x2       x3     x4 cluster 
-         <dbl>  <dbl>    <dbl>  <dbl> <chr>   
-       1 1.92   3.90  11.2      6.62  cluster3
-       2 2.06   2.70  11.3      5.72  cluster3
-       3 3.05   2.71  10.9      5.59  cluster3
-       4 3.84   4.42  10.3      7.44  cluster3
-       5 4.12   3.22  11.1      6.84  cluster3
-       6 0.739 -0.686 -1.02    -0.353 cluster1
-       7 5.07   9.03   0.00842 -0.357 cluster2
-       8 2.07   3.78   8.24     6.58  cluster3
-       9 1.13  -0.161  1.21     0.349 cluster1
-      10 3.62   3.33   9.71     6.52  cluster3
+            x1    x2       x3     x4 cluster 
+         <dbl> <dbl>    <dbl>  <dbl> <chr>   
+       1  4.42  2.84  9.63     7.69  cluster3
+       2  4.99  9.02 -0.0516  -0.381 cluster2
+       3  5.00  8.96  0.0357  -0.307 cluster2
+       4  1.20  4.99 10.7      5.68  cluster3
+       5  1.58  5.38  8.83     6.93  cluster3
+       6  4.95  9.05  0.00858  0.240 cluster2
+       7  4.96  8.94  0.0683   0.250 cluster2
+       8  4.96  8.95  0.0126  -0.113 cluster2
+       9  2.41  3.35  9.11     5.32  cluster3
+      10  1.99  1.58 -0.623    0.847 cluster1
       # i 990 more rows
 

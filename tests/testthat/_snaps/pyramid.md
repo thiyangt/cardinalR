@@ -64,10 +64,10 @@
       10 -0.499   8.65e- 1 -0.0121  2.79 
       # i 490 more rows
 
-# gen_pyrholes() works
+# gen_pyrfrac() works
 
     Code
-      gen_pyrholes(n = 500, p = 3)
+      gen_pyrfrac(n = 500, p = 3)
     Message
       v Data generation completed successfully!!!
     Output

@@ -4,10 +4,13 @@
       gen_mobius(n = 500, p = 4)
     Message
       v 1 noise dimensions have been generated successfully!!!
+      New names:
+      * `x1` -> `x1...1`
+      * `x1` -> `x1...4`
       v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
-              x1       x2       x3      x4
+          x1...1       x2       x3  x1...4
            <dbl>    <dbl>    <dbl>   <dbl>
        1  0.787  -0.526    0.0162  -0.0495
        2 -0.0601  0.920   -0.0837   0.0573

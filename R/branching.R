@@ -5,15 +5,18 @@
 #' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
+#' @param noise_fun A function specifying which noise generation function to
+#' use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun}
+#' (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing exponential shaped branches.
 #'
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' expbranches <- gen_expbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
+#' expbranches <- gen_expbranches(n = 400, p = 4, k = 4,
+#' noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
 gen_expbranches <- function(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...) {
 
   if (p < 2) {
@@ -100,14 +103,18 @@ gen_expbranches <- function(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ..
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @param allow_share A logical value (default: TRUE). If TRUE, multiple branches may share the same 2D subspace. If FALSE, branches are sampled without replacement from all possible 2D subspaces until exhausted.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
+#' @param noise_fun A function specifying which noise generation function to
+#' use for the additional dimensions. Default is \code{gen_noisedims}.
+#' Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun}
+#' (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing curvy shaped branches originated in one point.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' orgcurvybranches <- gen_orgcurvybranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
+#' orgcurvybranches <- gen_orgcurvybranches(n = 400, p = 4, k = 4,
+#' noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
 gen_orgcurvybranches <- function(n = 400, p = 4, k = 4,
                                  allow_share = TRUE,
                                  noise_fun = gen_noisedims, ...) {
@@ -193,15 +200,21 @@ gen_orgcurvybranches <- function(n = 400, p = 4, k = 4,
 #' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param allow_share A logical value (default: TRUE). If TRUE, multiple branches may share the same 2D subspace. If FALSE, branches are sampled without replacement from all possible 2D subspaces until exhausted.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
+#' @param noise_fun A function specifying which noise generation function to
+#' use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param allow_share A logical value (default: TRUE).
+#' If TRUE, multiple branches may share the same 2D subspace.
+#' If FALSE, branches are sampled without replacement from all possible 2D
+#' subspaces until exhausted.
+#' @param ... Additional arguments passed to the selected \code{noise_fun}
+#' (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing linear shaped branches originated in one point.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' orglinearbranches <- gen_orglinearbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
+#' orglinearbranches <- gen_orglinearbranches(n = 400, p = 4, k = 4,
+#' noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.1, 2))
 gen_orglinearbranches <- function(n = 400, p = 4, k = 4,
                                   allow_share = TRUE,
                                   noise_fun = gen_noisedims, ...) {
@@ -291,14 +304,19 @@ gen_orglinearbranches <- function(n = 400, p = 4, k = 4,
 #' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
+#' @param noise_fun A function specifying which noise generation function to
+#' use for the additional dimensions. Default is \code{gen_noisedims}.
+#' Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and
+#' \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun}
+#' (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing linear shaped branches.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' linearbranches <- gen_linearbranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.05, 2))
+#' linearbranches <- gen_linearbranches(n = 400, p = 4, k = 4,
+#' noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.05, 2))
 gen_linearbranches <- function(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...) {
 
   if (p < 2) {
@@ -498,14 +516,18 @@ gen_linearbranches <- function(n = 400, p = 4, k = 4, noise_fun = gen_noisedims,
 #' @param n A numeric value (default: 400) representing the sample size.
 #' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
+#' @param noise_fun A function specifying which noise generation function to
+#' use for the additional dimensions. Default is \code{gen_noisedims}.
+#' Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
+#' @param ... Additional arguments passed to the selected \code{noise_fun}
+#' (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing non-linear shaped branches.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvybranches <- gen_curvybranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.05, 2))
+#' curvybranches <- gen_curvybranches(n = 400, p = 4, k = 4,
+#' noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.05, 2))
 gen_curvybranches <- function(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...) {
 
   if (p < 2) {
