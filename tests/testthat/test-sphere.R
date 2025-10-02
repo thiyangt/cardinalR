@@ -18,9 +18,9 @@ test_that("gen_curvycycle() works", {
 
 test_that("gen_unifsphere() works", {
   set.seed(20240412)
-  testthat::expect_snapshot(gen_unifsphere(n = 500, p = 4))
-  testthat::expect_error(gen_unifsphere(n = 500, p = 2))
-  testthat::expect_error(gen_unifsphere(n = -500, p = 4))
+  testthat::expect_snapshot(gen_unifsphere(n = 500))
+  testthat::expect_error(gen_unifsphere(n = 500, r = -0.5))
+  testthat::expect_error(gen_unifsphere(n = -500))
 
 })
 
@@ -35,25 +35,22 @@ test_that("gen_gridedsphere() works", {
 test_that("gen_clusteredspheres() works", {
   set.seed(20240412)
 
-  clusteredspheres <- gen_clusteredspheres(n = c(1000, 100), k = 3, p = 4,
+  clusteredspheres <- gen_clusteredspheres(n = c(1000, 100), k = 3,
   r = c(15, 3), loc = 10 / sqrt(3))
 
   testthat::expect_snapshot(clusteredspheres)
-  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100), k = 3, p = 2,
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100, 300), k = 3,
                                               r = c(15, 3), loc = 10 / sqrt(3)))
-  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100, 300), k = 3, p = 4,
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, -100), k = 3,
                                               r = c(15, 3), loc = 10 / sqrt(3)))
-  testthat::expect_error(gen_clusteredspheres(n = c(1000, -100), k = 3, p = 4,
-                                              r = c(15, 3), loc = 10 / sqrt(3)))
-  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100), k = 3, p = 4,
+  testthat::expect_error(gen_clusteredspheres(n = c(1000, 100), k = 3,
                                               r = c(-15, 3), loc = 10 / sqrt(3)))
 
 })
 
 test_that("gen_hemisphere() works", {
   set.seed(20240412)
-  testthat::expect_snapshot(gen_hemisphere(n = 500, p = 4))
-  testthat::expect_error(gen_hemisphere(n = 500, p = 2))
-  testthat::expect_error(gen_hemisphere(n = -500, p = 4))
+  testthat::expect_snapshot(gen_hemisphere(n = 500))
+  testthat::expect_error(gen_hemisphere(n = -500))
 
 })

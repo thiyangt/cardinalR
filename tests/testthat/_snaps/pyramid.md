@@ -1,7 +1,7 @@
 # gen_pyrrect() works
 
     Code
-      gen_pyrrect(n = 500, p = 4, h = 5, l_vec = c(3, 2), rt = 0.5)
+      gen_pyrrect(n = 500, h = 5, l_vec = c(3, 2), rt = 0.5)
     Message
       v Data generation completed successfully!!!
     Output
@@ -23,7 +23,7 @@
 # gen_pyrtri() works
 
     Code
-      gen_pyrtri(n = 500, p = 4, h = 5, l = 3, rt = 0.5)
+      gen_pyrtri(n = 500, h = 5, l = 3, rt = 0.5)
     Message
       v Data generation completed successfully!!!
     Output
@@ -45,7 +45,7 @@
 # gen_pyrstar() works
 
     Code
-      gen_pyrstar(n = 500, p = 4, h = 5, rb = 3)
+      gen_pyrstar(n = 500, h = 5, rb = 3)
     Message
       v Data generation completed successfully!!!
     Output
@@ -67,22 +67,22 @@
 # gen_pyrfrac() works
 
     Code
-      gen_pyrfrac(n = 500, p = 3)
+      gen_pyrfrac(n = 500)
     Message
       v Data generation completed successfully!!!
     Output
-      # A tibble: 500 x 3
-               x1      x2      x3
-            <dbl>   <dbl>   <dbl>
-       1  0.807    0.489   0.275 
-       2  0.0498   0.449   0.282 
-       3  0.0249   0.224  -0.292 
-       4  0.0124   0.112  -0.579 
-       5  0.00622 -0.352  -0.145 
-       6  0.357    0.0280  0.0717
-       7  0.178    0.0140 -0.397 
-       8 -0.264    0.211  -0.0542
-       9 -0.132    0.106  -0.460 
-      10  0.287    0.257  -0.0857
+      # A tibble: 500 x 4
+              x1    x2      x3    x4
+           <dbl> <dbl>   <dbl> <dbl>
+       1  0.0996 0.489  0.275  0.290
+       2  0.0498 0.244 -0.296  0.257
+       3  0.0249 0.122 -0.581  0.240
+       4  0.366  0.265 -0.146  0.232
+       5 -0.171  0.337  0.0713 0.228
+       6 -0.0853 0.168 -0.397  0.226
+       7  0.311  0.288 -0.0543 0.225
+       8  0.509  0.348  0.117  0.224
+       9  0.608  0.378  0.203  0.224
+      10 -0.0495 0.393  0.246  0.224
       # i 490 more rows
 

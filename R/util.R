@@ -531,17 +531,20 @@ gen_rotation <- function(p = 4, planes_angles) {
 #'
 #' @export
 normalize_data <- function(data) {
-  # Select only numeric columns
-  num_cols <- sapply(data, is.numeric)
-  df_num <- data[, num_cols]
+  # Ensure data is a data.frame
+  data <- as.data.frame(data)
 
-  # Compute max of max/min absolute values
-  max_abs <- sapply(df_num, function(col) max(abs(col), na.rm = TRUE))
-  min_abs <- sapply(df_num, function(col) min(abs(col), na.rm = TRUE))
-  scale_value <- max(c(max_abs, min_abs))
+  # Select numeric columns
+  num_cols <- sapply(data, is.numeric)
+  df_num <- data[, num_cols, drop = FALSE]
+
+  # Compute the maximum absolute value across all numeric columns
+  max_abs <- max(abs(df_num), na.rm = TRUE)
+  if (max_abs == 0) max_abs <- 1  # prevent division by zero
 
   # Normalize numeric columns
-  data[, num_cols] <- df_num / scale_value
+  data[, num_cols] <- df_num / max_abs
+
   return(data)
 }
 
@@ -579,5 +582,51 @@ gen_clustloc <- function(p = 4, k = 3) {
 
   return(simplex_points)
 }
+
+#' Remove points within a spherical hole in the middle
+#'
+#' @param df A data frame or matrix of coordinates.
+#' @param anchor A numeric vector giving the center of the hole.
+#' @param r A numeric value for the hole radius.
+#' @return A tibble with the hole removed.
+#'
+#' @examples
+#' set.seed(20240412)
+#' df <- gen_scurve(n = 1000)
+#' gen_hole(df, r = 0.5)
+#'
+#' @export
+gen_hole <- function(df, anchor = NULL, r = 0.5) {
+  if (!is.data.frame(df)) cli::cli_abort("df should be a data frame.")
+
+  # hole anchor: default = mean of data
+  if (is.null(anchor)) {
+    anchor <- colMeans(df)
+  } else{
+
+    anchor <- as.numeric(anchor)
+    if (length(anchor) != ncol(df)) {
+      cli::cli_abort("Length of anchor should match the number of columns in df.")
+    }
+
+  }
+
+  # check radius validity
+  if (r <= 0) cli::cli_abort("radius should be positive.")
+  if (r < 0.3) cli::cli_abort("radius too small.")
+  if (r > 0.8) cli::cli_abort("radius too large.")
+
+  # keep only points outside the radius
+  indices <- rowSums((sweep(df, 2, anchor, `-`))^2) > r^2
+  df <- df[indices, , drop = FALSE]
+  rownames(df) <- NULL
+
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", seq_len(ncol(df)))
+
+  return(df)
+}
+
+
 
 utils::globalVariables(c("cluster"))

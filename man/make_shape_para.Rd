@@ -4,15 +4,13 @@
 \alias{make_shape_para}
 \title{Generate Parallel Multi-Shape Clusters}
 \usage{
-make_shape_para(n = c(500, 300), k = 2, p = 4, shift = 0.4, shape = "crescent")
+make_shape_para(n = c(500, 300), k = 2, shift = 1, shape = "crescent")
 }
 \arguments{
 \item{n}{A numeric vector of length \eqn{k}, specifying the number of
 observations in each cluster. All values must be positive.}
 
 \item{k}{Integer. Number of clusters to generate. Must be greater than 1.}
-
-\item{p}{Integer. Number of dimensions. Must be at least 3.}
 
 \item{shift}{Numeric. The distance between cluster centers along the
 alternating dimensions (default is `0.4`).}
@@ -22,7 +20,7 @@ alternating dimensions (default is `0.4`).}
 }
 \value{
 A tibble containing \eqn{\sum n} rows and \eqn{p} columns, with
-  the generated features (`x1, x2, ..., xp`) and a `cluster` label.
+  the generated features (`x1, x2, x3, x4`) and a `cluster` label.
 }
 \description{
 This function generates synthetic high-dimensional data consisting of
@@ -33,7 +31,7 @@ the third along the first dimension again, and so on.
 }
 \examples{
 # Generate 2 crescent-shaped clusters in 4D
-twocrescent <- make_shape_para(n = c(500, 300), k = 2, p = 4, shape = "crescent")
+twocrescent <- make_shape_para(n = c(500, 300), k = 2, shape = "crescent")
 
 
 }

@@ -4,18 +4,12 @@
 \alias{gen_trefoil4d}
 \title{Generate 4-D Trefoil Knot Coordinates}
 \usage{
-gen_trefoil4d(n = 500, p = 4, steps = 5, noise_fun = gen_noisedims, ...)
+gen_trefoil4d(n = 500, steps = 5)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
 \item{steps}{A numeric value (default: 5) representing the number of steps for the theta parameter.}
-
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
-
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing 4-D trefoil knot.
@@ -26,5 +20,5 @@ The number of points is determined by the length of the theta and phi sequences.
 }
 \examples{
 set.seed(20240412)
-trefoil4d <- gen_trefoil4d(n = 500, p = 4, steps = 5)
+trefoil4d <- gen_trefoil4d(n = 500, steps = 5)
 }

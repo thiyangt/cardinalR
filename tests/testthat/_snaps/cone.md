@@ -1,7 +1,7 @@
 # gen_cone() works
 
     Code
-      gen_cone(n = 500, p = 4, h = 5, ratio = 0.5)
+      gen_cone(n = 500, h = 5, ratio = 0.5)
     Message
       v Data generation completed successfully!!!
     Output

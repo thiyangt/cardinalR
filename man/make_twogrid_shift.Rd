@@ -4,20 +4,16 @@
 \alias{make_twogrid_shift}
 \title{Generate Two Shifted Grid Clusters in High Dimensions}
 \usage{
-make_twogrid_shift(n = c(500, 500), p = 4)
+make_twogrid_shift(n = c(500, 500))
 }
 \arguments{
 \item{n}{A numeric vector of length 2 specifying the number of points in each cluster.
 Default is \code{c(500, 500)}.}
-
-\item{p}{An integer specifying the total number of dimensions for the output dataset.
-Must be at least 2. If \code{p > 2}, additional noise dimensions will be added.
-Default is 4.}
 }
 \value{
-A tibble with \code{n[1] + n[2]} rows and \code{p + 1} columns:
+A tibble with \code{n[1] + n[2]} rows and 5 columns:
 \itemize{
-  \item \code{x1, x2, ..., xp}: Numeric coordinates of the points.
+  \item \code{x1, x2, x3, x4}: Numeric coordinates of the points.
   \item \code{cluster}: Cluster membership label (factor with 2 levels).
 }
 }

@@ -16,22 +16,9 @@ gen_gridcube <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  if (p <= 0) {
-    cli::cli_abort("p should be positive.")
-  }
+  df <- geozoo::cube.solid.grid(p = p)$points |>
+    tibble::as_tibble(.name_repair = "minimal")
 
-  n_vec <- gen_nproduct(n = n, p = p)
-
-  dims <- as.list(n_vec)
-  df <- tidyr::expand_grid(!!!purrr::map(dims, seq_len))
-
-  for (i in seq_along(df)) {
-    df[[i]] <- (df[[i]] - 1) / (n_vec[i] - 1)
-  }
-
-
-  # Create the tibble
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
@@ -57,21 +44,11 @@ gen_unifcube <- function(n = 500, p = 4) {
     cli::cli_abort("n should be positive.")
   }
 
-  if (p <= 0) {
-    cli::cli_abort("p should be positive.")
-  }
+  df <- geozoo::cube.solid.random(n = n, p = p)$points |>
+    tibble::as_tibble(.name_repair = "minimal")
 
-  df <- matrix(NA, nrow = n, ncol = 3)
-  half_length <- 1 / 2
+  df <- df[-(1:(2^p)),] ## To remove vertices
 
-  x_min <- -half_length
-  x_max <- half_length
-
-  # Generate n x d matrix of uniform points
-  df <- matrix(stats::runif(n * p, min = x_min, max = x_max), nrow = n, ncol = p)
-
-  # Create the tibble
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
@@ -94,26 +71,16 @@ gen_unifcube <- function(n = 500, p = 4) {
 #' @examples
 #' set.seed(20240412)
 #' cubehole <- gen_cubehole(n = 1000, p = 4)
-gen_cubehole <- function(n = 500, p = 4, r_hole = 0.5) {
+gen_unifcubehole <- function(n = 5000, p = 4, r_hole = 0.5) {
+  if (n <= 0) cli::cli_abort("n should be positive.")
+  if (p <= 0) cli::cli_abort("p should be positive.")
 
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
+  # generate cube from geozoo
+  df <- gen_unifcube(n = n, p = p)
 
-  if (n < 0) {
-    cli::cli_abort("n should be positive.")
-  }
-
-  plane_points <- gen_unifcube(n = n, p = p)
-
-  # Compute Euclidean distance from the center
-  distances <- sqrt(rowSums(plane_points^2))
-
-  # Remove points inside the hole
-  plane_points <- plane_points |>
-    dplyr::filter(distances > r_hole)
+  # apply hole generation
+  df <- gen_hole(df, r = r_hole)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
-  return(plane_points)
-
+  return(df)
 }

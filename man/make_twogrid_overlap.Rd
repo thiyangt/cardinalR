@@ -4,20 +4,16 @@
 \alias{make_twogrid_overlap}
 \title{Generate Two Overlapping Grid Clusters in High Dimensions}
 \usage{
-make_twogrid_overlap(n = c(500, 500), p = 4)
+make_twogrid_overlap(n = c(500, 500))
 }
 \arguments{
 \item{n}{A numeric vector of length 2 specifying the number of points
 in each grid cluster.}
-
-\item{p}{An integer specifying the total number of dimensions.
-Must be greater than or equal to 2. If \code{p > 2}, additional
-noise dimensions are appended.}
 }
 \value{
-A tibble with \code{n[1] + n[2]} rows and \code{p + 1} columns:
+A tibble with \code{n[1] + n[2]} rows and 5 columns:
   \itemize{
-    \item \code{x1, ..., xp} — coordinates of the generated points.
+    \item \code{x1,x2, x3, x4} — coordinates of the generated points.
     \item \code{cluster} — cluster membership label.
   }
 }

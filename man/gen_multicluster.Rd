@@ -6,7 +6,6 @@
 \usage{
 gen_multicluster(
   n = c(200, 300, 500),
-  p = 4,
   k = 3,
   loc = matrix(c(0, 0, 0, 0, 5, 9, 0, 0, 3, 4, 10, 7), nrow = 3, byrow = TRUE),
   scale = c(3, 1, 2),
@@ -17,55 +16,61 @@ gen_multicluster(
 )
 }
 \arguments{
-\item{n}{A numeric vector (default: c(200, 500, 300)) representing the sample sizes.}
-
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
+\item{n}{A numeric vector (default: c(200, 500, 300)) representing the sample sizes
+for each cluster. Must have length \code{k}.}
 
 \item{k}{A numeric value (default: 3) representing the number of clusters.}
 
-\item{loc}{A numeric matrix (default: matrix(c(0, 0, 0, 0,
-5, 9, 0, 0,
-3, 4, 10, 7
-), nrow = 3, byrow = TRUE)) representing the locations/centroids of clusters.}
+\item{loc}{A numeric matrix giving the centroids of the clusters.
+The number of rows must equal \code{k}; the number of columns should match
+the maximum dimensionality across all shapes.}
 
-\item{scale}{A numeric vector (default: c(3, 1, 2)) representing the scaling factors of clusters.}
+\item{scale}{A numeric vector (default: c(3, 1, 2)) giving the scaling factors
+for each cluster. Must have length \code{k}.}
 
-\item{shape}{A character vector (default: c("gen_gaussian", "gen_cone", "gen_unifcube")) representing the shapes of clusters.}
+\item{shape}{A character vector (default: c("gaussian", "cone", "unifcube"))
+specifying the generator function to use for each cluster. Must have length \code{k}.}
 
-\item{rotation}{A numeric list which contains plane and the corresponding angle along that plane for each cluster.}
+\item{rotation}{A list of rotation matrices (one per cluster), or \code{NULL}.
+Each matrix must be square with dimension equal to the total number of
+structural dimensions in the dataset. Rotation matrices can be generated
+using \code{\link{gen_rotation}} for convenience.}
 
-\item{is_bkg}{A Boolean value (default: FALSE) representing the background noise should exist or not.}
+\item{is_bkg}{Logical (default: FALSE). If \code{TRUE}, adds background noise
+sampled from a multivariate normal distribution centered on the dataset mean
+with standard deviations matching the observed spread.}
 
 \item{...}{Additional arguments passed to the cluster generator functions.}
 }
 \value{
-A data containing same/different shaped clusters.
+A tibble containing all generated clusters, with columns \code{x1, x2, ...}
+  for dimensions and a \code{cluster} label.
 }
 \description{
-This function generates a dataset with multiple clusters.
+This function generates a dataset with multiple clusters in high-dimensional space.
+Each cluster can have a different shape, scale, rotation, and centroid,
+allowing the construction of complex synthetic datasets.
 }
 \examples{
 set.seed(20240412)
-rotations_4d <- list(
-cluster1 = list(
-  list(plane = c(1, 2), angle = 60), # Rotation in the (1, 2) plane
-  list(plane = c(3, 4), angle = 90)  # Rotation in the (3, 4) plane
-  ),
-cluster2 = list(
-  list(plane = c(1, 3), angle = 30) # Rotation in the (1, 3) plane
-  ),
-cluster3 = list(
-  list(plane = c(2, 4), angle = 45) # Rotation in the (2, 4) plane
-  )
+
+# Example rotation matrices for 4D space
+rot1 <- gen_rotation(p = 4, planes_angles = list(list(plane = c(1, 2), angle = 60),
+                                                list(plane = c(3, 4), angle = 90)))
+rot2 <- gen_rotation(p = 4, planes_angles = list(list(plane = c(1, 3), angle = 30)))
+rot3 <- gen_rotation(p = 4, planes_angles = list(list(plane = c(2, 4), angle = 45)))
+
+clust_data <- gen_multicluster(
+  n = c(200, 300, 500),
+  k = 3,
+  loc = matrix(c(
+    0, 0, 0, 0,
+    5, 9, 0, 0,
+    3, 4, 10, 7
+  ), nrow = 3, byrow = TRUE),
+  scale = c(3, 1, 2),
+  shape = c("gaussian", "cone", "unifcube"),
+  rotation = list(rot1, rot2, rot3),
+  is_bkg = FALSE
 )
-clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
-loc = matrix(c(
-  0, 0, 0, 0,
-  5, 9, 0, 0,
-  3, 4, 10, 7
-), nrow = 3, byrow = TRUE),
-scale = c(3, 1, 2),
-shape = c("gaussian", "cone", "unifcube"),
-rotation = rotations_4d,
-is_bkg = FALSE)
 }

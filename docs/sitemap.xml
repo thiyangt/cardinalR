@@ -2,6 +2,9 @@
 <url><loc>https://jayanilakshika.github.io/cardinalR/404.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/LICENSE-text.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/LICENSE.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/articles/01main_function.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/articles/02cardinalRexamples.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/articles/cardinalRexamples.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/articles/cardinalr01clustering.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/articles/cardinalr02branching.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/articles/cardinalr03circulars.html</loc></url>
@@ -100,6 +103,8 @@
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_helicalHyperspiral.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_helicalspiral.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hemisphere.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hole.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hollowsphere.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hyperplane.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_hyperplaneHole.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_intersectConicSpirals.html</loc></url>
@@ -151,6 +156,7 @@
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_twoLongClusts.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_unifSphere.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_unifcube.html</loc></url>
+<url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_unifcubehole.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_wavydims1.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_wavydims2.html</loc></url>
 <url><loc>https://jayanilakshika.github.io/cardinalR/reference/gen_wavydims3.html</loc></url>

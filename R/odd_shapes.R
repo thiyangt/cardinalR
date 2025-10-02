@@ -166,7 +166,6 @@ make_curvygau <- function(n = c(200, 100), p = 4) {
 
 }
 
-
 #' Generate Multiple Interlocked Circles in High-Dimensional Space
 #'
 #' This function generates \eqn{k} interlocked circular clusters in a
@@ -204,16 +203,27 @@ make_klink_circles <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5) {
   # Build rotations:
   # Circle 1 stays in (1,2) plane; subsequent ones rotated into (2,3), (3,4), etc.
   rotations <- vector("list", k)
+  angle <- 90
+
   for (i in seq_len(k)) {
     if (i == 1) {
-      rotations[[i]] <- list(
-        list(plane = c(1, 2), angle = 0)  # no rotation
-      )
+      # Circle 1: no rotation (identity matrix)
+      rotations[[i]] <- diag(p)
     } else {
-      # Rotate each new circle into a different orthogonal plane
-      rotations[[i]] <- list(
-        list(plane = c(i, i + 1), angle = 90 %% 360)
+      # Circle i: rotated into (i, i+1) plane
+      plane <- c(i, i + 1)
+      if (max(plane) > p) {
+        plane <- (plane - 1) %% p + 1  # wrap around
+      }
+
+      theta <- angle * pi / 180  # degrees -> radians
+      R <- diag(p)
+      R[plane, plane] <- matrix(
+        c(cos(theta), -sin(theta),
+          sin(theta),  cos(theta)),
+        nrow = 2
       )
+      rotations[[i]] <- R
     }
   }
   names(rotations) <- paste0("cluster", seq_len(k))
@@ -279,16 +289,21 @@ make_chain_circles <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5, angl
   rotations <- vector("list", k)
   for (i in seq_len(k)) {
     if (i == 1) {
-      rotations[[i]] <- list(
-        list(plane = c(1, 2), angle = 0)  # Circle 1 in x1-x2 plane
-      )
+      # First circle: no rotation
+      rotations[[i]] <- diag(p)
     } else {
-      # Circle i in (i, i+1) plane, wrapping if needed
+      # Circle i rotated in (i, i+1) plane, wrapping if needed
       plane <- c(i, i + 1)
       plane[plane > p] <- plane[plane > p] - (p - 1)
-      rotations[[i]] <- list(
-        list(plane = plane, angle = angle)
+
+      theta <- angle * pi / 180  # degrees -> radians
+      R <- diag(p)               # start with identity
+      R[plane, plane] <- matrix(
+        c(cos(theta), -sin(theta),
+          sin(theta),  cos(theta)),
+        nrow = 2
       )
+      rotations[[i]] <- R
     }
   }
   names(rotations) <- paste0("cluster", seq_len(k))
@@ -344,16 +359,27 @@ make_klink_curvycycle <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5) {
   # Build rotations:
   # curvycycle 1 stays in (1,2) plane; subsequent ones rotated into (2,3), (3,4), etc.
   rotations <- vector("list", k)
+
+  angle <- 90
   for (i in seq_len(k)) {
     if (i == 1) {
-      rotations[[i]] <- list(
-        list(plane = c(1, 2), angle = 0)  # no rotation
-      )
+      # First cluster: no rotation (identity)
+      rotations[[i]] <- diag(p)
     } else {
-      # Rotate each new curvycycle into a different orthogonal plane
-      rotations[[i]] <- list(
-        list(plane = c(i, i + 1), angle = 90 %% 360)
+      # Subsequent clusters rotated into different orthogonal planes
+      plane <- c(i, i + 1)
+      plane[plane > p] <- plane[plane > p] - (p - 1)
+
+      theta <- angle * pi / 180  # convert to radians
+      R <- diag(p)               # identity matrix
+
+      # insert 2D rotation block into plane
+      R[plane, plane] <- matrix(
+        c(cos(theta), -sin(theta),
+          sin(theta),  cos(theta)),
+        nrow = 2
       )
+      rotations[[i]] <- R
     }
   }
   names(rotations) <- paste0("cluster", seq_len(k))
@@ -419,16 +445,23 @@ make_chain_curvycycle <- function(n = c(200, 100), p = 4, k = 2, offset = 0.5, a
   rotations <- vector("list", k)
   for (i in seq_len(k)) {
     if (i == 1) {
-      rotations[[i]] <- list(
-        list(plane = c(1, 2), angle = 0)  # curvycycle 1 in x1-x2 plane
-      )
+      # cluster 1: no rotation (identity)
+      rotations[[i]] <- diag(p)
     } else {
-      # curvycycle i in (i, i+1) plane, wrapping if needed
+      # rotate cluster i in the (i, i+1) plane by `angle`
       plane <- c(i, i + 1)
       plane[plane > p] <- plane[plane > p] - (p - 1)
-      rotations[[i]] <- list(
-        list(plane = plane, angle = angle)
+
+      theta <- angle * pi / 180  # convert to radians
+      R <- diag(p)               # identity
+
+      # insert 2D rotation block into the plane
+      R[plane, plane] <- matrix(
+        c(cos(theta), -sin(theta),
+          sin(theta),  cos(theta)),
+        nrow = 2
       )
+      rotations[[i]] <- R
     }
   }
   names(rotations) <- paste0("cluster", seq_len(k))
@@ -571,13 +604,11 @@ make_gaucurvycycle <- function(n = c(200, 100, 100), p = 4, num_curvycycle = 2, 
 #'
 #' @param n Integer, the number of points in the grid cluster. Must be positive.
 #'   Default is \code{500}.
-#' @param p Integer, the dimensionality of the embedding space. Must be at least 2.
-#'   Default is \code{4}.
 #'
 #'
 #' @return A tibble containing the generated dataset with columns:
 #'   \itemize{
-#'     \item \code{x1, x2, ..., xp} — coordinates of the data points.
+#'     \item \code{x1, x2, x3, x4} — coordinates of the data points.
 #'     \item \code{cluster} — cluster assignment (always 1 for the grid).
 #'   }
 #'
@@ -588,11 +619,7 @@ make_gaucurvycycle <- function(n = c(200, 100, 100), p = 4, num_curvycycle = 2, 
 #'
 #'
 #' @export
-make_onegrid <- function(n = 500, p = 4){
-
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
+make_onegrid <- function(n = 500){
 
   if (length(n) != 1) {
     cli::cli_abort("n should contain exactly one values.")
@@ -610,17 +637,11 @@ make_onegrid <- function(n = 500, p = 4){
                          rotation = NULL,
                          is_bkg = FALSE)
 
-  if (p > 2) {
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-2), m = rep(0, p-2), s = rep(0.01, p-2)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 3:p)
 
-    df <- cbind(df, noise_df)
-  }
+  noise_df <- gen_noisedims(n = NROW(df), p = 2, m = rep(0, 2), s = rep(0.01, 2))
+  names(noise_df) <- paste0("x", 3:4)
 
-  # Create the tibble
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df[-3]) <- paste0("x", 1:p)
+  df <- cbind(df, noise_df)
 
   df <- df |>
     dplyr::select(dplyr::starts_with("x"), "cluster")
@@ -638,13 +659,10 @@ make_onegrid <- function(n = 500, p = 4){
 #'
 #' @param n A numeric vector of length 2 specifying the number of points
 #'   in each grid cluster.
-#' @param p An integer specifying the total number of dimensions.
-#'   Must be greater than or equal to 2. If \code{p > 2}, additional
-#'   noise dimensions are appended.
 #'
-#' @return A tibble with \code{n[1] + n[2]} rows and \code{p + 1} columns:
+#' @return A tibble with \code{n[1] + n[2]} rows and 5 columns:
 #'   \itemize{
-#'     \item \code{x1, ..., xp} — coordinates of the generated points.
+#'     \item \code{x1,x2, x3, x4} — coordinates of the generated points.
 #'     \item \code{cluster} — cluster membership label.
 #'   }
 #'
@@ -654,11 +672,7 @@ make_onegrid <- function(n = 500, p = 4){
 #' df <- make_twogrid_overlap()
 #'
 #' @export
-make_twogrid_overlap <- function(n = c(500, 500), p = 4){
-
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
+make_twogrid_overlap <- function(n = c(500, 500)){
 
   if (length(n) != 2) {
     cli::cli_abort("n should contain exactly one values.")
@@ -668,28 +682,30 @@ make_twogrid_overlap <- function(n = c(500, 500), p = 4){
     cli::cli_abort("Values in n should be positive.")
   }
 
+  # locations for the two grids (shifted along x1 and x2)
+  loc <- matrix(0, nrow = 2, ncol = 2)
+  loc[1, 1] <- 0         # first grid at origin
+  loc[1, 2] <- 0
+  loc[2, 1] <- 0.6     # second grid shifted in x1
+  loc[2, 2] <- 0.6     # and shifted in x2
+
   ## To generate data
-  df <- gen_multicluster(n = n, p = 2, k = 2,
-                         loc = NULL,
-                         scale = c(1, 3),
+  df <- gen_multicluster(n = n, k = 2,
+                         loc = loc,
+                         scale = rep(1, 2),
                          shape = rep("gridcube", 2),
                          rotation = NULL,
-                         is_bkg = FALSE)
+                         is_bkg = FALSE,
+                         p = 2)
 
-  if (p > 2) {
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-2), m = rep(0, p-2), s = rep(0.01, p-2)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 3:p)
+  noise_df <- gen_noisedims(n = NROW(df), p = 2, m = rep(0, 2), s = rep(0.01, 2))
+  names(noise_df) <- paste0("x", 3:4)
 
-    df <- cbind(df, noise_df)
-  }
-
-  # Create the tibble
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df[-3]) <- paste0("x", 1:p)
+  df <- cbind(df, noise_df)
 
   df <- df |>
     dplyr::select(dplyr::starts_with("x"), "cluster")
+
 
   return(df)
 
@@ -703,14 +719,11 @@ make_twogrid_overlap <- function(n = c(500, 500), p = 4){
 #'
 #' @param n A numeric vector of length 2 specifying the number of points in each cluster.
 #'   Default is \code{c(500, 500)}.
-#' @param p An integer specifying the total number of dimensions for the output dataset.
-#'   Must be at least 2. If \code{p > 2}, additional noise dimensions will be added.
-#'   Default is 4.
 #'
 #'
-#' @return A tibble with \code{n[1] + n[2]} rows and \code{p + 1} columns:
+#' @return A tibble with \code{n[1] + n[2]} rows and 5 columns:
 #' \itemize{
-#'   \item \code{x1, x2, ..., xp}: Numeric coordinates of the points.
+#'   \item \code{x1, x2, x3, x4}: Numeric coordinates of the points.
 #'   \item \code{cluster}: Cluster membership label (factor with 2 levels).
 #' }
 #'
@@ -720,11 +733,7 @@ make_twogrid_overlap <- function(n = c(500, 500), p = 4){
 #'
 #'
 #' @export
-make_twogrid_shift <- function(n = c(500, 500), p = 4){
-
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
+make_twogrid_shift <- function(n = c(500, 500)){
 
   if (length(n) != 2) {
     cli::cli_abort("n should contain exactly one values.")
@@ -734,28 +743,30 @@ make_twogrid_shift <- function(n = c(500, 500), p = 4){
     cli::cli_abort("Values in n should be positive.")
   }
 
+  # locations for the two grids (shifted along x1 and x2)
+  loc <- matrix(0, nrow = 2, ncol = 2)
+  loc[1, 1] <- 0         # first grid at origin
+  loc[1, 2] <- 0
+  loc[2, 1] <- 2     # second grid shifted in x1
+  loc[2, 2] <- 3     # and shifted in x2
+
   ## To generate data
-  df <- gen_multicluster(n = n, p = 2, k = 2,
-                         loc = matrix(c(0, 0, 0.5, 0.5), nrow = 2, byrow = TRUE),
+  df <- gen_multicluster(n = n, k = 2,
+                         loc = loc,
                          scale = rep(1, 2),
                          shape = rep("gridcube", 2),
                          rotation = NULL,
-                         is_bkg = FALSE)
+                         is_bkg = FALSE,
+                         p = 2)
 
-  if (p > 2) {
-    noise_df <- gen_noisedims(n = NROW(df), p = (p-2), m = rep(0, p-2), s = rep(0.01, p-2)) |>
-      as.matrix()
-    colnames(noise_df) <- paste0("x", 3:p)
+  noise_df <- gen_noisedims(n = NROW(df), p = 2, m = rep(0, 2), s = rep(0.01, 2))
+  names(noise_df) <- paste0("x", 3:4)
 
-    df <- cbind(df, noise_df)
-  }
-
-  # Create the tibble
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df[-3]) <- paste0("x", 1:p)
+  df <- cbind(df, noise_df)
 
   df <- df |>
     dplyr::select(dplyr::starts_with("x"), "cluster")
+
 
   return(df)
 
@@ -773,7 +784,6 @@ make_twogrid_shift <- function(n = c(500, 500), p = 4){
 #' @param n A numeric vector of length \eqn{k}, specifying the number of
 #'   observations in each cluster. All values must be positive.
 #' @param k Integer. Number of clusters to generate. Must be greater than 1.
-#' @param p Integer. Number of dimensions. Must be at least 3.
 #' @param shift Numeric. The distance between cluster centers along the
 #'   alternating dimensions (default is `0.4`).
 #' @param shape Character string. Shape of the clusters to generate (e.g.,
@@ -781,19 +791,16 @@ make_twogrid_shift <- function(n = c(500, 500), p = 4){
 #'
 #'
 #' @return A tibble containing \eqn{\sum n} rows and \eqn{p} columns, with
-#'   the generated features (`x1, x2, ..., xp`) and a `cluster` label.
+#'   the generated features (`x1, x2, x3, x4`) and a `cluster` label.
 #'
 #' @examples
 #' # Generate 2 crescent-shaped clusters in 4D
-#' twocrescent <- make_shape_para(n = c(500, 300), k = 2, p = 4, shape = "crescent")
+#' twocrescent <- make_shape_para(n = c(500, 300), k = 2, shape = "crescent")
 #'
 #'
 #' @export
-make_shape_para <- function(n = c(500, 300), k = 2, p = 4, shift = 0.4, shape = "crescent") {
+make_shape_para <- function(n = c(500, 300), k = 2, shift = 1, shape = "crescent") {
 
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
 
   if (k < 1) {
     cli::cli_abort("k should be greater than 1.")
@@ -812,23 +819,30 @@ make_shape_para <- function(n = c(500, 300), k = 2, p = 4, shift = 0.4, shape = 
   }
 
   ## Construct location matrix
-  loc <- matrix(0, nrow = k, ncol = p)
+  loc <- matrix(0, nrow = k, ncol = 2)
   for (i in seq_len(k)) {
     if (i %% 2 == 1) {
       loc[i, 1] <- shift * ((i - 1) %/% 2 + 1)  # shift along x1
     } else {
-      loc[i, 3] <- shift * (i %/% 2)            # shift along x3
+      loc[i, 2] <- shift * (i %/% 2)            # shift along x2
     }
   }
 
   ## To generate data
-  df <- gen_multicluster(n = n, p = p, k = k,
-                         loc = loc,
+  df <- gen_multicluster(n = n, k = k,
+                         loc = t(loc),
                          scale = rep(1, k),
                          shape = rep(shape, k),
                          rotation = NULL,
                          is_bkg = FALSE)
 
+  noise_df <- gen_noisedims(n = NROW(df), p = 2, m = rep(0, 2), s = rep(0.1, 2))
+  names(noise_df) <- paste0("x", NCOL(df):(NCOL(df) + 1))
+
+  df <- cbind(df, noise_df)
+
+  df <- df |>
+    dplyr::select(dplyr::starts_with("x"), "cluster")
 
   return(df)
 

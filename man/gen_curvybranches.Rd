@@ -4,21 +4,12 @@
 \alias{gen_curvybranches}
 \title{Generate data with curvy shaped branches}
 \usage{
-gen_curvybranches(n = 400, p = 4, k = 4, noise_fun = gen_noisedims, ...)
+gen_curvybranches(n = 400, k = 4)
 }
 \arguments{
 \item{n}{A numeric value (default: 400) representing the sample size.}
 
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
 \item{k}{A numeric value (default: 4) representing the number of branches.}
-
-\item{noise_fun}{A function specifying which noise generation function to
-use for the additional dimensions. Default is \code{gen_noisedims}.
-Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
-
-\item{...}{Additional arguments passed to the selected \code{noise_fun}
-(e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing non-linear shaped branches.
@@ -28,6 +19,5 @@ This function generates a dataset representing a structure with non-linear shape
 }
 \examples{
 set.seed(20240412)
-curvybranches <- gen_curvybranches(n = 400, p = 4, k = 4,
-noise_fun = gen_noisedims, m = rep(0, 2), s = rep(0.05, 2))
+curvybranches <- gen_curvybranches(n = 400, k = 4)
 }

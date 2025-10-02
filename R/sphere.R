@@ -104,24 +104,21 @@ gen_curvycycle <- function(n = 500, p = 4){
 #' This function generates a dataset representing a structure with a uniform sphere.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param r A numeric vector (default: 1) representing the radius of the sphere.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a uniform sphere.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' unifsphere <- gen_unifsphere(n = 500, p = 4)
-gen_unifsphere <- function(n = 500, p = 4, r = 1, noise_fun = gen_noisedims, ...){
-
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
+#' unifsphere <- gen_unifsphere(n = 500)
+gen_unifsphere <- function(n = 500, r = 1){
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
+  }
+
+  if (r <= 0) {
+    cli::cli_abort("r should be positive.")
   }
 
   u <- stats::runif(n, -1, 1)                 # cos(phi)
@@ -133,36 +130,38 @@ gen_unifsphere <- function(n = 500, p = 4, r = 1, noise_fun = gen_noisedims, ...
 
   df <- matrix(c(x1, x2, x3), ncol = 3)
 
-  if (p > 3) {
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 3)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 3)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 3), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 3, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
+  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  names(df) <- paste0("x", 1:3)
 
-    colnames(noise_df) <- paste0("x", 4:p)
+  cli::cli_alert_success("Data generation completed successfully!!!")
+  return(df)
 
-    df <- cbind(df, noise_df)
+}
+
+#' Generate Hollow Sphere
+#'
+#' This function generates a dataset representing a structure with a sphere with points on the surface.
+#'
+#' @param n A numeric value (default: 500) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
+#' @return A data containing a hollow sphere.
+#' @export
+#'
+#' @examples
+#' set.seed(20240412)
+#' hollowsphere <- gen_hollowsphere(n = 500)
+gen_hollowsphere <- function(n = 500, p = 4){
+
+  if (n <= 0) {
+    cli::cli_abort("n should be positive.")
+  }
+  if (p <= 0) {
+    cli::cli_abort("p should be positive.")
   }
 
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
+  df <- sphere.hollow(n = n, p = p)$points |>
+    tibble::as_tibble(.name_repair = "minimal")
+
   names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
@@ -234,7 +233,6 @@ gen_gridedsphere <- function(n = 500, p = 4){
 #' This function generates a dataset representing a structure with a small and big spheres.
 #'
 #' @param n A numeric vector (default: c(1000, 100)) representing the sample sizes of the big and small spheres respectively.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 3) representing the number of small spheres.
 #' @param r A numeric vector (default: c(15, 3)) representing the radius of the big and small spheres respectively.
 #' @param loc A numeric value (default: 10 / sqrt(3) representing how far the small spheres are placed from each other.
@@ -243,14 +241,10 @@ gen_gridedsphere <- function(n = 500, p = 4){
 #'
 #' @examples
 #' set.seed(20240412)
-#' clusteredspheres <- gen_clusteredspheres(n = c(1000, 100), k = 3, p = 4,
+#' clusteredspheres <- gen_clusteredspheres(n = c(1000, 100), k = 3,
 #' r = c(15, 3), loc = 10 / sqrt(3))
-gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
+gen_clusteredspheres <- function(n = c(1000, 100), k = 3, r = c(15, 3),
                                  loc = 10 / sqrt(3)) {
-
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
 
   if (length(n) != 2) {
     cli::cli_abort("n should contain exactly two values.")
@@ -270,13 +264,13 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
   r_big <- r[1]
   r_small <- r[2]
 
-  d_dim_sphere <- gen_unifsphere(n_small, p, r_small)
+  d_dim_sphere <- gen_unifsphere(n_small, r_small)
   small_spheres <- lapply(seq_len(k), function(i) {
-    center <- stats::rnorm(p, sd = loc)
+    center <- stats::rnorm(3, sd = loc)
     sweep(d_dim_sphere, 2, center, "+")
   })
 
-  big_sphere <- gen_unifsphere(n_big, p, r_big)
+  big_sphere <- gen_unifsphere(n_big, r_big)
 
   small_labeled <- lapply(seq_along(small_spheres), function(i) {
     cbind(small_spheres[[i]], cluster = paste0("small_", i))
@@ -286,7 +280,7 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
 
   df <- dplyr::bind_rows(c(small_labeled, list(big_labeled))) |>
     tibble::as_tibble()
-  names(df) <- append(paste0("x", 1:p), "cluster")
+  names(df) <- append(paste0("x", 1:3), "cluster")
 
   ## Swap rows
   df <- randomize_rows(df)
@@ -301,20 +295,13 @@ gen_clusteredspheres <- function(n = c(1000, 100), k = 3, p = 4, r = c(15, 3),
 #' This function generates a dataset representing a structure with a hemisphere.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a hemisphere.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' hemisphere <- gen_hemisphere(n = 500, p = 4)
-gen_hemisphere <- function(n = 500, p = 4, noise_fun = gen_noisedims, ...) {
-
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
+#' hemisphere <- gen_hemisphere(n = 500)
+gen_hemisphere <- function(n = 500) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -332,37 +319,6 @@ gen_hemisphere <- function(n = 500, p = 4, noise_fun = gen_noisedims, ...) {
   x4 <- cos(theta1) * sin(theta3)  # x4 coordinate (restricted to hemisphere)
 
   df <- matrix(c(x1, x2, x3, x4), ncol = 4)
-
-  if (p > 4) {
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 4, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- cbind(df, noise_df)
-  }
-
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)

@@ -31,7 +31,7 @@ reference:
   contents:
   - gen_gridcube
   - gen_unifcube
-  - gen_cubehole
+  - gen_unifcubehole
 - title: "Gaussian"
   desc: Gaussian data structure.
   contents:
@@ -113,6 +113,7 @@ reference:
   - gen_gridedsphere
   - gen_clusteredspheres
   - gen_hemisphere
+  - gen_hollowsphere
 - title: "Swiss roll"
   desc: Swiss roll data structures.
   contents:
@@ -146,3 +147,4 @@ reference:
   - gen_rotation
   - normalize_data
   - gen_clustloc
+  - gen_hole

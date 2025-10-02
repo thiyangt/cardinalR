@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">cardinalR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,8 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/main_function.html">Quick start</a></li>
-    <li><a class="dropdown-item" href="../articles/quollr1sample.html">Example data structures</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/01main_function.html">Quick start</a></li>
+    <li><a class="dropdown-item" href="../articles/02cardinalRexamples.html">Example data structures</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -43,7 +43,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_helicalspiral</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, p <span class="op">=</span> <span class="fl">4</span>, noise_fun <span class="op">=</span> <span class="va">gen_noisedims</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gen_helicalspiral</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -52,18 +52,6 @@
 
 <dl><dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>A numeric value (default: 500) representing the sample size.</p></dd>
-
-
-<dt id="arg-p">p<a class="anchor" aria-label="anchor" href="#arg-p"></a></dt>
-<dd><p>A numeric value (default: 4) representing the number of dimensions.</p></dd>
-
-
-<dt id="arg-noise-fun">noise_fun<a class="anchor" aria-label="anchor" href="#arg-noise-fun"></a></dt>
-<dd><p>A function specifying which noise generation function to use for the additional dimensions. Default is <code>gen_noisedims</code>. Other options include <code>gen_wavydims1</code>, <code>gen_wavydims2</code>, and <code>gen_wavydims3</code>.</p></dd>
-
-
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments passed to the selected <code>noise_fun</code> (e.g., <code>m</code>, <code>s</code>, <code>theta</code>, <code>x1_vec</code>, <code>data</code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -74,7 +62,8 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20240412</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">helicalspiral</span> <span class="op">&lt;-</span> <span class="fu">gen_helicalspiral</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span>, p <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">helicalspiral</span> <span class="op">&lt;-</span> <span class="fu">gen_helicalspiral</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data generation completed successfully!!!</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Data generation completed successfully!!!</span>
 </code></pre></div>
     </div>

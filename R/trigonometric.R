@@ -3,20 +3,13 @@
 #' This function generates a dataset representing a structure with a Crescent pattern.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_wavydims1}. Other options include \code{gen_noisedims}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a Crescent structure.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' crescent <- gen_crescent(n = 500, p = 4)
-gen_crescent <- function(n = 500, p = 4, noise_fun = gen_wavydims1, ...) {
-
-  if (p < 2) {
-    cli::cli_abort("p should be greater than 2.")
-  }
+#' crescent <- gen_crescent(n = 500)
+gen_crescent <- function(n = 500) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -30,39 +23,8 @@ gen_crescent <- function(n = 500, p = 4, noise_fun = gen_wavydims1, ...) {
   df[, 1] <- cos(theta)
   df[, 2] <- sin(theta)
 
-  if (p > 2) {
-
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 2)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 2)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 2), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 2), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 2), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 2), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 2, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-
-    colnames(noise_df) <- paste0("x", 3:p)
-
-    df <- cbind(df, noise_df)
-
-  }
-
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  names(df) <- paste0("x", 1:2)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
@@ -74,21 +36,14 @@ gen_crescent <- function(n = 500, p = 4, noise_fun = gen_wavydims1, ...) {
 #' This function generates a dataset representing a structure with a curvy cylinder.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param h A numeric value (default: 10) representing the height of the cylinder.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_wavydims2}. Other options include \code{gen_noisedims}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a curvy cylinder.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' curvycylinder <- gen_curvycylinder(n = 500, p = 4, h = 10)
-gen_curvycylinder <- function(n = 500, p = 4, h = 10, noise_fun = gen_wavydims2, ...) {
-
-  if (p < 4) {
-    cli::cli_abort("p should be greater than 4.")
-  }
+#' curvycylinder <- gen_curvycylinder(n = 500, h = 10)
+gen_curvycylinder <- function(n = 500, h = 10) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -107,39 +62,8 @@ gen_curvycylinder <- function(n = 500, p = 4, h = 10, noise_fun = gen_wavydims2,
   df[, 3] <- stats::runif(n, 0, h)     # Height along the cylinder
   df[, 4] <- sin(df[, 3])       # Curvy pattern in the 4th dimension
 
-
-  if (p > 4){
-
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 4, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- cbind(df, noise_df)
-
-  }
-
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  names(df) <- paste0("x", 1:4)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
@@ -151,21 +75,14 @@ gen_curvycylinder <- function(n = 500, p = 4, h = 10, noise_fun = gen_wavydims2,
 #' This function generates a dataset representing a structure with a spherical spiral.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param spins A numeric value (default: 1) representing the number of loops of the spiral.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a spherical spiral.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' sphericalspiral <- gen_sphericalspiral(n = 500, p = 4, spins = 1)
-gen_sphericalspiral <- function(n = 500, p = 4, spins = 1, noise_fun = gen_noisedims, ...) {
-
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
+#' sphericalspiral <- gen_sphericalspiral(n = 500, spins = 1)
+gen_sphericalspiral <- function(n = 500, spins = 1) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -187,39 +104,8 @@ gen_sphericalspiral <- function(n = 500, p = 4, spins = 1, noise_fun = gen_noise
   df[, 3] <- cos(phi) + stats::runif(n, -0.5, 0.5)
   df[, 4] <- theta / max(theta)  # Spiral along the 4th dimension
 
-
-  if(p > 4) {
-
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 4, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- cbind(df, noise_df)
-
-  }
-
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  names(df) <- paste0("x", 1:4)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
@@ -231,20 +117,13 @@ gen_sphericalspiral <- function(n = 500, p = 4, spins = 1, noise_fun = gen_noise
 #' This function generates a dataset representing a structure with a helical hyper spiral.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a helical hyper spiral.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' helicalspiral <- gen_helicalspiral(n = 500, p = 4)
-gen_helicalspiral <- function(n = 500, p = 4, noise_fun = gen_noisedims, ...) {
-
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
+#' helicalspiral <- gen_helicalspiral(n = 500)
+gen_helicalspiral <- function(n = 500) {
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -253,48 +132,16 @@ gen_helicalspiral <- function(n = 500, p = 4, noise_fun = gen_noisedims, ...) {
   # gen angles for the spiral (theta)
   theta <- seq(0, 5/4 * pi, length.out = n)
 
-  df <- matrix(0, nrow = n, ncol = 4)
+  df1 <- gen_crescent(n = n)
 
-  # Helical spiral coordinates
-  df[, 1] <- cos(theta)  # x1 is a circular pattern
-  df[, 2] <- sin(theta)  # x2 is a circular pattern
-  df[, 3] <- 0.05 * theta + stats::runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
-  df[, 4] <- 0.1 * sin(theta)          # x4 oscillates with sin(k * theta)
+  df2 <- matrix(0, nrow = n, ncol = 2)
+  df2[, 1] <- 0.05 * theta + stats::runif(n, -0.5, 0.5) # x3 moves linearly with theta (like a helix)
+  df2[, 2] <- 0.1 * sin(theta)          # x4 oscillates with sin(k * theta)
 
+  df2 <- tibble::as_tibble(df2, .name_repair = "minimal")
+  names(df2) <- paste0("x", 3:4)
 
-  # Extend to higher dimensions
-  if (p > 4) {
-
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 4, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- cbind(df, noise_df)
-
-  }
-
-  df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  df <- dplyr::bind_cols(df1, df2)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
@@ -305,21 +152,15 @@ gen_helicalspiral <- function(n = 500, p = 4, noise_fun = gen_noisedims, ...) {
 #' This function generates a dataset representing a conical spiral structure.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param spins A numeric value (default: 1) representing the number of loops of the spiral.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a conical spiral structure.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' conicspiral <- gen_conicspiral(n = 500, p = 4, spins = 1)
-gen_conicspiral <- function(n = 500, p = 4, spins = 1, noise_fun = gen_noisedims, ...) {
+#' conicspiral <- gen_conicspiral(n = 500, spins = 1)
+gen_conicspiral <- function(n = 500, spins = 1) {
 
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -343,39 +184,8 @@ gen_conicspiral <- function(n = 500, p = 4, spins = 1, noise_fun = gen_noisedims
   # Spiral in the fourth dimension (x4) - a helical shape based on the cone
   df[, 4] <- theta * sin(2 * theta) + stats::runif(n, -0.1, 0.6) # Helical movement
 
-  # Extend to higher dimensions
-  if (p > 4) {
-
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 4, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- cbind(df, noise_df)
-
-  }
-
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  names(df) <- paste0("x", 1:4)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)
@@ -386,22 +196,16 @@ gen_conicspiral <- function(n = 500, p = 4, spins = 1, noise_fun = gen_noisedims
 #' This function generates a dataset representing a nonlinear hyperbola structure.
 #'
 #' @param n A numeric value (default: 500) representing the sample size.
-#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param hc A numeric value (default: 1) representing the hyperbolic component which define the steepness and vertical scaling of the hyperbola. Larger values of this make the curve more pronounced (sharper dips/rises near 0), while smaller values make it flatter.
 #' @param non_fac A numeric value (default: 1) representing the nonlinear factor which describes the strength of this sinusoidal effect. When this is 0, the curve is purely hyperbolic; as it increases, the wave-like fluctuations become more prominent.
-#' @param noise_fun A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.
-#' @param ... Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).
 #' @return A data containing a nonlinear hyperbola structure.
 #' @export
 #'
 #' @examples
 #' set.seed(20240412)
-#' nonlinear <- gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
-gen_nonlinear <- function(n = 500, p = 4, hc = 1, non_fac = 0.5, noise_fun = gen_noisedims, ...) {
+#' nonlinear <- gen_nonlinear(n = 500, hc = 1, non_fac = 0.5)
+gen_nonlinear <- function(n = 500, hc = 1, non_fac = 0.5) {
 
-  if (p < 3) {
-    cli::cli_abort("p should be greater than 3.")
-  }
 
   if (n <= 0) {
     cli::cli_abort("n should be positive.")
@@ -427,39 +231,8 @@ gen_nonlinear <- function(n = 500, p = 4, hc = 1, non_fac = 0.5, noise_fun = gen
   # Define additional dimensions for 4D
   df[, 4] <- cos(df[, 1] * pi) + stats::runif(n, -0.1, 0.1)   # A cosine-based curve
 
-  # Extend to higher dimensions
-  if (p > 4) {
-
-    # If set defaults
-    if (identical(noise_fun, gen_noisedims)) {
-      dots <- list(...)
-      if (is.null(dots$m)) dots$m <- rep(0, p - 4)
-      if (is.null(dots$s)) dots$s <- rep(0.05, p - 4)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims1)) {
-      dots <- list(...)
-      if (is.null(dots$theta)) dots$theta <- seq(pi / 6, 12 * pi / 6, length.out = n)
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims2)) {
-      dots <- list(...)
-      if (is.null(dots$x1_vec)) dots$x1_vec <- df[, 1]
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else if (identical(noise_fun, gen_wavydims3)) {
-      dots <- list(...)
-      if (is.null(dots$df)) dots$data <- df
-      noise_df <- do.call(noise_fun, c(list(n = n, p = p - 4), dots))
-    } else {
-      noise_df <- noise_fun(n = n, p = p - 4, ...)
-    }
-    if (!is.matrix(noise_df)) noise_df <- as.matrix(noise_df)
-    colnames(noise_df) <- paste0("x", 5:p)
-
-    df <- cbind(df, noise_df)
-
-  }
-
   df <- tibble::as_tibble(df, .name_repair = "minimal")
-  names(df) <- paste0("x", 1:p)
+  names(df) <- paste0("x", 1:4)
 
   cli::cli_alert_success("Data generation completed successfully!!!")
   return(df)

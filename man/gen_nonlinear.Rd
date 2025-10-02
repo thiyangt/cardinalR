@@ -4,27 +4,14 @@
 \alias{gen_nonlinear}
 \title{Generate Nonlinear Hyperbola}
 \usage{
-gen_nonlinear(
-  n = 500,
-  p = 4,
-  hc = 1,
-  non_fac = 0.5,
-  noise_fun = gen_noisedims,
-  ...
-)
+gen_nonlinear(n = 500, hc = 1, non_fac = 0.5)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
 \item{hc}{A numeric value (default: 1) representing the hyperbolic component which define the steepness and vertical scaling of the hyperbola. Larger values of this make the curve more pronounced (sharper dips/rises near 0), while smaller values make it flatter.}
 
 \item{non_fac}{A numeric value (default: 1) representing the nonlinear factor which describes the strength of this sinusoidal effect. When this is 0, the curve is purely hyperbolic; as it increases, the wave-like fluctuations become more prominent.}
-
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
-
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing a nonlinear hyperbola structure.
@@ -34,5 +21,5 @@ This function generates a dataset representing a nonlinear hyperbola structure.
 }
 \examples{
 set.seed(20240412)
-nonlinear <- gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
+nonlinear <- gen_nonlinear(n = 500, hc = 1, non_fac = 0.5)
 }

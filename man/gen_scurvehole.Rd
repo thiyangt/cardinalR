@@ -4,16 +4,12 @@
 \alias{gen_scurvehole}
 \title{Generate S-curve Data with a Hole}
 \usage{
-gen_scurvehole(n = 500, p = 4, noise_fun = gen_noisedims, ...)
+gen_scurvehole(n = 500, r_hole = 0.5)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
-
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
+\item{r_hole}{A numeric value (default: 0.5) representing the radius of the hole.}
 }
 \value{
 A data containing the generated S-curve data with a hole.
@@ -24,7 +20,7 @@ are not close to a specified anchor point.
 }
 \examples{
 set.seed(20240412)
-scurvehole <- gen_scurvehole(n = 500, p = 4)
+scurvehole <- gen_scurvehole(n = 1000)
 }
 \references{
 Wang, Y., Huang, H., Rudin, C., & Shaposhnik, Y. (2021).

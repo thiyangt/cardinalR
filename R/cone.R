@@ -27,8 +27,8 @@ gen_cone <- function(n = 500, p = 4, h = 5, ratio = 0.5) {
     cli::cli_abort("h should be positive.")
   }
 
-  if (ratio >= 1) {
-    cli::cli_abort("The ratio should be less than 1.")
+  if (ratio <= 0 || ratio >= 0.8) {
+    cli::cli_abort("ratio should be between 0.1 and 0.8 (tip/base).")
   }
   #ratio = rt/rb
 

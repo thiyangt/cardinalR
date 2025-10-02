@@ -4,18 +4,12 @@
 \alias{gen_cubic}
 \title{Generate Cubic}
 \usage{
-gen_cubic(n = 500, p = 4, range = c(-1, 2), noise_fun = gen_noisedims, ...)
+gen_cubic(n = 500, range = c(-1, 2))
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
 \item{range}{A numeric vector (default: c(-1, 2)) representing the range along x1 axis.}
-
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
-
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing a cubic structure.
@@ -25,5 +19,5 @@ This function generates a dataset representing a structure with a cubic pattern.
 }
 \examples{
 set.seed(20240412)
-cubic <- gen_cubic(n = 500, p = 4)
+cubic <- gen_cubic(n = 500)
 }

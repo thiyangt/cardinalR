@@ -86,7 +86,7 @@ test_that("gen_wavydims2() works", {
 
 test_that("gen_wavydims3() works", {
   set.seed(20240412)
-  df <- gen_scurve(n = 500, p = 4) |>
+  df <- gen_scurve(n = 500) |>
     as.matrix()
 
   testthat::expect_snapshot(gen_wavydims3(n = 500, p = 4, data = df))
@@ -121,4 +121,14 @@ test_that("gen_clustloc() works", {
   testthat::expect_snapshot(gen_clustloc(p = 4, k = 3))
   testthat::expect_error(gen_clustloc(p = -4, k = 3))
   testthat::expect_error(gen_clustloc(p = 4, k = -3))
+})
+
+test_that("gen_hole() works", {
+  set.seed(20240412)
+
+  scurve_data <- gen_scurve(n = 1000)
+
+  testthat::expect_snapshot(gen_hole(scurve_data, r = 0.5))
+  testthat::expect_error(gen_hole(scurve_data, r = -0.5))
+  testthat::expect_error(gen_hole(scurve_data, anchor = 0, r = 0.5))
 })

@@ -4,18 +4,12 @@
 \alias{gen_sphericalspiral}
 \title{Generate Spherical Spiral}
 \usage{
-gen_sphericalspiral(n = 500, p = 4, spins = 1, noise_fun = gen_noisedims, ...)
+gen_sphericalspiral(n = 500, spins = 1)
 }
 \arguments{
 \item{n}{A numeric value (default: 500) representing the sample size.}
 
-\item{p}{A numeric value (default: 4) representing the number of dimensions.}
-
 \item{spins}{A numeric value (default: 1) representing the number of loops of the spiral.}
-
-\item{noise_fun}{A function specifying which noise generation function to use for the additional dimensions. Default is \code{gen_noisedims}. Other options include \code{gen_wavydims1}, \code{gen_wavydims2}, and \code{gen_wavydims3}.}
-
-\item{...}{Additional arguments passed to the selected \code{noise_fun} (e.g., \code{m}, \code{s}, \code{theta}, \code{x1_vec}, \code{data}).}
 }
 \value{
 A data containing a spherical spiral.
@@ -25,5 +19,5 @@ This function generates a dataset representing a structure with a spherical spir
 }
 \examples{
 set.seed(20240412)
-sphericalspiral <- gen_sphericalspiral(n = 500, p = 4, spins = 1)
+sphericalspiral <- gen_sphericalspiral(n = 500, spins = 1)
 }

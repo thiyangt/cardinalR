@@ -4,13 +4,11 @@
 \alias{make_three_clust_09}
 \title{Generate a Three-Cluster Dataset in High Dimensions}
 \usage{
-make_three_clust_09(n = c(700, 300, 500), p = 4)
+make_three_clust_09(n = c(700, 300, 500))
 }
 \arguments{
 \item{n}{An integer vector of length 3 specifying the number of points in
 each cluster. Default is \code{c(700, 300, 500)}.}
-
-\item{p}{Integer, the dimensionality of the space. Default is \code{4}.}
 }
 \value{
 A data frame (or tibble, depending on `gen_multicluster()`)
@@ -18,7 +16,7 @@ A data frame (or tibble, depending on `gen_multicluster()`)
 }
 \description{
 This function generates a dataset consisting of three distinct clusters
-in a \eqn{p}-dimensional space. Each cluster is generated with a specified
+in a 4-dimensional space. Each cluster is generated with a specified
 shape and location using the underlying `gen_multicluster()` function.
 }
 \examples{

@@ -4,19 +4,16 @@
 \alias{make_onegrid}
 \title{Generate a Single Grid Cluster in High Dimensions}
 \usage{
-make_onegrid(n = 500, p = 4)
+make_onegrid(n = 500)
 }
 \arguments{
 \item{n}{Integer, the number of points in the grid cluster. Must be positive.
 Default is \code{500}.}
-
-\item{p}{Integer, the dimensionality of the embedding space. Must be at least 2.
-Default is \code{4}.}
 }
 \value{
 A tibble containing the generated dataset with columns:
   \itemize{
-    \item \code{x1, x2, ..., xp} — coordinates of the data points.
+    \item \code{x1, x2, x3, x4} — coordinates of the data points.
     \item \code{cluster} — cluster assignment (always 1 for the grid).
   }
 }

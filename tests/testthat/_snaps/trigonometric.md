@@ -1,30 +1,29 @@
 # gen_crescent() works
 
     Code
-      gen_crescent(n = 500, p = 4)
+      gen_crescent(n = 500)
     Message
-      v Wavy shaped noise dimensions generation completed successfully!!!
       v Data generation completed successfully!!!
     Output
-      # A tibble: 500 x 4
-            x1    x2    x3    x4
-         <dbl> <dbl> <dbl> <dbl>
-       1 0.866 0.5   0.340  2.43
-       2 0.860 0.510 0.971  2.00
-       3 0.854 0.520 0.503  1.45
-       4 0.848 0.530 0.632  2.23
-       5 0.842 0.539 0.453  1.55
-       6 0.836 0.549 0.109  1.91
-       7 0.829 0.559 0.717  2.13
-       8 0.823 0.568 0.565  2.44
-       9 0.816 0.578 1.34   2.08
-      10 0.810 0.587 1.27   2.27
+      # A tibble: 500 x 2
+            x1    x2
+         <dbl> <dbl>
+       1 0.866 0.5  
+       2 0.860 0.510
+       3 0.854 0.520
+       4 0.848 0.530
+       5 0.842 0.539
+       6 0.836 0.549
+       7 0.829 0.559
+       8 0.823 0.568
+       9 0.816 0.578
+      10 0.810 0.587
       # i 490 more rows
 
 # gen_curvycylinder() works
 
     Code
-      gen_curvycylinder(n = 500, p = 4, h = 10)
+      gen_curvycylinder(n = 500, h = 10)
     Message
       v Data generation completed successfully!!!
     Output
@@ -46,7 +45,7 @@
 # gen_sphericalspiral() works
 
     Code
-      gen_sphericalspiral(n = 500, p = 4, spins = 1)
+      gen_sphericalspiral(n = 500, spins = 1)
     Message
       v Data generation completed successfully!!!
     Output
@@ -68,29 +67,30 @@
 # gen_helicalspiral() works
 
     Code
-      gen_helicalspiral(n = 500, p = 4)
+      gen_helicalspiral(n = 500)
     Message
+      v Data generation completed successfully!!!
       v Data generation completed successfully!!!
     Output
       # A tibble: 500 x 4
-            x1      x2      x3       x4
-         <dbl>   <dbl>   <dbl>    <dbl>
-       1 1     0        0.406  0       
-       2 1.000 0.00787  0.0700 0.000787
-       3 1.000 0.0157  -0.239  0.00157 
-       4 1.000 0.0236  -0.142  0.00236 
-       5 1.000 0.0315  -0.400  0.00315 
-       6 0.999 0.0393   0.310  0.00393 
-       7 0.999 0.0472   0.403  0.00472 
-       8 0.998 0.0551  -0.0317 0.00551 
-       9 0.998 0.0629   0.150  0.00629 
-      10 0.997 0.0708   0.0625 0.00708 
+            x1    x2      x3       x4
+         <dbl> <dbl>   <dbl>    <dbl>
+       1 0.866 0.5    0.406  0       
+       2 0.860 0.510  0.0700 0.000787
+       3 0.854 0.520 -0.239  0.00157 
+       4 0.848 0.530 -0.142  0.00236 
+       5 0.842 0.539 -0.400  0.00315 
+       6 0.836 0.549  0.310  0.00393 
+       7 0.829 0.559  0.403  0.00472 
+       8 0.823 0.568 -0.0317 0.00551 
+       9 0.816 0.578  0.150  0.00629 
+      10 0.810 0.587  0.0625 0.00708 
       # i 490 more rows
 
 # gen_conicspiral() works
 
     Code
-      gen_conicspiral(n = 500, p = 4, spins = 1)
+      gen_conicspiral(n = 500, spins = 1)
     Message
       v Data generation completed successfully!!!
     Output
@@ -112,7 +112,7 @@
 # gen_nonlinear() works
 
     Code
-      gen_nonlinear(n = 500, p = 4, hc = 1, non_fac = 0.5)
+      gen_nonlinear(n = 500, hc = 1, non_fac = 0.5)
     Message
       v Data generation completed successfully!!!
     Output
