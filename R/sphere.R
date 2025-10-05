@@ -159,7 +159,7 @@ gen_hollowsphere <- function(n = 500, p = 4){
     cli::cli_abort("p should be positive.")
   }
 
-  df <- sphere.hollow(n = n, p = p)$points |>
+  df <- geozoo::sphere.hollow(n = n, p = p)$points |>
     tibble::as_tibble(.name_repair = "minimal")
 
   names(df) <- paste0("x", 1:p)
