@@ -71,6 +71,19 @@ gen_multicluster <- function(n = c(200, 300, 500),
   if (any(scale < 0)) cli::cli_abort("Values in scale should be positive.")
   if (length(shape) != k) cli::cli_abort("shape should contain exactly {.val {k}} values.")
 
+  if (!is.null(rotation)) {
+    if (!is.list(rotation)) rotation <- list(rotation)
+    if (length(rotation) < k) {
+      # fill missing rotations with identity matrices of appropriate size
+      for (i in (length(rotation)+1):k) {
+        rotation[[i]] <- NULL  # will be treated as no rotation later
+      }
+    }
+  } else {
+    rotation <- vector("list", k)  # all NULL, i.e., no rotation
+  }
+
+
   # --- generate clusters ---
   dfs <- vector("list", k)
   max_dims <- 0L  # track max structural dimensions
