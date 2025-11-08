@@ -76,11 +76,11 @@ gen_multicluster <- function(n = c(200, 300, 500),
     if (length(rotation) < k) {
       # fill missing rotations with identity matrices of appropriate size
       for (i in (length(rotation)+1):k) {
-        rotation[[i]] <- NULL  # will be treated as no rotation later
+        rotation[[i]] <- "identity"  # will be treated as no rotation later
       }
     }
   } else {
-    rotation <- vector("list", k)  # all NULL, i.e., no rotation
+    rotation <- vector("list", k)  # all "identity", i.e., no rotation
   }
 
 
@@ -132,6 +132,12 @@ gen_multicluster <- function(n = c(200, 300, 500),
     # rotate if rotation matrix provided
     if (!is.null(rotation) && !is.null(rotation[[i]])) {
       rot_mat <- rotation[[i]]
+
+      if (is.character(rot_mat) && rot_mat == "identity") {
+        # create identity matrix of appropriate size
+        rot_mat <- diag(ncol(cluster_df))
+      }
+
       if (!is.matrix(rot_mat)) cli::cli_abort("rotation[[{i}]] must be a matrix.")
       if (!all(dim(rot_mat) == c(ncol(cluster_df), ncol(cluster_df)))) {
         cli::cli_abort("rotation[[{i}]] must be square with dimension {.val {ncol(cluster_df)}}.")
