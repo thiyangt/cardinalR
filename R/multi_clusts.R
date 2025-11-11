@@ -18,7 +18,7 @@
 #'   Each matrix must be square with dimension equal to the total number of
 #'   structural dimensions in the dataset. Rotation matrices can be generated
 #'   using \code{\link{gen_rotation}} for convenience.
-#' @param is_bkg Logical (default: FALSE). If \code{TRUE}, adds background noise
+#' @param add_bkg Logical (default: FALSE). If \code{TRUE}, adds background noise
 #'   sampled from a multivariate normal distribution centered on the dataset mean
 #'   with standard deviations matching the observed spread.
 #' @param ... Additional arguments passed to the cluster generator functions.
@@ -48,7 +48,7 @@
 #'   scale = c(3, 1, 2),
 #'   shape = c("gaussian", "cone", "unifcube"),
 #'   rotation = list(rot1, rot2, rot3),
-#'   is_bkg = FALSE
+#'   add_bkg = FALSE
 #' )
 gen_multicluster <- function(n = c(200, 300, 500),
                              k = 3,
@@ -60,7 +60,7 @@ gen_multicluster <- function(n = c(200, 300, 500),
                              scale = c(3, 1, 2),
                              shape = c("gaussian", "bluntedcorn", "unifcube"),
                              rotation = NULL,
-                             is_bkg = FALSE,
+                             add_bkg = FALSE,
                              ...) {
 
   # --- checks ---
@@ -71,37 +71,36 @@ gen_multicluster <- function(n = c(200, 300, 500),
   if (any(scale < 0)) cli::cli_abort("Values in scale should be positive.")
   if (length(shape) != k) cli::cli_abort("shape should contain exactly {.val {k}} values.")
 
+  # --- handle rotation argument ---
   if (!is.null(rotation)) {
-    if (!is.list(rotation)) rotation <- list(rotation)
-    if (length(rotation) < k) {
-      # fill missing rotations with identity matrices of appropriate size
-      for (i in (length(rotation)+1):k) {
-        rotation[[i]] <- "identity"  # will be treated as no rotation later
-      }
+    if (is.matrix(rotation)) {
+      # Single rotation matrix: apply to all clusters
+      rotation <- replicate(k, rotation, simplify = FALSE)
+    } else if (!is.list(rotation)) {
+      # Single non-list (e.g., numeric or character)
+      rotation <- replicate(k, rotation, simplify = FALSE)
+    } else if (is.list(rotation) && length(rotation) < k) {
+      # Extend shorter lists
+      rotation <- c(rotation, rep(list(NULL), k - length(rotation)))
     }
   } else {
-    rotation <- vector("list", k)  # all "identity", i.e., no rotation
+    # Default: no rotation
+    rotation <- vector("list", k)
   }
 
-
   # --- generate clusters ---
-  dfs <- vector("list", k)
-  max_dims <- 0L  # track max structural dimensions
-
   raw_clusters <- vector("list", k)
+  max_dims <- 0L
+
   for (i in seq_len(k)) {
     fn <- tryCatch(match.fun(paste0("gen_", shape[i])),
                    error = function(e) cli::cli_abort("No generator found for shape {.val {shape[i]}}."))
 
-    # Get the formal arguments of the generator
     fn_args <- names(formals(fn))
-
-    # Pass only the arguments that exist for this generator
     extra_args <- list(...)
     pass_args <- extra_args[names(extra_args) %in% fn_args]
 
     cluster_df <- do.call(fn, c(list(n = n[i]), pass_args))
-
     cluster_df <- as.data.frame(cluster_df)
     d_i <- ncol(cluster_df)
     max_dims <- max(max_dims, d_i)
@@ -109,59 +108,54 @@ gen_multicluster <- function(n = c(200, 300, 500),
     raw_clusters[[i]] <- cluster_df
   }
 
-
-  # --- pad clusters to max_dims ---
+  # --- pad clusters to max_dims and apply transforms ---
   dfs <- vector("list", k)
   for (i in seq_len(k)) {
     cluster_df <- raw_clusters[[i]]
-
     d_i <- ncol(cluster_df)
 
     # pad with Gaussian noise if fewer than max_dims
     if (d_i < max_dims) {
       mean_vals <- colMeans(cluster_df, na.rm = TRUE)
-
-      # repeat values so they match the number of noise dims
       m <- rep(mean(mean_vals), max_dims - d_i)
       s <- rep(0.2, max_dims - d_i)
-
       pad <- gen_noisedims(n = n[i], p = max_dims - d_i, m = m, s = s)
       cluster_df <- cbind(cluster_df, pad)
     }
 
-    # rotate if rotation matrix provided
-    if (!is.null(rotation) && !is.null(rotation[[i]])) {
-      rot_mat <- rotation[[i]]
-
+    # --- rotation ---
+    rot_mat <- rotation[[i]]
+    if (!is.null(rot_mat)) {
       if (is.character(rot_mat) && rot_mat == "identity") {
-        # create identity matrix of appropriate size
         rot_mat <- diag(ncol(cluster_df))
       }
 
-      if (!is.matrix(rot_mat)) cli::cli_abort("rotation[[{i}]] must be a matrix.")
+      if (!is.matrix(rot_mat)) {
+        cli::cli_abort("rotation[[{i}]] must be a matrix if provided.")
+      }
+
       if (!all(dim(rot_mat) == c(ncol(cluster_df), ncol(cluster_df)))) {
         cli::cli_abort("rotation[[{i}]] must be square with dimension {.val {ncol(cluster_df)}}.")
       }
+
       cluster_df <- t(rot_mat %*% t(cluster_df))
     }
 
-    # normalize + scale
+    # normalize, scale, and translate
     cluster_df <- normalize_data(cluster_df)
     cluster_df <- scale[i] * cluster_df
-
-    # center and shift
     cluster_df <- apply(cluster_df, 2, function(col) col - mean(col))
+
     if (!is.null(loc)) {
       if (NCOL(loc) != max_dims) {
-        cli::cli_abort("Number of cols in loc must match the total dimensions {.val {max_dims}}.")
+        cli::cli_abort("Number of cols in loc must match {.val {max_dims}} dimensions.")
       }
       cluster_df <- cluster_df + matrix(rep(loc[i, ], NROW(cluster_df)), ncol = max_dims, byrow = TRUE)
     }
 
-    # tibble and label
+    # add cluster label
     cluster_df <- tibble::as_tibble(cluster_df, .name_repair = "minimal")
     names(cluster_df)[1:max_dims] <- paste0("x", 1:max_dims)
-
     dfs[[i]] <- cluster_df |> dplyr::mutate(cluster = paste0("cluster", i))
   }
 
@@ -169,7 +163,7 @@ gen_multicluster <- function(n = c(200, 300, 500),
   df <- dplyr::bind_rows(dfs)
 
   # background noise
-  if (isTRUE(is_bkg)) {
+  if (isTRUE(add_bkg)) {
     mean_vals <- colMeans(df[sapply(df, is.numeric)])
     std_vals  <- sapply(df[sapply(df, is.numeric)], stats::sd)
     noise_df <- gen_bkgnoise(n = max(n) * 0.1, p = max_dims, m = mean_vals, s = std_vals) |>
@@ -177,10 +171,9 @@ gen_multicluster <- function(n = c(200, 300, 500),
     df <- dplyr::bind_rows(df, noise_df)
   }
 
-  # shuffle rows
   df <- randomize_rows(df)
-
   cli::cli_alert_success("Multiple clusters generation completed successfully!!!")
   return(df)
 }
+
 

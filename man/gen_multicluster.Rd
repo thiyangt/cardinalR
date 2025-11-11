@@ -11,7 +11,7 @@ gen_multicluster(
   scale = c(3, 1, 2),
   shape = c("gaussian", "bluntedcorn", "unifcube"),
   rotation = NULL,
-  is_bkg = FALSE,
+  add_bkg = FALSE,
   ...
 )
 }
@@ -36,7 +36,7 @@ Each matrix must be square with dimension equal to the total number of
 structural dimensions in the dataset. Rotation matrices can be generated
 using \code{\link{gen_rotation}} for convenience.}
 
-\item{is_bkg}{Logical (default: FALSE). If \code{TRUE}, adds background noise
+\item{add_bkg}{Logical (default: FALSE). If \code{TRUE}, adds background noise
 sampled from a multivariate normal distribution centered on the dataset mean
 with standard deviations matching the observed spread.}
 
@@ -71,6 +71,6 @@ clust_data <- gen_multicluster(
   scale = c(3, 1, 2),
   shape = c("gaussian", "cone", "unifcube"),
   rotation = list(rot1, rot2, rot3),
-  is_bkg = FALSE
+  add_bkg = FALSE
 )
 }
