@@ -19,6 +19,92 @@ knitr::opts_chunk$set(
 library(cardinalR)
 ```
 
+These are helper functions included in the package.
+
+## Generating background noise
+
+The `gen_bkgnoise()` function allows users to generate multivariate Gaussian noise to serve as background data in high-dimensional spaces.
+
+```{r}
+# Example: Generate 4D background noise
+bkg_data <- gen_bkgnoise(n = 500, p = 4, 
+                         m = c(0, 0, 0, 0), s = c(2, 2, 2, 2))
+head(bkg_data)
+```
+
+The generated data has independent dimensions with specified means (`m`) and standard deviations (`s`).
+
+## Randomizing rows
+
+`randomize_rows()` ensures the rows of the input data is randomized.
+
+```{r}
+randomized_data <- randomize_rows(bkg_data)
+head(randomized_data)
+```
+
+## Relocating clusters
+
+`relocate_clusters()` allows users to translate clusters in any dimension(s). This is achieved by centering each cluster (subtracting its mean) and then adding a translation vector from a provided matrix (`vert_mat`).
+
+```{r}
+df <- tibble::tibble(
+  x1 = rnorm(12),
+  x2 = rnorm(12),
+  x3 = rnorm(12),
+  x4 = rnorm(12),
+  cluster = rep(1:3, each = 4)
+)
+
+vert_mat <- matrix(c(
+  5, 0, 0, 0,
+  0, 5, 0, 0,
+  0, 0, 5, 0
+), nrow = 3, byrow = TRUE)
+
+relocated_df <- relocate_clusters(df, vert_mat)
+head(relocated_df)
+```
+
+## Generating Rotation Matrices
+
+The `gen_rotation()` function creates a rotation matrix in high-dimensional space for given planes and angles.
+
+```{r}
+
+rotations_4d <- list(
+  list(plane = c(1, 2), angle = 60),
+  list(plane = c(3, 4), angle = 90)
+)
+
+rot_mat <- gen_rotation(p = 4, planes_angles = rotations_4d)
+rot_mat
+```
+
+## Normalize data
+
+When combining clusters or transforming data geometrically, magnitudes can differ drastically.
+The `normalize_data()` function rescales the entire dataset to fit within ([-1, 1]) based on its maximum absolute value.
+
+```{r}
+norm_data <- normalize_data(bkg_data)
+head(norm_data)
+```
+
+## Generating cluster locations
+
+To place clusters in different positions, `gen_clustloc()` generates points forming a **simplex-like arrangement** ensuring each cluster center is equidistant from others as much as possible.
+
+```{r}
+
+centers <- gen_clustloc(p = 4, k = 5)
+head(centers)
+```
+
+## Numeric generators
+
+Two helper functions, `gen_nproduct()` and `gen_nsum()`, generate numeric vectors of positive integers that approximately satisfy a user-specified target product or sum, respectively.
+
 The function `gen_nsum(n, k)` divides a total sum `n` into `k` positive integers. It first assigns an equal base value to each element and then randomly distributes any remainder, ensuring the elements sum exactly to `n`.
 
 ```{r, echo=TRUE}

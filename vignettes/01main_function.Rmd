@@ -44,7 +44,7 @@ clust_data <- gen_multicluster(n = c(200, 300, 500), k = 3,
   scale = c(2, 5, 1),
   shape = c("gaussian", "cone", "unifcube"),
   rotation = list(rot1, rot2, rot3),
-  is_bkg = FALSE
+  add_bkg = FALSE
 )
 
 langevitour(clust_data |> dplyr::select(-cluster), 
