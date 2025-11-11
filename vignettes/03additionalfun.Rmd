@@ -1,0 +1,32 @@
+---
+title: "Additional functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Additional functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE
+)
+```
+
+```{r setup}
+library(cardinalR)
+```
+
+The function `gen_nsum(n, k)` divides a total sum `n` into `k` positive integers. It first assigns an equal base value to each element and then randomly distributes any remainder, ensuring the elements sum exactly to `n`.
+
+```{r, echo=TRUE}
+gen_nsum(n = 100, k = 3)
+```
+
+The function `gen_nproduct(n, p)` aims to produce `p` positive integers whose product is approximately `n`. It starts with all elements equal to the rounded $p^{th}$ root of `n` and iteratively adjusts elements up or down in a randomized manner until the product is within a small tolerance of `n`. This accommodates the fact that exact integer solutions for a given product are often impossible.
+
+```{r, echo=TRUE}
+gen_nproduct(n = 500, p = 4)
+```
