@@ -24,10 +24,6 @@
 
     Code
       gen_orgcurvybranches(n = 400, p = 4, k = 4)
-    Condition
-      Warning:
-      The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
-      i Using compatibility `.name_repair`.
     Message
       v 2 noise dimensions have been generated successfully!!!
       v 2 noise dimensions have been generated successfully!!!
@@ -54,10 +50,6 @@
 
     Code
       gen_orglinearbranches(n = 400, p = 4, k = 4)
-    Condition
-      Warning:
-      The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
-      i Using compatibility `.name_repair`.
     Message
       v 2 noise dimensions have been generated successfully!!!
       v 2 noise dimensions have been generated successfully!!!

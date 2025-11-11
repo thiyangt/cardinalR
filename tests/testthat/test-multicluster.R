@@ -17,7 +17,33 @@ test_that("gen_multicluster() works", {
                                 scale = c(3, 1, 2),
                                 shape = c("gaussian", "cone", "unifcube"),
                                 rotation = rotations_4d,
-                                is_bkg = FALSE)
+                                add_bkg = FALSE)
+
+  testthat::expect_snapshot(clust_data)
+
+  clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
+                                 loc = matrix(c(
+                                   0, 0, 0, 0,
+                                   5, 9, 0, 0,
+                                   3, 4, 10, 7
+                                 ), nrow = 3, byrow = TRUE),
+                                 scale = c(3, 1, 2),
+                                 shape = c("gaussian", "cone", "unifcube"),
+                                 rotation = rot1,
+                                 add_bkg = FALSE)
+
+  testthat::expect_snapshot(clust_data)
+
+  clust_data <- gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
+                                 loc = matrix(c(
+                                   0, 0, 0, 0,
+                                   5, 9, 0, 0,
+                                   3, 4, 10, 7
+                                 ), nrow = 3, byrow = TRUE),
+                                 scale = c(3, 1, 2),
+                                 shape = c("gaussian", "cone", "unifcube"),
+                                 rotation = list(rot1, NULL, NULL),
+                                 add_bkg = FALSE)
 
   testthat::expect_snapshot(clust_data)
 
@@ -30,7 +56,7 @@ test_that("gen_multicluster() works", {
                                           scale = c(3, 1, 2),
                                           shape = c("gaussian", "cone", "unifcube"),
                                           rotation = rotations_4d,
-                                          is_bkg = FALSE))
+                                          add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 0,
                                           loc = matrix(c(
@@ -41,7 +67,7 @@ test_that("gen_multicluster() works", {
                                           scale = c(3, 1, 2),
                                           shape = c("gaussian", "cone", "unifcube"),
                                           rotation = rotations_4d,
-                                          is_bkg = FALSE))
+                                          add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, -300, 500), p = 4, k = 3,
                                              loc = matrix(c(
@@ -52,7 +78,7 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, 2),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500, 800), p = 4, k = 3,
                                              loc = matrix(c(
@@ -63,7 +89,7 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, 2),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
                                              loc = matrix(c(
@@ -74,7 +100,7 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, 2, 6),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
                                              loc = matrix(c(
@@ -85,7 +111,7 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, -2),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
                                              loc = matrix(c(
@@ -96,14 +122,14 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, 2),
                                              shape = c("gaussian", "cone", "unifcube", "mobius"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
                                              loc = 8,
                                              scale = c(3, 1, 2),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
                                              loc = matrix(c(
@@ -113,7 +139,7 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, 2),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
   testthat::expect_error(gen_multicluster(n = c(200, 300, 500), p = 4, k = 3,
                                              loc = matrix(c(
@@ -124,6 +150,6 @@ test_that("gen_multicluster() works", {
                                              scale = c(3, 1, 2),
                                              shape = c("gaussian", "cone", "unifcube"),
                                              rotation = rotations_4d,
-                                             is_bkg = FALSE))
+                                             add_bkg = FALSE))
 
 })
