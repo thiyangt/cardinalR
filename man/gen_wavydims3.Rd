@@ -21,7 +21,7 @@ This function generates random noise dimensions by adding wavy patterns.
 }
 \examples{
 set.seed(20240412)
-df <- gen_scurve(n = 500, p = 4) |> as.matrix()
-gen_wavydims3(n = 500, p = 4, data = df)
+df <- gen_scurve(n = 500) |> as.matrix()
+gen_wavydims3(n = 500, p = 3, data = df)
 
 }

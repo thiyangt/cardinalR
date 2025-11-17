@@ -9,6 +9,8 @@ gen_orgcurvybranches(n = 400, p = 4, k = 4, allow_share = TRUE)
 \arguments{
 \item{n}{A numeric value (default: 400) representing the sample size.}
 
+\item{p}{A numeric value (default: 4) representing the number of dimensions.}
+
 \item{k}{A numeric value (default: 4) representing the number of branches.}
 
 \item{allow_share}{A logical value (default: TRUE). If TRUE, multiple branches may share the same 2D subspace. If FALSE, branches are sampled without replacement from all possible 2D subspaces until exhausted.}

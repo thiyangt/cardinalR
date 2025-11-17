@@ -405,8 +405,8 @@ gen_wavydims2 <- function(n = 500, p = 4, x1_vec) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' df <- gen_scurve(n = 500, p = 4) |> as.matrix()
-#' gen_wavydims3(n = 500, p = 4, data = df)
+#' df <- gen_scurve(n = 500) |> as.matrix()
+#' gen_wavydims3(n = 500, p = 3, data = df)
 #'
 #' @export
 gen_wavydims3 <- function(n = 500, p = 4, data) {

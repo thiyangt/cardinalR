@@ -61,6 +61,7 @@ gen_expbranches <- function(n = 400, k = 4) {
 #' This function generates a dataset representing a structure with curvy shaped branches.
 #'
 #' @param n A numeric value (default: 400) representing the sample size.
+#' @param p A numeric value (default: 4) representing the number of dimensions.
 #' @param k A numeric value (default: 4) representing the number of branches.
 #' @param allow_share A logical value (default: TRUE). If TRUE, multiple branches may share the same 2D subspace. If FALSE, branches are sampled without replacement from all possible 2D subspaces until exhausted.
 #' @return A data containing curvy shaped branches originated in one point.

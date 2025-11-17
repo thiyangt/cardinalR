@@ -70,7 +70,7 @@ gen_unifcube <- function(n = 500, p = 4) {
 #'
 #' @examples
 #' set.seed(20240412)
-#' cubehole <- gen_cubehole(n = 1000, p = 4)
+#' cubehole <- gen_unifcubehole(n = 1000, p = 4)
 gen_unifcubehole <- function(n = 5000, p = 4, r_hole = 0.5) {
   if (n <= 0) cli::cli_abort("n should be positive.")
   if (p <= 0) cli::cli_abort("p should be positive.")
