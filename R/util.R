@@ -518,7 +518,7 @@ gen_rotation <- function(p = 4, planes_angles) {
 
 #' Generate Normalized data
 #'
-#' This function normalize the data by absolute value
+#' This function normalize the data by the largest absolute value found in the dataset.
 #'
 #' @param data A tibble representing the data which needed to be normalized.
 #'
